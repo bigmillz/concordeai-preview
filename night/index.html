@@ -153,7 +153,7 @@ textarea::placeholder{color:var(--ink2)}
 .mode .h{font-size:12px;color:var(--ink2)}
 
 /* the effort slider */
-.slider{position:relative;width:150px;height:40px;flex:none;border-radius:999px}
+.slider{position:relative;width:170px;height:40px;flex:none;border-radius:999px}
 .elevel{font-size:13px;color:var(--ink2);min-width:60px}
 .pick{display:flex;align-items:center;gap:7px;height:36px;padding:0 11px 0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);cursor:pointer;color:var(--ink);transition:background .2s}
 .pick:hover{background:rgba(255,255,255,.09)}
@@ -167,7 +167,7 @@ textarea::placeholder{color:var(--ink2)}
 .opt{display:grid;grid-template-columns:1fr auto;column-gap:12px;width:100%;padding:10px 12px;border:0;border-radius:12px;background:transparent;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
 .opt:hover,.opt:focus-visible,.opt.open{background:rgba(255,255,255,.07)}
 .opt b{font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px}
-.opt[aria-checked="true"] b::after{content:"";width:6px;height:6px;border-radius:50%;background:#cfe0ff;box-shadow:0 0 8px #9fc0ff}
+.opt[aria-checked="true"]>b::after{content:"";width:6px;height:6px;border-radius:50%;background:#cfe0ff;box-shadow:0 0 8px #9fc0ff}
 .opt .d{grid-column:1;font-size:12.5px;color:var(--ink3);margin-top:2px}
 .opt .dies{grid-row:1/3;grid-column:2;display:flex;gap:4px;align-items:center}
 .opt .dies .die{opacity:1;transform:none;width:7px;height:7px}
@@ -188,7 +188,7 @@ textarea::placeholder{color:var(--ink2)}
 .slider.drag .sl-thumb{transform:scale(1.08)}
 .slider input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
 
-/* the deepest modes shimmer (Odyssey fully, Meridian softly) and a light runs round the composer */
+/* the top efforts shimmer (Ultra fully, Max softly) and a light runs round the composer */
 @property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
 .shim{background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6,#9fa8ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:shim 3.2s linear infinite}
 .shim.soft{background:linear-gradient(90deg,#cfe0ff,#b9a8ff,#cfe0ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;animation-duration:5s}
@@ -352,12 +352,12 @@ main{transition:transform .6s var(--ease)}
           <textarea id="ask" rows="2" placeholder="Ask anything, or press return for a sample"></textarea>
           <div class="row">
             <button type="button" class="round" aria-label="Attach a file"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-            <button type="button" class="pick" id="pick" aria-haspopup="menu" aria-expanded="false"><b id="mName">Zenith</b><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+            <button type="button" class="pick" id="pick" aria-haspopup="menu" aria-expanded="false"><b id="mName">Gamma</b><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
             <div class="slider" id="slider">
               <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-fill" id="slfill"></span>
-              <span class="sl-det" style="left:9px"></span><span class="sl-det" style="left:calc(9px + (100% - 18px)/3)"></span><span class="sl-det" style="left:calc(9px + (100% - 18px)*2/3)"></span><span class="sl-det last" style="left:calc(100% - 9px)"></span>
+              <span class="sl-det" style="left:9px"></span><span class="sl-det" style="left:calc(9px + (100% - 18px)/4)"></span><span class="sl-det" style="left:calc(9px + (100% - 18px)/2)"></span><span class="sl-det" style="left:calc(9px + (100% - 18px)*3/4)"></span><span class="sl-det last" style="left:calc(100% - 9px)"></span>
               <span class="sl-thumb" id="thumb"></span>
-              <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="3" step="1" value="1"></label>
+              <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="4" step="1" value="1"></label>
             </div>
             <span class="elevel" id="eName">Medium</span>
             <span class="spacer"></span>
@@ -562,7 +562,7 @@ const Sky=(function(){
   requestAnimationFrame(frame);
   let lvl=.25,busyOn=false;const setNeon=()=>{neonTo=lvl+(busyOn?.28:0);};
   function reset(){[fA,fB].forEach(f=>{gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);});gl.bindFramebuffer(gl.FRAMEBUFFER,null);}
-  return {size,reset,busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.5,.78][m]+e*.04;setNeon();}};
+  return {size,reset,busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.5,.62][m]+e*.035+(e===4?.12:0);setNeon();}};
 })();
 function loadClip(c){clip=c;vid.innerHTML='<source src="'+c.n+'.webm" type="video/webm"><source src="'+c.n+'.mp4" type="video/mp4">';vid.load();
   try{vid.play().catch(()=>{});}catch(e){} const nm=document.getElementById("clipname");if(nm)nm.textContent=c.t;}
@@ -700,8 +700,8 @@ document.querySelectorAll("[data-fx]").forEach(b=>b.addEventListener("click",()=
 
 /* ---------- the mode (who works) and the effort (how long each one thinks), like the best chat apps keep them apart ---------- */
 const MACH={mlx:{ac:"#c9ccd2",ag:"#e4e7ee"},nvidia:{ac:"#76b900",ag:"#93dc1a"},amd:{ac:"#ed1c24",ag:"#ff4d55"},cloud:{ac:"#9fc0ff",ag:"#cfe0ff"}};
-const MODES=[{n:"Flare",d:"Fast answers"},{n:"Zenith",d:"Thinks it through"},{n:"Meridian",d:"Every model weighs in"},{n:"Odyssey",d:"Keeps going until you stop it"}];
-const EFFORT=["Low","Medium","High","Max"];
+const MODES=[{n:"Alpha",d:"Fast answers"},{n:"Gamma",d:"Thinks it through"},{n:"Sigma",d:"Every model weighs in"},{n:"Omega",d:"Keeps going until you stop it"}];
+const EFFORT=["Low","Medium","High","Max","Ultra"];
 const MODELS=[
   {n:"Qwen 3.6 35B",m:"This Mac",v:"mlx",from:0},
   {n:"Gemma 4 26B",m:"Home server",v:"nvidia",from:1},
@@ -734,15 +734,14 @@ document.addEventListener("click",e=>{if(!menu.contains(e.target))closeMenu();})
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&stage.classList.contains("menu-open")){closeMenu();pick.focus();}});
 function showLineup(){}
 function setMode(i){mode=i;$("#mName").textContent=MODES[i].n;
-  menu.querySelectorAll(".opt").forEach((x,k)=>x.setAttribute("aria-checked",String(k===i)));
-  const nm=$("#mName");nm.classList.toggle("shim",i>=2);nm.classList.toggle("soft",i===2);
-  stage.classList.toggle("ultra",i===3);stage.classList.toggle("meridian",i===2);Sky&&Sky.level(mode,+eff.value);}
+  menu.querySelectorAll(".opt").forEach((x,k)=>x.setAttribute("aria-checked",String(k===i)));Sky&&Sky.level(mode,+eff.value);}
 function paint(){
-  const i=+eff.value,pct=i/3;
+  const i=+eff.value,pct=i/4;
   $("#thumb").style.left="calc(9px + (100% - 18px) * "+pct+")";
   $("#slfill").style.width="calc((100% - 18px) * "+pct+")";
   document.querySelectorAll(".sl-det").forEach((d,k)=>d.classList.toggle("on",k<=i));
-  const en=$("#eName");en.textContent=EFFORT[i];en.classList.toggle("shim",i===3);
+  const en=$("#eName");en.textContent=EFFORT[i];en.classList.toggle("shim",i>=3);en.classList.toggle("soft",i===3);
+  stage.classList.toggle("ultra",i===4);stage.classList.toggle("meridian",i===3);
   eff.setAttribute("aria-valuetext","Effort "+EFFORT[i]);Sky&&Sky.level(mode,i);
 }
 eff.addEventListener("input",paint);
@@ -833,7 +832,7 @@ async function ask(text){
     toks+=140+Math.round(Math.random()*80);return launch(chipOf(m.v),target(),MACH[m.v].ac,MACH[m.v].ag,1200+Math.random()*500);}));
   await Promise.all(flights);
   if(used.length>1){setStep("Merging "+used.length+" drafts",[...new Set(used.map(m=>m.v))]);const tg=target();ripple(tg[0],tg[1],"#ffffff");await wait(1000);}
-  if(e>=2){setStep(e===3?"Thinking it all the way through":"Thinking it through",used[0].v);toks+=220*e;await wait(500+e*350);}
+  if(e>=2){setStep(e===4?"Ultra: thinking it all the way through":e===3?"Thinking it all the way through":"Thinking it through",used[0].v);toks+=220*e;await wait(500+e*350);}
   if(i>=1){setStep("Checking the answer",used[0].v);await wait(700);}
   document.querySelectorAll(".rig").forEach(r=>r.classList.remove("working"));
   setStep("Writing",used[used.length-1].v);
