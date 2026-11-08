@@ -66,20 +66,20 @@ textarea:focus-visible{box-shadow:none}
 #bigmark .flare{position:absolute;left:4%;right:4%;top:50%;height:2px;margin-top:-1px;border-radius:2px;opacity:0;transform:scaleX(0);pointer-events:none;
   background:linear-gradient(90deg,transparent,rgba(159,168,255,.55) 22%,rgba(220,232,255,.95) 46%,#fff 50%,rgba(255,190,220,.95) 54%,rgba(127,240,214,.5) 78%,transparent);
   filter:drop-shadow(0 0 6px rgba(159,192,255,.95)) drop-shadow(0 0 22px rgba(255,143,196,.55))}
-.lit-mark #bigmark .flare{animation:aflare 1.7s var(--ease) forwards}
+.lit-mark #bigmark .flare{animation:aflare 2.8s cubic-bezier(.22,.8,.25,1) forwards}
 @keyframes aflare{0%{opacity:0;transform:scaleX(0)}14%{opacity:1}55%{opacity:.85;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1.12)}}
 #bigmark .glint.big .gm{animation:none}
 #bigmark .glint.big{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px rgba(255,143,196,.9)) drop-shadow(0 0 26px rgba(159,168,255,.85))}
-.lit-mark #bigmark .glint.big .gm{animation:glint1 1.5s cubic-bezier(.45,0,.25,1) .25s both}
+.lit-mark #bigmark .glint.big .gm{animation:glint1 2.5s cubic-bezier(.45,0,.25,1) .55s both}
 @keyframes glint1{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
-.lit-mark #bigmark .mark{animation:prism 7s ease-in-out infinite}
+.lit-mark #bigmark .mark{animation:prism 9s ease-in-out infinite}
 @keyframes prism{0%,100%{filter:drop-shadow(0 0 14px rgba(159,168,255,.7)) drop-shadow(0 0 42px rgba(255,143,196,.28))}
   33%{filter:drop-shadow(0 0 14px rgba(127,240,214,.6)) drop-shadow(0 0 42px rgba(159,168,255,.3))}
   66%{filter:drop-shadow(0 0 14px rgba(255,197,138,.55)) drop-shadow(0 0 42px rgba(127,240,214,.26))}}
 #bigmark p{margin:0;font-size:18px;color:var(--ink2);opacity:0;transform:translateY(8px);transition:opacity 1.2s var(--ease) .9s,transform 1.2s var(--ease) .9s}
 .markin #bigmark{opacity:1}
 .markin #bigmark p{opacity:1;transform:none}
-.markout #bigmark{opacity:0;transform:translateY(-24px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.markout #bigmark{opacity:0;transform:translateY(-24px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
 
 /* the app */
 #ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;transition:opacity 1.2s var(--ease)}
@@ -685,10 +685,10 @@ function run(){
   try{vid.play().catch(()=>{});}catch(e){}
   at(300,()=>{stage.classList.add("markin");traceIn($("#bigword"),{margin:40,speed:520,spread:.7}).then(()=>{$("#bigword").classList.add("shown");stage.classList.add("lit-mark");});});
   at(1500,()=>{void $("#wash").offsetWidth;$("#wash").classList.add("go");});
-  at(4700,()=>stage.classList.add("markout"));
-  at(5200,()=>{stage.classList.add("home");playHeadline();});
-  at(5500,()=>{if(innerWidth>=1100)setSide(true);});
-  document.querySelectorAll(".rig").forEach((r,i)=>at(5900+i*170,()=>r.classList.add("on")));
+  at(6200,()=>stage.classList.add("markout"));
+  at(6800,()=>{stage.classList.add("home");playHeadline();});
+  at(7100,()=>{if(innerWidth>=1100)setSide(true);});
+  document.querySelectorAll(".rig").forEach((r,i)=>at(7500+i*170,()=>r.classList.add("on")));
 }
 $("#replay").addEventListener("click",run);
 $("#nextclip").addEventListener("click",nextClip);
