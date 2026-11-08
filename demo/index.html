@@ -19,27 +19,32 @@ html,body{margin:0;height:100%;background:#03040a;color:var(--ink);font-family:v
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:0;box-shadow:0 0 0 2px #04050a,0 0 0 4px var(--accent)}
+textarea:focus-visible{box-shadow:none}
+.cbox:focus-within{border-color:rgba(200,222,255,.24)}
 #app{position:relative;min-height:100vh;overflow:hidden;background:linear-gradient(180deg,#03040a 0%,#04060e 36%,#060b1c 56%,#0b1736 66%,#10224f 70%,#10224f 100%)}
 
 /* sky */
-.stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 6% 12%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 13% 31%,rgba(220,230,255,.7),transparent),radial-gradient(1.4px 1.4px at 21% 7%,rgba(255,255,255,.95),transparent),radial-gradient(1px 1px at 27% 44%,rgba(255,255,255,.6),transparent),radial-gradient(1px 1px at 33% 19%,rgba(230,236,255,.8),transparent),radial-gradient(1px 1px at 41% 9%,rgba(255,255,255,.7),transparent),radial-gradient(1.4px 1.4px at 47% 27%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 55% 5%,rgba(255,255,255,.65),transparent),radial-gradient(1px 1px at 59% 39%,rgba(220,230,255,.6),transparent),radial-gradient(1px 1px at 66% 16%,rgba(255,255,255,.85),transparent),radial-gradient(1.6px 1.6px at 73% 33%,rgba(255,246,230,.95),transparent),radial-gradient(1px 1px at 79% 8%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 84% 47%,rgba(255,255,255,.55),transparent),radial-gradient(1px 1px at 91% 21%,rgba(230,236,255,.85),transparent),radial-gradient(1.3px 1.3px at 96% 11%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 4% 52%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 38% 54%,rgba(220,230,255,.5),transparent),radial-gradient(1px 1px at 88% 60%,rgba(255,255,255,.5),transparent)}
-.washwrap{position:absolute;inset:-12%;pointer-events:none;animation:drift 38s ease-in-out infinite alternate}
+.stars{position:absolute;inset:-45%;pointer-events:none;animation:skyturn 2400s linear infinite;background-size:46% 46%;background-image:radial-gradient(1px 1px at 6% 12%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 13% 31%,rgba(220,230,255,.7),transparent),radial-gradient(1.4px 1.4px at 21% 7%,rgba(255,255,255,.95),transparent),radial-gradient(1px 1px at 27% 44%,rgba(255,255,255,.6),transparent),radial-gradient(1px 1px at 33% 19%,rgba(230,236,255,.8),transparent),radial-gradient(1px 1px at 41% 9%,rgba(255,255,255,.7),transparent),radial-gradient(1.4px 1.4px at 47% 27%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 55% 5%,rgba(255,255,255,.65),transparent),radial-gradient(1px 1px at 59% 39%,rgba(220,230,255,.6),transparent),radial-gradient(1px 1px at 66% 16%,rgba(255,255,255,.85),transparent),radial-gradient(1.6px 1.6px at 73% 33%,rgba(255,246,230,.95),transparent),radial-gradient(1px 1px at 79% 8%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 84% 47%,rgba(255,255,255,.55),transparent),radial-gradient(1px 1px at 91% 21%,rgba(230,236,255,.85),transparent),radial-gradient(1.3px 1.3px at 96% 11%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 4% 52%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 38% 54%,rgba(220,230,255,.5),transparent),radial-gradient(1px 1px at 88% 60%,rgba(255,255,255,.5),transparent)}
+.washwrap{position:absolute;inset:-12%;pointer-events:none;animation:drift 22s ease-in-out infinite alternate,swell 14s ease-in-out infinite}
 .wash{position:absolute;inset:0;background:radial-gradient(42% 36% at 24% 40%,rgba(98,96,255,.6),rgba(98,96,255,0) 72%),radial-gradient(38% 32% at 72% 30%,rgba(255,118,178,.4),rgba(255,118,178,0) 72%),radial-gradient(40% 30% at 50% 64%,rgba(255,182,108,.44),rgba(255,182,108,0) 72%),radial-gradient(34% 30% at 88% 58%,rgba(58,214,198,.34),rgba(58,214,198,0) 72%);filter:blur(46px);mix-blend-mode:screen;opacity:.13;transition:opacity 2.4s var(--ease)}
 .wash.bloom{animation:bloom 4.8s var(--ease) both}
 #app.busy .wash{opacity:.42}
 @keyframes bloom{0%{opacity:0;transform:scale(1.12) rotate(-4deg)}28%{opacity:.88;transform:scale(1.04) rotate(-1.5deg)}100%{opacity:.13;transform:scale(1) rotate(0)}}
 @keyframes drift{from{transform:translate(-3%,-1%)}to{transform:translate(3%,1.5%)}}
-.aurora{position:absolute;left:50%;top:128px;width:1640px;height:440px;margin-left:-780px;transform:rotate(-3deg);pointer-events:none;
-  -webkit-mask-image:radial-gradient(ellipse 58% 62% at 50% 60%,#000 22%,transparent 100%);mask-image:radial-gradient(ellipse 58% 62% at 50% 60%,#000 22%,transparent 100%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;transition:opacity 1.6s var(--ease);opacity:.85}
+.aurora{position:absolute;left:50%;top:8vh;width:1800px;height:640px;margin-left:-880px;transform:rotate(-3deg);pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse 54% 44% at 50% 52%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 54% 44% at 50% 52%,#000 30%,transparent 100%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;transition:opacity 1.6s var(--ease);opacity:.85}
 #app.busy .aurora{opacity:1}
-.aurora i{position:absolute;inset:-40px 0;animation:sway 46s ease-in-out infinite alternate}
-#app.busy .aurora i{animation-duration:16s}
+.aurora i{position:absolute;inset:-40px 0;animation:sway 28s ease-in-out infinite alternate}
+.aurora .a4{animation:sway2 37s ease-in-out infinite alternate;background:repeating-linear-gradient(90deg,rgba(186,208,255,0) 0,rgba(186,208,255,.55) 5px,rgba(186,208,255,0) 11px,rgba(186,208,255,0) 23px);-webkit-mask-image:linear-gradient(180deg,transparent 10%,rgba(0,0,0,.5) 60%,#000 90%,transparent);mask-image:linear-gradient(180deg,transparent 10%,rgba(0,0,0,.5) 60%,#000 90%,transparent);filter:blur(10px);opacity:.3}
+#app.busy .aurora i{animation-duration:12s}
 .aurora .a1{background:linear-gradient(90deg,rgba(159,192,255,0),rgba(159,192,255,.22) 28%,rgba(176,204,255,.3) 55%,rgba(159,192,255,0));-webkit-mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.4) 50%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.4) 50%,#000 86%,transparent);filter:blur(34px);opacity:.42}
 .aurora .a2{background:repeating-linear-gradient(90deg,rgba(168,198,255,0) 0,rgba(168,198,255,.9) 7px,rgba(168,198,255,0) 15px,rgba(168,198,255,0) 28px,rgba(196,216,255,.55) 34px,rgba(168,198,255,0) 43px),repeating-linear-gradient(90deg,rgba(210,222,255,0) 0,rgba(210,222,255,.34) 60px,rgba(210,222,255,0) 150px);-webkit-mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.3) 42%,#000 84%,transparent);mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.3) 42%,#000 84%,transparent);filter:blur(5px);opacity:.55}
 .aurora .a3{background:repeating-linear-gradient(90deg,rgba(150,236,212,0) 0,rgba(150,236,212,.7) 7px,rgba(150,236,212,0) 15px,rgba(150,236,212,0) 28px,rgba(170,240,220,.45) 34px,rgba(150,236,212,0) 43px);-webkit-mask-image:linear-gradient(180deg,transparent 62%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent 62%,#000 88%,transparent);filter:blur(5px);opacity:.42}
-@keyframes sway{from{transform:translateX(-34px) skewX(-13deg)}to{transform:translateX(34px) skewX(-17deg)}}
-.limb{position:absolute;left:50%;top:min(612px,68vh);width:3200px;height:3200px;margin-left:-1600px;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 50% 0%,#0b142c 0%,#060a16 10%,#030509 26%,#020307 60%);box-shadow:0 -1px 0 rgba(255,214,160,.92),0 -3px 1px rgba(170,205,255,.55),0 -14px 30px rgba(120,170,255,.36),0 -56px 120px rgba(50,100,220,.24),0 -170px 300px rgba(30,70,180,.14);transition:top .9s var(--ease)}
-#app.chat .limb{top:calc(100vh - 58px)}
+@keyframes sway{from{transform:translateX(-64px) skewX(-12deg)}to{transform:translateX(64px) skewX(-18deg)}}
+@keyframes sway2{from{transform:translateX(52px) skewX(-19deg)}to{transform:translateX(-58px) skewX(-10deg)}}
+@keyframes skyturn{to{transform:rotate(360deg)}}
+@keyframes swell{0%,100%{opacity:.75}50%{opacity:1}}
+.limb{position:absolute;left:50%;top:62vh;width:3200px;height:3200px;margin-left:-1600px;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 50% 0%,#0b142c 0%,#060a16 10%,#030509 26%,#020307 60%);box-shadow:0 -1px 0 rgba(255,214,160,.92),0 -3px 1px rgba(170,205,255,.55),0 -14px 30px rgba(120,170,255,.36),0 -56px 120px rgba(50,100,220,.24),0 -170px 300px rgba(30,70,180,.14);transition:top .9s var(--ease)}
 .trail{position:absolute;left:50%;width:520px;height:2px;margin-left:-260px;border-radius:2px;background:linear-gradient(90deg,rgba(220,232,255,0),rgba(235,242,255,.95) 85%,#fff);box-shadow:0 0 10px rgba(180,205,255,.8);opacity:0;pointer-events:none;z-index:3}
 .trail.go{animation:trail 1.3s cubic-bezier(.4,0,.2,1)}
 @keyframes trail{0%{transform:translateX(-70vw);opacity:0}12%{opacity:1}100%{transform:translateX(70vw);opacity:0}}
@@ -59,12 +64,14 @@ nav.lanes button[aria-current]{color:var(--ink);font-weight:500;box-shadow:inset
 
 /* home */
 main{position:relative;z-index:4;width:100%;max-width:808px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;min-height:calc(100vh - 68px)}
-.greet{margin-top:min(108px,10vh);display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease),transform .5s var(--ease)}
-.greet h1{margin:0;font-weight:400;font-size:clamp(38px,5vw,58px);line-height:1.04;letter-spacing:-.025em}
+.greet{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5vh 0 6vh;min-height:220px;animation:rise 1.4s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.greet h1{margin:0;font-weight:400;font-size:clamp(54px,8vw,104px);line-height:1;letter-spacing:-.04em;text-shadow:0 0 60px rgba(159,192,255,.18)}
 .greet p{margin:0;font-size:15.5px;color:var(--ink2)}
 .moonglow{position:absolute;top:-6%;right:-4%;width:min(760px,70vw);height:min(760px,70vw);border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(246,241,228,.5) 0%,rgba(222,230,255,.2) 16%,rgba(159,192,255,.07) 42%,rgba(159,192,255,0) 68%);mix-blend-mode:screen;opacity:.3;transition:opacity 2s var(--ease)}
 .moonglow.left{right:auto;left:-4%}
-#app.chat .greet,#app.chat .ideas{opacity:0;pointer-events:none}
+#app.chat .greet{display:none}#app.chat .ideas{opacity:0;pointer-events:none}
+.grow{flex:0}#app.chat .grow{flex:1}
 .grow{flex:1}
 
 /* composer */
@@ -184,7 +191,7 @@ textarea::placeholder{color:var(--ink2)}
 <div id="app">
   <div class="stars" aria-hidden="true"></div>
   <div class="washwrap" aria-hidden="true"><div class="wash bloom" id="wash"></div></div>
-  <div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
   <div class="limb" aria-hidden="true"></div>
   <div class="trail" id="trail" aria-hidden="true"></div>
 
@@ -331,7 +338,7 @@ $("#form").addEventListener("submit",e=>{
   // the sonic boom and the contrail
   const boom=$("#boom");boom.classList.remove("go");void boom.offsetWidth;boom.classList.add("go");
   const tr=$("#trail"),lim=document.querySelector(".limb").getBoundingClientRect();
-  tr.style.top=(lim.top-3)+"px";tr.classList.remove("go");void tr.offsetWidth;tr.classList.add("go");
+  tr.style.top=(lim.top-document.getElementById("app").getBoundingClientRect().top-3)+"px";tr.classList.remove("go");void tr.offsetWidth;tr.classList.add("go");
   app.classList.add("busy","chat");
   $("#qText").textContent=q;$("#ask").value="";
   $("#brandName").textContent="Concorde "+mode;const bn=$("#brandName");bn.classList.toggle("shim",mode==="Odyssey"||mode==="Meridian");bn.classList.toggle("soft",mode==="Meridian");$("#state").textContent="thinking";$("#live").style.display="";
@@ -375,6 +382,12 @@ document.querySelectorAll(".switch[data-k]").forEach(s=>s.addEventListener("clic
   if(s.dataset.k==="comp"){$("#compNode").classList.toggle("off",!on);$("#compLine").textContent=on?"Looking for a computer on your Wi-Fi… (in the real app, it finds it and sets it up for you)":"Got a powerful desktop? ConcordeAI can set it up for you and use it too.";}
   else{$("#cloudNode").classList.toggle("off",!on);$("#cloudLine").textContent=on?"On. Other AIs can help with the hardest questions, using your own keys. You'll see every time.":"Off. Nothing leaves your machines.";}
 }));
+function placeLimb(){
+  const c=document.querySelector(".cbox").getBoundingClientRect(),a=document.getElementById("app").getBoundingClientRect();
+  document.querySelector(".limb").style.top=Math.round(c.top-a.top+c.height*0.55)+"px";
+}
+addEventListener("resize",placeLimb);placeLimb();setTimeout(placeLimb,400);
+new MutationObserver(()=>{placeLimb();setTimeout(placeLimb,60);}).observe(app,{attributes:true,attributeFilter:["class"]});
 $("#ask").focus();
 })();
 </script>
