@@ -273,7 +273,7 @@ textarea::placeholder{color:var(--ink2)}
 #comets{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:7}
 .cbox.finish::before{opacity:1;animation:ring 1.5s cubic-bezier(.45,0,.25,1) 1}
 /* the sidebar: your chats by day, in glass */
-#side{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:68px;bottom:16px;width:244px;z-index:6;display:flex;flex-direction:column;padding:10px;border-radius:20px;
+#side{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:68px;bottom:72px;width:244px;z-index:6;display:flex;flex-direction:column;padding:10px;border-radius:20px;
   background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);-webkit-backdrop-filter:blur(24px) saturate(140%);backdrop-filter:blur(24px) saturate(140%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 60px rgba(0,0,0,.35);transform:translateX(calc(-100% - 28px));opacity:0;pointer-events:none;transition:transform .6s var(--ease),opacity .45s var(--ease)}
 .side-open #side{transform:none;opacity:1;pointer-events:auto}
@@ -373,8 +373,8 @@ main{transition:transform .6s var(--ease)}
 </div>
 <canvas id="comets" aria-hidden="true"></canvas>
 <footer id="foot">
-  <span id="note">Concept preview, nothing here is live. Earth footage: <a href="https://eol.jsc.nasa.gov/BeyondThePhotography/CrewEarthObservationsVideos/" target="_blank" rel="noopener">video courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center</a>.<span id="clipname" hidden></span></span>
-  <button id="nextclip" type="button" hidden>Next backdrop</button>
+  <span id="note">Concept preview, nothing here is live. Backdrop: <span id="clipname"></span>, <a href="https://eol.jsc.nasa.gov/BeyondThePhotography/CrewEarthObservationsVideos/" target="_blank" rel="noopener">video courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center</a>.</span>
+  <button id="nextclip" type="button">Next backdrop</button>
   <div class="seg" role="group" aria-label="Effects"><span>Effects</span><button type="button" data-fx="full" aria-pressed="true" title="Your Mac draws everything while your server does the thinking">Full</button><button type="button" data-fx="balanced" aria-pressed="false" title="Lighter effects for when this Mac is doing the thinking too">Balanced</button></div>
   <button id="replay" type="button">Replay the opening</button>
 </footer>
@@ -386,7 +386,7 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const now=new Date(), hour=now.getHours()+now.getMinutes()/60;
 const greet=hour<5?"Up late?":hour<12?"Good morning.":hour<18?"Good afternoon.":"Good evening.";
 let fx="full", asking=false;
-const CLIPS=[{n:"night",t:"City lights over Asia, from the ISS",when:"night dawn day dusk",foot:.46,rise:.56,hi:.36,rate:.5}];
+const CLIPS=[{n:"night",t:"City lights over Asia",when:"night dawn day dusk",foot:.46,rise:.56,hi:.36,rate:.5},{n:"milkyway",t:"The Milky Way",when:"night dawn day dusk",foot:.5,rise:1.6,hi:.97,rate:.45},{n:"calicoast",t:"The West Coast at night",when:"night dawn day dusk",foot:.52,rise:.56,hi:.34,rate:.5},{n:"eastcoast",t:"Up the East Coast at night",when:"night dawn day dusk",foot:.48,rise:.56,hi:.34,rate:.5},{n:"northern",t:"Aurora over Canada",when:"night dawn day dusk",foot:.42,rise:.66,hi:.45,rate:.5},{n:"europe",t:"Storms and city lights",when:"night dawn day dusk",foot:.4,rise:.6,hi:.4,rate:.5}];
 const _h=new Date().getHours()+new Date().getMinutes()/60;
 const bucket=_h<5||_h>=20.5?"night":_h<8?"dawn":_h<17?"day":"dusk";
 function pickClip(){let recent=[];try{recent=JSON.parse(localStorage.getItem("concorde.sky.recent")||"[]");}catch(e){}
