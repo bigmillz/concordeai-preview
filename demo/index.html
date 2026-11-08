@@ -62,11 +62,9 @@ main{position:relative;z-index:4;width:100%;max-width:808px;margin:0 auto;paddin
 .greet{margin-top:min(108px,10vh);display:flex;flex-direction:column;gap:12px;transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .greet h1{margin:0;font-weight:400;font-size:clamp(38px,5vw,58px);line-height:1.04;letter-spacing:-.025em}
 .greet p{margin:0;font-size:15.5px;color:var(--ink2)}
-.moon{position:absolute;right:max(24px,calc(50% - 600px));top:150px;display:flex;align-items:center;gap:20px;z-index:4;transition:opacity .6s}
-.moon .cap{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
-.moon .cap b{font-weight:400;font-size:17px;color:#d6dcef}
-.moon .cap span{font-size:12.5px;color:var(--ink3)}
-#app.chat .moon,#app.chat .greet,#app.chat .ideas{opacity:0;pointer-events:none}
+.moonglow{position:absolute;top:-6%;right:-4%;width:min(760px,70vw);height:min(760px,70vw);border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(246,241,228,.5) 0%,rgba(222,230,255,.2) 16%,rgba(159,192,255,.07) 42%,rgba(159,192,255,0) 68%);mix-blend-mode:screen;opacity:.3;transition:opacity 2s var(--ease)}
+.moonglow.left{right:auto;left:-4%}
+#app.chat .greet,#app.chat .ideas{opacity:0;pointer-events:none}
 .grow{flex:1}
 
 /* composer */
@@ -164,7 +162,7 @@ textarea::placeholder{color:var(--ink2)}
 .close{position:absolute;right:20px;top:18px}
 .badge{position:fixed;left:14px;bottom:12px;z-index:30;font-size:12px;color:#8d99bb;background:rgba(3,4,10,.6);padding:6px 11px;border-radius:999px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .badge a{color:#b9cfff}
-@media (max-width:760px){.moon{display:none}.side{flex-basis:100%}}
+@media (max-width:760px){.side{flex-basis:100%}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.wash{opacity:.13}}
 </style>
 </head>
@@ -176,18 +174,7 @@ textarea::placeholder{color:var(--ink2)}
   <div class="limb" aria-hidden="true"></div>
   <div class="trail" id="trail" aria-hidden="true"></div>
 
-  <div class="moon" id="moon">
-    <div class="cap"><b id="moonName">The Moon</b><span id="moonSub">Tonight</span></div>
-    <svg role="img" id="moonSvg" aria-label="The Moon tonight" width="66" height="66" viewBox="0 0 68 68">
-      <defs>
-        <mask id="mmask"><rect width="68" height="68" fill="#fff"></rect><circle id="moonShadow" cx="34" cy="34" r="30" fill="#000"></circle></mask>
-        <radialGradient id="mfill" cx="40%" cy="36%" r="72%"><stop offset="0" stop-color="#fbf7ec"></stop><stop offset="1" stop-color="#d4cfbf"></stop></radialGradient>
-      </defs>
-      <circle cx="34" cy="34" r="32" fill="rgba(251,247,236,.07)"></circle>
-      <circle cx="34" cy="34" r="30" fill="#131a2f"></circle>
-      <circle cx="34" cy="34" r="30" fill="url(#mfill)" mask="url(#mmask)"></circle>
-    </svg>
-  </div>
+  <div class="moonglow" id="moonglow" aria-hidden="true"></div>
 
   <header>
     <button class="ibtn" aria-label="New chat" id="newChat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
@@ -200,7 +187,7 @@ textarea::placeholder{color:var(--ink2)}
   </header>
 
   <main>
-    <section class="greet"><h1 id="hello">Good evening.</h1><p>Your AI is ready, and everything stays on your own machines.</p></section>
+    <section class="greet"><h1 id="hello">Good evening.</h1></section>
 
     <section class="convo" aria-live="polite" id="convo">
       <p class="q" id="qText"></p>
@@ -269,21 +256,12 @@ const app=$("#app"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matche
 const h=new Date().getHours();
 $("#hello").textContent=h<5?"Up late?":h<12?"Good morning.":h<18?"Good afternoon.":"Good evening.";
 
-// the Moon's real phase tonight (synodic month from a known new moon)
+// the Moon, told only by its light: brightness follows tonight's real phase;
+// it hangs to the right while the Moon grows and to the left while it wanes
 (function(){
   const syn=29.530588853,ref=Date.UTC(2000,0,6,18,14)/864e5;
-  const p=((Date.now()/864e5-ref)%syn+syn)%syn/syn;          // 0 new .. .5 full .. 1 new
-  const lit=(1-Math.cos(2*Math.PI*p))/2, r=30, waxing=p<.5;
-  // the shadow disc slides away as the lit share grows; waxing lights the right side (north)
-  const off=2*r*lit*(waxing?-1:1);
-  $("#moonShadow").setAttribute("cx",String(34+off));
-  const names=[[.03,"New moon"],[.22,"Waxing crescent"],[.28,"First quarter"],[.47,"Waxing gibbous"],[.53,"Full moon"],[.72,"Waning gibbous"],[.78,"Last quarter"],[.97,"Waning crescent"],[1.01,"New moon"]];
-  const name=names.find(n=>p<n[0])[1];
-  let sub="Tonight";
-  if(waxing&&p>.03){const d=Math.round((.5-p)*syn);sub=d<=0?"Full tonight":d===1?"One night from full":d+" nights from full";}
-  else if(!waxing&&p<.97){sub=Math.round(lit*100)+"% lit tonight";}
-  $("#moonName").textContent=name;$("#moonSub").textContent=sub;
-  $("#moonSvg").setAttribute("aria-label","The Moon tonight: "+name.toLowerCase());
+  const p=((Date.now()/864e5-ref)%syn+syn)%syn/syn, lit=(1-Math.cos(2*Math.PI*p))/2;
+  const g=$("#moonglow");g.style.opacity=(0.08+0.62*lit).toFixed(2);if(p>=.5)g.classList.add("left");
 })();
 
 // the effort slider
