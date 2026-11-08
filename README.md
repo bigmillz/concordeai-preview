@@ -1,8 +1,8 @@
 # ConcordeAI preview
 
-A clickable concept preview of ConcordeAI: your own AI, on your own machines.
+Concept previews of ConcordeAI: your own AI, on your own machines.
 
-Open the live page: https://bigmillz.github.io/concordeai-preview/
+- Interactive demo (type, slide the effort, send): https://bigmillz.github.io/concordeai-preview/demo/
+- Clickable walkthrough, first launch to first answer: https://bigmillz.github.io/concordeai-preview/
 
-It walks through first launch, getting your Mac ready, making it yours, home, and a first answer.
-Sample content only; this is a design preview, not the app.
+Design previews with simulated answers; not the app itself.
