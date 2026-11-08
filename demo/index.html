@@ -143,6 +143,20 @@ textarea::placeholder{color:var(--ink2)}
 .machines{border-top:1px solid var(--hair);padding-top:12px;font-size:12.5px;color:var(--ink3);display:flex;flex-direction:column;gap:6px}
 .machines .status{font-size:13px}
 
+/* ULTRA: the deepest modes shimmer (Odyssey full, Meridian subtle) */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+.shim{background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6,#9fa8ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:shim 3.2s linear infinite}
+.shim.soft{background:linear-gradient(90deg,#cfe0ff,#b9a8ff,#cfe0ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;animation-duration:5s}
+@keyframes shim{to{background-position:300% 0}}
+.cbox::before{content:"";position:absolute;inset:-1px;border-radius:27px;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .8s var(--ease);
+  background:conic-gradient(from var(--ang),rgba(159,168,255,0) 0deg,#9fa8ff 40deg,#ff8fc4 90deg,#ffc58a 140deg,rgba(127,240,214,0) 200deg,rgba(159,168,255,0) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:ring 4s linear infinite}
+#app.ultra .cbox::before{opacity:.9}
+#app.ultra.busy .cbox::before{opacity:1;animation-duration:2.4s}
+#app.meridian .cbox::before{opacity:.35;animation-duration:7s}
+@keyframes ring{to{--ang:360deg}}
+
 /* settings sheet */
 .veil{position:fixed;inset:0;z-index:20;background:rgba(2,3,8,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .veil.open{opacity:1;pointer-events:auto}
@@ -278,6 +292,8 @@ function paint(){
   document.querySelectorAll(".slider .det").forEach((d,k)=>d.classList.toggle("on",k<=i));
   $("#mName").textContent=MODES[i].n;$("#mDesc").textContent=MODES[i].d;$("#mHint").textContent=MODES[i].h;
   eff.setAttribute("aria-valuetext",MODES[i].n+". "+MODES[i].d);
+  const nm=$("#mName");nm.classList.toggle("shim",i>=2);nm.classList.toggle("soft",i===2);
+  app.classList.toggle("ultra",i===3);app.classList.toggle("meridian",i===2);
 }
 eff.addEventListener("input",paint);paint();
 
@@ -318,7 +334,7 @@ $("#form").addEventListener("submit",e=>{
   tr.style.top=(lim.top-3)+"px";tr.classList.remove("go");void tr.offsetWidth;tr.classList.add("go");
   app.classList.add("busy","chat");
   $("#qText").textContent=q;$("#ask").value="";
-  $("#brandName").textContent="Concorde "+mode;$("#state").textContent="thinking";$("#live").style.display="";
+  $("#brandName").textContent="Concorde "+mode;const bn=$("#brandName");bn.classList.toggle("shim",mode==="Odyssey"||mode==="Meridian");bn.classList.toggle("soft",mode==="Meridian");$("#state").textContent="thinking";$("#live").style.display="";
   $("#txt").textContent="";$("#stats").textContent="";
   const steps=STEPS[mode],ol=$("#steps");ol.innerHTML="";
   steps.concat([["Final answer",0]]).forEach(s=>{const li=document.createElement("li");li.innerHTML="<b></b><small></small>";li.querySelector("b").textContent=s[0];ol.appendChild(li);});
