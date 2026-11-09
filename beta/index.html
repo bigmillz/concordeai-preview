@@ -311,7 +311,7 @@ html:not(.full) .cbox::before,html:not(.full) .cbox::after{display:none}   /* ca
 .chat .under{height:max(16px,env(safe-area-inset-bottom,0px))}
 
 /* the sidebar: your chats by day, in glass, with token totals in mono */
-#side{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:72px;bottom:16px;width:248px;z-index:6;display:flex;flex-direction:column;padding:8px;border-radius:14px;
+#side{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:72px;bottom:calc(var(--foot,40px) + 16px);width:248px;z-index:6;display:flex;flex-direction:column;padding:8px;border-radius:14px;
   background:rgba(255,255,255,.04);border:1px solid var(--hair2);-webkit-backdrop-filter:blur(24px) saturate(140%);backdrop-filter:blur(24px) saturate(140%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 60px rgba(0,0,0,.35);transform:translateX(calc(-100% - 28px));opacity:0;pointer-events:none;transition:transform .6s var(--ease),opacity .45s var(--ease)}
 .side-open #side{transform:none;opacity:1;pointer-events:auto}
@@ -438,7 +438,7 @@ html:not(.full) #aurora{display:none}
 @keyframes sway2{from{transform:translateX(52px) skewX(-19deg)}to{transform:translateX(-58px) skewX(-10deg)}}
 
 /* the footer */
-#foot{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;align-items:baseline;justify-content:space-between;gap:6px 18px;flex-wrap:wrap;
+#foot{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;align-items:baseline;justify-content:space-between;gap:6px 18px;flex-wrap:wrap;line-height:20px;
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   font-size:12px;color:var(--ink3);opacity:0;transition:opacity 1.6s var(--ease) 1.6s;pointer-events:none}
 #stage.home~#foot{opacity:1;pointer-events:auto}
@@ -860,7 +860,7 @@ addEventListener("resize",killTracers);   // a traced canvas is fixed where it w
    short fade-in instead. ---------- */
 let timers=[],introOn=false;
 function at(ms,fn){timers.push(setTimeout(fn,ms));}
-function home(){stage.classList.add("home");if(innerWidth>=1100)setSide(true);}
+function home(){stage.classList.add("home");if(innerWidth>=1100)setSide(true);relayout();}
 function landed(){introOn=false;removeEventListener("pointerdown",skipIntro,true);removeEventListener("keydown",skipIntro,true);
   at(1400,()=>$("#bigmark").classList.add("gone"));}
 function skipIntro(e){if(!introOn)return;if(e&&e.type==="keydown"&&(e.key==="Tab"||e.metaKey||e.ctrlKey||e.altKey))return;
@@ -874,20 +874,20 @@ function run(){
   if(BAL()){   // balanced: the wordmark traced in light, about 2.5 s, then it settles and the home takes its place
     at(200,()=>{stage.classList.add("markin");traceIn($("#bigword"),{margin:40,speed:900,spread:.45}).then(()=>{if(introOn)$("#bigword").classList.add("shown");});});
     at(2700,()=>stage.classList.add("markout"));
-    at(3000,()=>{stage.classList.add("home");$("#h1").classList.add("shown");});
+    at(3000,()=>{stage.classList.add("home");$("#h1").classList.add("shown");relayout();});
     at(3200,()=>{if(innerWidth>=1100)setSide(true);landed();});
     return;}
   if(!FULL()){   // calm: the wordmark fades in over a second, holds a moment, and the home takes its place
     at(200,()=>{stage.classList.add("markin");$("#bigword").classList.add("shown");});
     at(1700,()=>stage.classList.add("markout"));
-    at(1900,()=>{stage.classList.add("home");$("#h1").classList.add("shown");});
+    at(1900,()=>{stage.classList.add("home");$("#h1").classList.add("shown");relayout();});
     at(2100,()=>{if(innerWidth>=1100)setSide(true);landed();});
     document.querySelectorAll(".rig").forEach(r=>at(2300,()=>r.classList.add("on")));
     return;}
   at(300,()=>{stage.classList.add("markin");traceIn($("#bigword"),{margin:40,speed:520,spread:.7}).then(()=>{if(!introOn)return;$("#bigword").classList.add("shown");stage.classList.add("lit-mark");});});
   at(1500,()=>{void $("#wash").offsetWidth;$("#wash").classList.add("go");});
   at(6200,()=>stage.classList.add("markout"));
-  at(6800,()=>{stage.classList.add("home");if(innerWidth>=1100)setSide(true);});
+  at(6800,()=>{stage.classList.add("home");if(innerWidth>=1100)setSide(true);relayout();});
   at(7500,()=>{playHeadline();landed();});   // the column has finished moving beside the sidebar (.6 s) before the greeting is traced
   document.querySelectorAll(".rig").forEach((r,i)=>at(7500+i*170,()=>r.classList.add("on")));
 }
@@ -1034,7 +1034,7 @@ function popToSide(text,v){
             {duration:820,easing:"cubic-bezier(.3,.7,.2,1)",fill:"forwards"}).onfinish=land;
   return row;}
 function finishRow(row,title){row.classList.remove("live");const t=row.querySelector(".t");t.style.opacity=0;setTimeout(()=>{t.textContent=title;t.style.opacity="";},260);}
-function goHome(){if(asking)return;stage.classList.remove("chat","busy");$("#convo").hidden=true;$("#form").style.transform="";setTimeout(placeComposer,0);
+function goHome(){if(asking)return;stage.classList.remove("chat","busy");$("#convo").hidden=true;$("#form").style.transform="";setTimeout(relayout,0);
   $("#today").querySelectorAll(".hrow.on").forEach(r=>r.classList.remove("on"));if(innerWidth<1100)setSide(false);$("#ask").focus();}
 $("#newchat").addEventListener("click",goHome);
 $("#details").addEventListener("click",()=>{const ai=$("#ai"),on=!ai.classList.contains("open");ai.classList.toggle("open",on);$("#details").setAttribute("aria-expanded",String(on));});
@@ -1130,7 +1130,7 @@ async function ask(text){
   const row=popToSide(text,machines[machines.length-1]);
   const form=$("#form"),r0=form.getBoundingClientRect();
   fx.cancel();closeMenu();const full=FULL();
-  stage.classList.add("chat");if(full)stage.classList.add("busy");$("#convo").hidden=false;if(full&&Sky)Sky.busy(true);
+  stage.classList.add("chat");if(full)stage.classList.add("busy");$("#convo").hidden=false;if(full&&Sky)Sky.busy(true);footFit();
   if(full){const r1=form.getBoundingClientRect();form.style.transition="none";form.style.transform=`translateY(${r0.top-r1.top}px)`;void form.offsetWidth;
   form.style.transition="transform .9s var(--ease)";form.style.transform="none";}
   $("#q").textContent=text;$("#by").textContent="Concorde "+MODES[i].n;$("#by").className=e===4?"shim":e===3?"shim soft":"";setBy("thinking");
@@ -1197,7 +1197,11 @@ function strike(){const st=$("#strike");if(reduce||!st.animate)return;const a=st
 function placeComposer(){const main=$("main");if(stage.classList.contains("chat")){main.style.removeProperty("--under");return;}
   const hb=$("header").getBoundingClientRect().bottom,free=innerHeight-hb,ch=$("#form").getBoundingClientRect().height,sg=$("#suggs"),sh=sg.getBoundingClientRect().height+parseFloat(getComputedStyle(sg).marginTop||0);
   const under=Math.max(8,Math.round(innerHeight-(hb+.618*free)-ch/2-sh));main.style.setProperty("--under",under+"px");}
-addEventListener("resize",placeComposer);try{document.fonts.ready.then(placeComposer);}catch(e){}placeComposer();
+function footFit(){const f=$("#foot");document.documentElement.style.setProperty("--foot",(f.offsetHeight||0)+"px");}   // the sidebar stops 16 px above the credit
+function relayout(){footFit();placeComposer();}
+addEventListener("resize",relayout);addEventListener("load",relayout);
+try{document.fonts.ready.then(relayout);document.fonts.addEventListener("loadingdone",relayout);}catch(e){}
+relayout();
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 const DEMO_LINE="Plan a quiet weekend by the sea, with two good walks and one great dinner.";
 let lis=null,spaceAt=0;
