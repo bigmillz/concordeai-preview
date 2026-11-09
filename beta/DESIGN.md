@@ -28,7 +28,8 @@ and labels), **Michroma** (the wordmark, with the wing).
 - Tables: 15 px, hairline top and bottom, `--hair` between rows, heads in `--t-micro`;
   numbers in mono 13 with `tabular-nums`, right-aligned (`.num`).
 - Labels in caps track +0.12em (`--track-label`). Nothing else is tracked.
-- Space Grotesk at 500 with −0.03em is the display voice; 600 only in Full's glowing greeting.
+- Space Grotesk at 500 with −0.03em is the display voice; 600 in Full's greeting. The greeting is one text node in
+  one box in every mode, crisp `#f8faff`, no text shadow.
 
 ## Colour
 
@@ -91,8 +92,8 @@ Shadows, two depths, both soft and long:
 | `--r-chip` | 6 | small chips inside controls (models, sources, Effects buttons) |
 | `--r-tag` | 4 | tags and badges (beta, Demo, citations, inline code) |
 
-Strokes: 1 px hairlines, 1.5 px icon strokes, 1.5 px rim. The diamond is 8 px square
-turned 45°, 1 px white; it fills white while dragged and at Ultra.
+Strokes: 1 px hairlines, 1.5 px icon strokes, 1.5 px rim. The chosen mode in the mode menu wears a 5 px white
+diamond; the effort slider's knob is a round orb (see The effort slider).
 
 ## Spacing
 
@@ -112,7 +113,7 @@ the composer's arrival) keep their own seconds but use the same curve. No bounce
 States: hover brightens the border to `--line` and the fill to `rgba(255,255,255,.06)`
 (Balanced also lifts 1 px with a soft shadow); press scales to .97 in 120 ms; selected is
 `rgba(255,255,255,.09)` with `--ink` type; the chosen mode wears a small white diamond.
-Keyboard focus is a 1 px ember hairline; on the slider it hugs the beam with rounded ends
+Keyboard focus is a 1 px ember hairline; on the slider it is a ring round the pill (2 px off it)
 and shows only after a keydown (never after a click).
 
 ### The opening
@@ -133,30 +134,125 @@ lengthen briefly along their arcs at the fastest moment (2 s in).
   fine print (+240 ms) fade in over 400 ms each.
 - Calm: words in one plain 350 ms fade, no star. Reduced motion: no motion.
 
+### The greeting: traced, then the afterglow
+- Every visit, Balanced and Full: after the wordmark and the twist (Balanced: at 3.9 s, waiting out the twist by at
+  most 0.9 s more; Full: at 7.5 s) the greeting is traced in light once (the night page's tracer: margin 56, speed 620,
+  spread .9). The trace ends with a cut: the crisp text appears and the trace canvas is removed in the same frame, so
+  two copies are never on screen. A trace in flight is dropped at once (no fade) if the text changes, the window
+  resizes, the sidebar moves or the greeting's box moves or changes size by more than 0.5 px.
+- The afterglow is light, not text: a radial gradient behind the word block (`::before`, 22 % wider than the text
+  each side, 72 % taller above and below), warm white `rgba(255,244,228,.30)` at the centre falling through
+  `.24 / .15 / .07 / .02` to 0. It rises over 2 s on `--out` (0 → 1 at 20 %, scale .9 → 1) and rests at `.5`
+  (Balanced) or `.62` (Full), then is still: no breathing, no loop. With the text hidden it shows no letterforms.
+- Calm and reduced motion: the plain greeting, no trace, no afterglow.
+
+### The effort slider
+A 26 px pill, a segmented control in Gemini's luminous language (one `<input type=range>` on top for the hit area).
+
+| Part | Value |
+|---|---|
+| Size | PINNED ("thick, like ChatGPT's"): 220 × 36 (hit), pill `--ph: 26px`; in a conversation 200 wide, `--ph: 20px`; under 600 px 88 wide, `--ph: 24px`. Never thinner |
+| Channel | `linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.085))`, inset 1 px `rgba(255,255,255,.08)`, inset `0 1px 2px rgba(0,0,0,.25)` |
+| Fill | from the left to round the orb: `linear-gradient(90deg, #4f8cff, #9b72ff 55%, #f07aa6)` fixed to the track (each step has its own colour); 1 px inner top light |
+| Bloom | a copy of the fill beneath it, `blur(8px)`, opacity by step `.32 / .40 / .50 / .62 / .78` |
+| Notches | five 4 px dots on the centre line: `rgba(255,255,255,.22)`; passed ones `.85` with a 4 px glow |
+| Orb | `--ob: 20px` (15 in a conversation, 18 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
+| Halo | 2 × the orb, the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), opacity .45 at scale .85; hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
+| Snap | 160 ms `cubic-bezier(.22,1,.36,1)`, no bounce |
+| Tip | glass above the orb while hovered, held or stepped with keys (1.4 s): the step in `--ink` 500, then one honest line in `--ink3` 12 px; a 1 px blue → violet → rose edge at .55 and `0 0 18px -4px rgba(155,114,255,.35)` |
+| Level | beside it, Space Grotesk 13/500 `--ink2`, 4 px off the pill: Low · Medium · High · Extra · Ultra |
+
+The tip's lines (the app's NOTES 6b534): Low "one pass, no second look"; Medium "the usual second pass"; High "always a
+second pass, drafts double-checked"; Extra "the models review each other"; Ultra "all of that, with deeper reasoning".
+Click anywhere to jump, arrows step. Calm and reduced motion: the same look, no transitions.
+
+### Ultra's light (the cool palette)
+Electric blue `#4f8cff` → violet `#9b72ff` → soft rose `#f07aa6`, with white highlights; warm gold `#f3d27a` only as a
+rare glint (one sparkle in twelve). No green, orange or red. Text tints that pass AA on the glass: `#86b0ff`,
+`#b9a2ff`, `#f7a3c3`.
+
+- **The label and the byline:** "Ultra" in the text tints with a white-blue highlight band (`rgba(240,246,255,.95)`,
+  20 % of a 250 % background) that glides across once every 2.5 s (across in about 1.1 s on
+  `cubic-bezier(.45,0,.25,1)`, then rest), `drop-shadow(0 0 6px rgba(155,114,255,.4))`. The byline reads
+  "Concorde Thinking · Ultra"; its sweep stops when the answer lands (a still gradient).
+- **The typed words:** a mirror over the textarea carries the same light in near-white tints (`#dbe6ff`, `#e4dcff`,
+  `#f8dde9`), a subtler sweep every 3.6 s; "Ask anything" at .72. Leaving Ultra crossfades back to white in 600 ms.
+- **The send key** (with text): `#6f9bff → #9b72ff → #f07aa6 → #fff → #9b72ff`, flowing one 108 px period per 4 s; navy arrow.
+- **The writing star:** a 20 px tail behind it, rose → violet → blue → `#e6efff` at the star.
+- **The sparkles:** four-point stars, a white core (2 px; 3 px for the big ones) with two crossed 1 px rays tinted
+  white, ice `#cfe0ff`, `#86b0ff`, `#b9a2ff`, `#9b72ff` (gold one in twelve).
+
 ### The Ultra moment
-Once per arrival at Ultra, about 900 ms, in Full and Balanced:
-- 0 ms: the diamond ignites — white core, a bloom `0 0 6px 2px #fff, 0 0 22px 8px
-  violet .75, 0 0 44px 16px rose .45` at 18 %, gone by 900 ms. ULTRA is lit (a white text
-  glow that settles in 900 ms).
-- While at Ultra, the one approved loop on text: the label's gradient
-  `linear-gradient(90deg, #cfe0ff, #b9a8ff, #f2a6b4, #e8415a, #f1dcb2, #cfe0ff)` at
-  `background-size: 300%` flows across the letters, one cycle in 3.5 s, linear, crisp
-  letters, no blur; the diamond carries a faint 7 px glow of the same hue in step
-  (`diamondFlow`, 3.5 s). It stops the instant Ultra is left. Calm and reduced motion keep
-  the still gradient. The rim stays still.
-- 0–160 ms: a 22 px spark runs from the diamond back along the beam to its start.
-- 160–760 ms: a line of light leaves the beam's start and runs all the way round the
-  composer's border (a conic reveal from that point's angle, `cubic-bezier(.45,0,.2,1)`),
-  a white head at its edge; the border settles into a still 1.5 px spectral rim:
-  `conic-gradient(from a0, #cfe0ff, #b9a8ff 28%, #f2a6b4 56%, #e8415a 78%, #cfe0ff)` at .9.
-  No rotation, no loop.
-- The aurora takes one breath: +.45 peaking at about 200 ms, settled within 2 s.
-- Leaving Ultra: the rim drains back along the same path in 300 ms `--inout`; the diamond
-  and the label return to plain.
-- Calm and reduced motion: the still rim (a 300 ms fade in Calm) and the label only.
+Arriving (about 1.5 s), Balanced and Full:
+- **The beat** (under 1.2 s): 0 ms the orb clicks into place (scale 1 → 1.12 → 1, 220 ms) as the first star wave and
+  the sweep leave; +200 ms the second star wave and the sky's glint flash; +400 ms the lit glass edge comes up (the
+  line of light runs round in 600 ms); +600 ms the ULTRA label's light sweep starts and the chip's badge appears.
+- **The stars lead.** Two waves of four-point stars burst from where the orb lands (80 in all). The first, 56: 5 hero
+  stars (11–14 px rays), the rest 4–8 px, each twinkling twice (opacity 1 → .45 → .95 → .35 → 0, scale with it) as it
+  flies 26–72 px and fades in 760–1040 ms on `--out`, seven of them drifting up across the composer (70–150 px,
+  1.3–1.7 s). The second, 200 ms later: 24 smaller ones (3–6 px), 18–46 px. Above the glass, clipped to the screen;
+  compositor work only (transform and opacity on pooled-size elements).
+- The sky's brightest stars (now the top 4.5 %, three times as many) flash their four-point glint at +200 ms
+  (2.6 × at .55 s, x e^(1−x)), then settle to their gentle twinkle.
+- The orb flares: eight fine rays (38 px, 400 ms) and a small bloom `0 0 6px 2px #fff, 0 0 12px 3px violet .7`.
+- **The sweep:** one thin horizontal band of light (a 7 px core, a faint 28 px skirt; white at its core, blue → violet
+  at its edges, screen-blended at .6) rises from the composer's top edge to above the sky in 700 ms (ease in-out),
+  fading as it goes; the stars brighten as it passes. Lines, never circles.
+- **The sky:** the field turns 5.5° (1.6 s smootherstep, the opening's direction) and springs back to its rest drift the
+  same way on leaving; the aurora erupts to
+  1.6 × Full's level for the mode at 1 s (x² e^(2(1−x))), both curtains, briefly faster, richer, leaning blue and
+  violet (`mix(col, mix(#4f8cff, #9b72ff, height) × luminance, .7)`), and rests at 1.3 ×; the stars flare once
+  (+.9, x e^(1−x), peak .35 s) and rest 30 % brighter; a faint rectangular tint along the screen's edges
+  (`smoothstep(.78, 1, max(|x|,|y|))`, .24 at the peak, .04 at rest). In Balanced the sky is lifted to Full while at Ultra.
+- The composer lifts once: scale 1.01 at 30 % of 1.5 s, then settles.
+- The line of light runs round the border (600 ms, from the beam's angle) and leaves the lit edge.
+
+While at Ultra:
+- **The lit glass edge:** a 1.5 px rim in the cool light with a white highlight
+  (`conic-gradient(#4f8cff, #9b72ff 26%, #f07aa6 46%, #9b72ff 62%, #dce8ff 69%, #fff 71%, #dce8ff 73%, #4f8cff 84%)`)
+  that turns once every 6 s, and a tight glow (a 2 px copy, `blur(3px)`, .75): about 2–6 px of light, no halo.
+- **Inside the glass:** `linear-gradient(180deg, rgba(79,140,255,.13), rgba(155,114,255,.06) 38%, transparent 72%)`
+  plus a faint horizontal blue → violet → rose wash, clipped to the glass.
+- **The horizon line:** 1 px, 4 px under the composer, 10 % in from each end, `#4f8cff .55 → #e2ecff .95 → #9b72ff .55`,
+  fading at both ends, `0 0 4px rgba(155,114,255,.45)`.
+- **The sky's stars answer:** the brightest (top 1.5 %) wear a faint four-point glint (arms falling off over about
+  3 px) that twinkles gently, each at its own pace (.55 ± .45).
+- **Stars drift round the composer:** one every 170 ms, at most 40, from the outer thirds of the top edge (60 %; the
+  centre stays clear so text is never covered) or a side, 5–9 px (one in five 10–13 px), drifting 30–130 px over
+  5.2–7.6 s with a calm twinkle.
+- **The charged state:** hairlines and outlines turn faintly blue-violet (`--hair rgba(150,165,255,.13)`,
+  `--hair2 rgba(150,160,255,.22)`, `--line rgba(170,160,255,.45)`, registered so they ease), keyboard focus is a
+  1 px `#9b72ff` ring, the chosen mode's mark is a blue-violet diamond, the mode chip wears a 9 px "Ultra" badge
+  (the label's light sweep, a `#9b72ff` .5 hairline) on its corner, and the send key is charged: a violet outline
+  and a slow inner sheen (every 3 s).
+- **Sending at Ultra:** a 22 px star glint on the key (420 ms); a bright streak (a 90 px line, ice to white at its
+  head) runs from the key to where the answer starts in 460 ms, leaving nine tiny stars that twinkle out in 520 ms;
+  the writing star is born where it lands, with its prism tail.
+- The slider's fill flows (`#4f8cff → #9b72ff → #f07aa6 → #fff → #9b72ff → #4f8cff`, one 2 × width period per 4 s)
+  with its bloom; the orb's halo turns to the cool spectrum; the knob's glow cycles blue, violet, rose (3.5 s).
+
+Leaving Ultra, the power-down: the accent drains back in 800 ms, the drifting stars drift 24 px up and fade (800 ms),
+the sky eases back to the chosen level (time constant .3 s, about 900 ms) and its twist springs back; the rim drains
+back the way it came; tints, line, glow and knob fade in 900 ms.
+
+Calm and reduced motion: the still rim, the still gradient label and a brighter still sky (stars 30 % brighter,
+exposure 8 % up) only.
+
+### The sideways lock
+No layer may widen the page. The colour wash (12 % past each side) and the aurora band live in a clipped layer
+(`#decor`, `overflow:clip`); the stage itself is `overflow:clip` (it cannot be scrolled by focus, find-in-page or a
+selection drag, which is how the page once slid sideways at 2000 px); a guard returns any window or stage scroll to 0;
+the conversation scrolls vertically only. Checked: `scrollWidth === innerWidth` at 2000, 1440, 1280 and 390 through
+the opening, the menus, Ultra, a slider drag and typing.
 
 ## Modes and effort
 
 Modes: **Fast** (fast answers) · **Thinking** (thinks it through) · **Pro** (every model on
 your machines) · **Max** (every model, every machine) · **Deep** (keeps going until you stop
-it). Effort: **Low · Medium · High · Extra · Ultra**. Bylines read "Concorde Thinking".
+it). Effort: **Low · Medium · High · Extra · Ultra**. Bylines read "Concorde Thinking" ("Concorde Thinking · Ultra" at Ultra).
+
+## Footage on WebKit
+- Every `<video>` lists the `.mp4` first, then the `.webm` (WKWebView and Safari can freeze a `.webm` on its last frame).
+- A loop watchdog checks every 400 ms: a clip stalled within 0.6 s of its end for two checks is sent back to 0 and played.
+- The sky draws from its first frame with a one-texel black footage texture; the footage is uploaded only once a frame
+  has been decoded (`requestVideoFrameCallback`, else `loadeddata`), and fades in. No stall at the opening.
