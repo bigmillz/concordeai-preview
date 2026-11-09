@@ -161,6 +161,7 @@ html:not(.full) .rigs{display:none}
 #fxpop span{font-size:var(--t-label);color:var(--ink3);padding-right:8px}
 #fxpop button{height:28px;padding:0 10px;border-radius:var(--r-chip);border:0;background:transparent;color:var(--ink2);font-size:var(--t-small);cursor:pointer;transition:background var(--t1) var(--out),color var(--t1) var(--out)}
 #fxpop button{position:relative}#fxpop button::before,.details::before{content:"";position:absolute;left:0;right:0;top:-2px;bottom:-2px}
+.details::before{top:-3px;bottom:-3px}   /* inside its 1 px border: 26 + 6 = 32 */
 #fxpop button:hover{background:rgba(255,255,255,.06);color:var(--ink)}
 #fxpop button[aria-pressed="true"]{background:rgba(255,255,255,.12);color:var(--ink)}
 .rig{position:relative;display:flex;align-items:center;gap:7px;height:32px;padding:0 10px;border-radius:var(--r-ctl);font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);cursor:default;outline:0;transition:color .5s,background var(--t3)}
