@@ -104,8 +104,8 @@ diamond; the effort slider's knob is a round orb (see The effort slider).
 ## Spacing
 
 An 8 px grid: 8 / 16 / 24 / 32 / 40 / 64. Header 64. Controls 36 (32 under 600). Rows 32.
-Pills 32. Sidebar 248 wide, 8 px padding, 16 from the edge, 72 from the top, 16 above the
-credit. Home column 800; chat column 640. The composer's centre sits at the golden point
+Pills 32. Hit areas at least 32 (an invisible extension where the drawn control is smaller). Sidebar 248 wide, 8 px padding, 16 from the edge, 72 from the top, 16 above the
+credit. Home column 800; chat column 640 (Full, 1200 px and up: 900, the 640 column, 40 and the 220 margin notes, centred in the room). The composer's centre sits at the golden point
 (61.8 %) of the free height below the header.
 
 ## Motion
@@ -157,7 +157,7 @@ A 20 px pill, a segmented control in Gemini's luminous language (one `<input typ
 
 | Part | Value |
 |---|---|
-| Size | PINNED ("slightly slimmer", superseding the earlier 26 px): 220 × 36 (hit), pill `--ph: 20px`; in a conversation 200 wide, `--ph: 16px`; under 600 px 88 × 32, `--ph: 20px`. The level sits beside it |
+| Size | PINNED ("slightly slimmer", superseding the earlier 26 px): 220 × 36 (hit), pill `--ph: 20px`; in a conversation 200 wide, `--ph: 16px`; under 600 px 88 × 32, `--ph: 20px`, the composer's row on one line with the phone's 6 px gaps (the pill may give up to 8 px rather than wrap). The level sits beside it |
 | Channel | `linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.085))`, inset 1 px `rgba(255,255,255,.08)`, inset `0 1px 2px rgba(0,0,0,.25)` |
 | Fill | from the left to round the orb: `linear-gradient(90deg, #4f8cff, #9b72ff 55%, #f07aa6)` fixed to the track (each step has its own colour); 1 px inner top light |
 | Bloom | a copy of the fill beneath it, `blur(8px)`, opacity by step `.32 / .40 / .50 / .62 / .78` |
@@ -171,15 +171,15 @@ Click anywhere to jump, arrows step. Calm and reduced motion: the same look, no 
 
 ### Ultra's light (the cool palette)
 Electric blue `#4f8cff` → violet `#9b72ff` → soft rose `#f07aa6`, with white highlights; warm gold `#f3d27a` only as a
-rare glint (one sparkle in twelve). No green, orange or red. Text tints that pass AA on the glass: `#86b0ff`,
-`#b9a2ff`, `#f7a3c3`.
+rare glint (one sparkle in twelve). No green, orange or red. Text tints that pass AA on the glass, even over Full's lifted Ultra sky: `#9cc0ff`,
+`#c4b0ff`, `#f7a3c3`.
 
 - **The label and the byline:** "Ultra" in the text tints with a white-blue highlight band (`rgba(240,246,255,.95)`,
   20 % of a 250 % background) that glides across once every 2.5 s (across in about 1.1 s on
   `cubic-bezier(.45,0,.25,1)`, then rest), `drop-shadow(0 0 6px rgba(155,114,255,.4))`. The byline reads
   "Concorde Thinking · Ultra"; its sweep stops when the answer lands (a still gradient).
 - **The typed words:** a mirror over the textarea carries the same light in near-white tints (`#dbe6ff`, `#e4dcff`,
-  `#f8dde9`), a subtler sweep every 3.6 s; "Ask anything" at .72. Leaving Ultra crossfades back to white in 600 ms.
+  `#f8dde9`), a subtler sweep every 3.6 s; "Ask anything" at .85 (AA in Full). Leaving Ultra crossfades back to white in 600 ms.
 - **The send key** (with text): `#6f9bff → #9b72ff → #f07aa6 → #fff → #9b72ff`, flowing one 108 px period per 4 s; navy arrow.
 - **The writing star:** a 20 px tail behind it, rose → violet → blue → `#e6efff` at the star.
 - **The sparkles:** four-point stars, a white core (2 px; 3 px for the big ones) with two crossed 1 px rays tinted

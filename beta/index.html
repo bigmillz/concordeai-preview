@@ -156,10 +156,11 @@ html:not(.full) .rigs{display:none}
 /* the settings icon and its little Effects popover */
 #fxbtn{position:relative}
 #fxpop{position:absolute;right:0;top:44px;z-index:30;display:flex;align-items:center;gap:2px;padding:4px 4px 4px 12px;border-radius:var(--r-ctl);white-space:nowrap;border:1px solid var(--hair2);background:var(--glass-dense);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow-float);
-  opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity var(--t2) var(--out),transform var(--t2) var(--out)}
-#fxpop.open{opacity:1;transform:none;pointer-events:auto}
+  opacity:0;transform:translateY(-4px);pointer-events:none;visibility:hidden;transition:opacity var(--t2) var(--out),transform var(--t2) var(--out),visibility 0s linear var(--t2)}
+#fxpop.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity var(--t2) var(--out),transform var(--t2) var(--out)}
 #fxpop span{font-size:var(--t-label);color:var(--ink3);padding-right:8px}
 #fxpop button{height:28px;padding:0 10px;border-radius:var(--r-chip);border:0;background:transparent;color:var(--ink2);font-size:var(--t-small);cursor:pointer;transition:background var(--t1) var(--out),color var(--t1) var(--out)}
+#fxpop button{position:relative}#fxpop button::before,.details::before{content:"";position:absolute;left:0;right:0;top:-2px;bottom:-2px}
 #fxpop button:hover{background:rgba(255,255,255,.06);color:var(--ink)}
 #fxpop button[aria-pressed="true"]{background:rgba(255,255,255,.12);color:var(--ink)}
 .rig{position:relative;display:flex;align-items:center;gap:7px;height:32px;padding:0 10px;border-radius:var(--r-ctl);font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);cursor:default;outline:0;transition:color .5s,background var(--t3)}
@@ -190,7 +191,8 @@ html:not(.full) .rigs{display:none}
 .tip .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ag);box-shadow:0 0 8px var(--ag)}
 
 main{--mw:800px;flex:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:var(--mw);margin:0 auto;min-height:0;transition:margin .6s var(--out),max-width .6s var(--out)}
-.full .chat main{--mw:1000px}
+.full .chat main{--mw:900px}
+@media (max-width:1199px){.full .chat main{--mw:640px}}   /* the margin notes fold under the answer: one 640 column, the composer under it */
 .chat main{--mw:640px}
 /* with the sidebar open, centre the column in the room to its right, never under it */
 @media (min-width:1100px){.side-open main{margin-left:max(282px,calc(282px + (100% - 282px - var(--mw)) / 2));margin-right:0}}
@@ -233,11 +235,12 @@ textarea{width:100%;border:0;background:transparent;outline:none;resize:none;fon
    the glass, with a white-blue highlight that glides across them (once every 2.5 s: across in about 1.1 s, then rest),
    like Claude's shimmer on its thinking text. Calm and reduced motion: the gradient, still. */
 .lum{background:linear-gradient(100deg,rgba(235,243,255,0) 40%,rgba(240,246,255,.95) 50%,rgba(235,243,255,0) 60%) 150% 0/250% 100% no-repeat,
-    linear-gradient(90deg,#86b0ff,#b9a2ff 55%,#f7a3c3);-webkit-background-clip:text;background-clip:text;color:transparent!important;
+    linear-gradient(90deg,#9cc0ff,#c4b0ff 55%,#f7a3c3);-webkit-background-clip:text;background-clip:text;color:transparent!important;
   filter:drop-shadow(0 0 6px rgba(155,114,255,.4))}
 html:not(.calm) .lum.go{animation:lumsweep 2.5s cubic-bezier(.45,0,.25,1) infinite}
 @keyframes lumsweep{0%{background-position:150% 0,0 0}45%,100%{background-position:-50% 0,0 0}}
 .tawrap{position:relative}
+.tawrap textarea,.mirror{text-rendering:optimizeLegibility;font-kerning:normal;font-variant-ligatures:normal}   /* the mirror and the textarea set type alike, so the caret meets the lit words */
 .tawrap textarea{display:block}
 .mirror{position:absolute;inset:0;pointer-events:none;white-space:pre-wrap;padding-bottom:4px;overflow-wrap:break-word;overflow:hidden;font-size:var(--t-read);line-height:1.5;letter-spacing:normal;opacity:0;transition:opacity .6s var(--inout)}
 .mirror.ph{opacity:0}
@@ -246,7 +249,7 @@ html:not(.calm) .lum.go{animation:lumsweep 2.5s cubic-bezier(.45,0,.25,1) infini
     linear-gradient(90deg,#dbe6ff,#e4dcff 55%,#f8dde9);-webkit-background-clip:text;background-clip:text;filter:none}
 html:not(.calm) .mirror.lum.go{animation:lumsweep 3.6s cubic-bezier(.45,0,.25,1) infinite}
 .ultra .mirror{opacity:1;transition:opacity .3s var(--out)}
-.ultra .mirror.ph{opacity:.72}
+.ultra .mirror.ph{opacity:.85}
 .ultra textarea{color:transparent;scrollbar-width:none}
 .ultra textarea::placeholder{color:transparent}
 /* the send key at Ultra: a slowly flowing spectrum while there is text (navy arrow on the light set), eased off in 600 ms */
@@ -415,7 +418,7 @@ html.calm .slider *,html.calm .slider *::before,html.calm .slider *::after{trans
    star glint when pressed). Leaving drains it back in 800 ms. Calm and reduced motion: unchanged. */
 #stage{transition:--hair .8s var(--inout),--hair2 .8s var(--inout),--line .8s var(--inout)}
 html:not(.calm) #stage.ultra{--hair:rgba(150,165,255,.13);--hair2:rgba(150,160,255,.22);--line:rgba(170,160,255,.45);transition-timing-function:var(--out)}
-html:not(.calm) .ultra :focus-visible{box-shadow:0 0 0 1px #9b72ff}
+html:not(.calm) .ultra :focus-visible:not(textarea){box-shadow:0 0 0 1px #9b72ff}   /* the textarea never: the composer's border is its focus (a violet box hugged the words) */
 html:not(.calm) .ultra .slider.kb:has(input:focus) .sl-track{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 2px var(--night),0 0 0 3px #9b72ff}
 html:not(.calm) .ultra .opt[aria-checked="true"]>b::after{background:linear-gradient(135deg,#86b0ff,#b9a2ff)}
 .ubadge{position:absolute;top:-8px;right:-8px;padding:2px 5px 3px;border-radius:var(--r-tag);font:600 9px/1 var(--ui);letter-spacing:.06em;pointer-events:none;
@@ -513,8 +516,8 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 /* the sidebar: your chats by day, in the same glass; day labels in mono caps */
 #side{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:72px;bottom:calc(var(--foot,40px) + 16px);width:248px;z-index:6;display:flex;flex-direction:column;padding:8px;border-radius:var(--r-panel);
   background:var(--glass);border:1px solid var(--hair2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-  box-shadow:inset 0 1px 0 var(--spec),var(--shadow);transform:translateX(calc(-100% - 28px));opacity:0;pointer-events:none;transition:transform .6s var(--out),opacity .45s var(--out)}
-.side-open #side{transform:none;opacity:1;pointer-events:auto}
+  box-shadow:inset 0 1px 0 var(--spec),var(--shadow);transform:translateX(calc(-100% - 28px));opacity:0;pointer-events:none;visibility:hidden;transition:transform .6s var(--out),opacity .45s var(--out),visibility 0s linear .6s}
+.side-open #side{transform:none;opacity:1;pointer-events:auto;visibility:visible;transition:transform .6s var(--out),opacity .45s var(--out)}
 @media (max-width:1099px){#side{background:var(--glass),rgba(8,11,24,.9)}}
 .newchat{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:var(--r-ctl);border:1px solid var(--hair2);background:transparent;color:var(--ink);font-size:var(--t-ui);cursor:pointer;flex:none;transition:background var(--t1) var(--out),border-color var(--t1) var(--out)}
 .newchat:hover{background:rgba(255,255,255,.06);border-color:var(--line)}
@@ -524,7 +527,7 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .hist>.day:first-child{margin-top:8px}
 .hrow{display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:var(--r-ctl);font-size:var(--t-ui);color:var(--ink2);cursor:pointer;overflow:hidden;transform-origin:0 50%;transition:background var(--t1) var(--out),color var(--t1) var(--out)}
 .hrow .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s}
-.hrow:hover{background:rgba(255,255,255,.05);color:var(--ink)}
+.hrow:hover{background:rgba(255,255,255,.06);color:var(--ink)}
 .hrow.on{background:rgba(255,255,255,.09);color:var(--ink)}
 .hrow.new{height:0;opacity:0;transition:height .5s var(--out),opacity .3s}
 .hrow.new.grow{height:32px;opacity:1}
@@ -562,7 +565,7 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 html:not(.full) .msg.ai{grid-template-columns:minmax(0,640px)}
 html:not(.full) .msg.ai>aside{grid-column:1;grid-row:auto;padding-top:16px;margin-top:16px;border-top:1px solid var(--hair)}
 html:not(.full) .msg.ai:not(.open)>aside{display:none}
-.details{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:400 var(--t-small)/1 var(--ui);color:var(--ink3);background:none;border:1px solid transparent;padding:0 10px;height:28px;border-radius:var(--r-ctl);cursor:pointer;flex:none;transition:color var(--t1) var(--out),background var(--t1) var(--out),border-color var(--t1) var(--out)}
+.details{position:relative;margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:400 var(--t-small)/1 var(--ui);color:var(--ink3);background:none;border:1px solid transparent;padding:0 10px;height:28px;border-radius:var(--r-ctl);cursor:pointer;flex:none;transition:color var(--t1) var(--out),background var(--t1) var(--out),border-color var(--t1) var(--out)}
 .details::after{content:"";width:5px;height:5px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-1.5px) rotate(45deg);transition:transform var(--t2) var(--out)}
 .details:hover{color:var(--ink);background:rgba(255,255,255,.06);border-color:var(--hair)}
 .details[aria-expanded="true"]{color:var(--ink2)}
@@ -717,15 +720,15 @@ html.calm #motes,html.calm #sparks{display:none}
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   font-size:var(--t-label);color:var(--ink3);opacity:0;transition:opacity 1.6s var(--out) 1.6s;pointer-events:none}
 #stage.home~#foot{opacity:1;pointer-events:auto}
-#foot a{color:var(--ink2);text-decoration-color:var(--hair2);text-underline-offset:3px;transition:color var(--t1) var(--out),text-decoration-color var(--t1) var(--out)}
+#foot a{padding:8px 0;color:var(--ink2);text-decoration-color:var(--hair2);text-underline-offset:3px;transition:color var(--t1) var(--out),text-decoration-color var(--t1) var(--out)}
 #foot a:hover{color:var(--ink);text-decoration-color:var(--line)}
 #foot .own{color:var(--ink2)}
-#foot .maclink{color:var(--ink2);white-space:nowrap}   /* the native preview (Apple silicon and Intel), offline */
+#foot .maclink{padding:6px 0;margin:-6px 0;color:var(--ink2);white-space:nowrap}   /* the native preview (Apple silicon and Intel), offline */
 #stage.chat~#foot{display:none}
 
-@media (max-width:760px){.rig b{display:none}.rig{padding:0 8px}.rig .tip{right:auto;left:50%;transform:translate(-50%,-4px)}.rig:hover .tip,.rig:focus-visible .tip{transform:translate(-50%,0)}.beta{display:none}}
-@media (max-width:600px){nav{display:none}header{gap:12px}#hero h1{font-size:clamp(40px,11.5vw,56px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round:not(.mic){display:none}#menu{left:0;width:100%}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
-  .pick{height:32px;padding:0 8px 0 10px;gap:6px}.slider,.chat .slider{width:88px;height:32px;--ph:20px;--ob:16px;--sw:88px}.elevel{min-width:0;font-size:12px}.send,.round{width:32px;height:32px}.mic.on{width:80px}.listening .elevel{display:none}
+@media (max-width:760px){.rig b{display:none}.rig{padding:0 8px;min-width:32px;justify-content:center}.rig .tip{right:auto;left:50%;transform:translate(-50%,-4px)}.rig:hover .tip,.rig:focus-visible .tip{transform:translate(-50%,0)}.beta{display:none}}
+@media (max-width:600px){nav{display:none}header{gap:12px}#hero h1{font-size:clamp(40px,11.5vw,56px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round:not(.mic){display:none}#menu{left:0;width:100%;box-sizing:border-box}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
+  .pick{height:32px;padding:0 8px 0 10px;gap:6px}.slider,.chat .slider{width:88px;height:32px;--ph:20px;--ob:16px;--sw:88px}.elevel{min-width:0;font-size:12px}.send,.round{width:32px;height:32px}.mic.on{width:80px}.row{gap:6px;flex-wrap:nowrap}.slider{flex:0 1 88px;min-width:80px}.listening .elevel{display:none}
   .body table{font-size:var(--t-ui)}.body pre{padding:12px;margin-inline:-4px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}#hero h1::before,.uline,.cbox .itint,.cbox .rimbloom,.sl-rays,#motes,#sparks{display:none}.body.swapwait,.body.swapout{opacity:1}#ui{transition:opacity .5s ease!important}}
 /* the lane tabs sit over the column's centre, sidebar open or not */
@@ -756,9 +759,9 @@ html.calm #motes,html.calm #sparks{display:none}
       <span class="spacer"></span>
       <nav aria-label="Lane"><span class="on">Chat</span><span>Code</span><span>Funnels</span></nav>
       <span class="spacer"></span>
-      <div class="status" id="status" tabindex="0" aria-label="Your machines: ready"><i></i><span class="tip"><strong>Ready</strong><span class="m"><i class="die" style="--ac:#c9ccd2;--ag:#e4e7ee"></i>This Mac, Apple silicon</span><span class="m"><i class="die" style="--ac:#76b900;--ag:#93dc1a"></i>Your server, NVIDIA graphics</span></span></div>
+      <div class="status" id="status" tabindex="0" aria-label="Your machines: ready"><i></i><span class="tip"><strong>Ready</strong><span class="m"><i class="die" style="--ac:#c9ccd2;--ag:#e4e7ee"></i>Your Mac, Apple silicon</span><span class="m"><i class="die" style="--ac:#76b900;--ag:#93dc1a"></i>Your server, NVIDIA graphics</span></span></div>
       <div class="rigs" role="list" aria-label="Your machines">
-        <div class="rig mlx" role="listitem" tabindex="0"><i class="die"></i><b>MLX</b><span class="tip"><strong>This Mac</strong><span>Apple silicon</span><span class="st">Ready</span></span></div>
+        <div class="rig mlx" role="listitem" tabindex="0"><i class="die"></i><b>MLX</b><span class="tip"><strong>Your Mac</strong><span>Apple silicon</span><span class="st">Ready</span></span></div>
         <div class="rig nvidia" role="listitem" tabindex="0"><i class="die"></i><b>NVIDIA</b><span class="tip"><strong>Your server</strong><span>NVIDIA graphics</span><span class="st">Ready</span></span></div>
       </div>
       <div id="fxbtn"><button class="ibtn" id="fxtog" type="button" aria-label="Effects" aria-expanded="false" aria-controls="fxpop"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="15.5" cy="7" r="2.2"/><circle cx="9.5" cy="17" r="2.2"/></svg></button>
@@ -1219,7 +1222,7 @@ stage.addEventListener("scroll",()=>{stage.scrollLeft=0;stage.scrollTop=0;});add
 window.__beta={setGreeting,sky:()=>Sky?Sky.state():null,fx:FX,tracing:()=>tracers.size};
 /* edge states, for review: ?empty=1 shows the sidebar with no chats; ?err=1 shows an error line under the composer */
 {const qs=new URLSearchParams(location.search);if(qs.get("empty")==="1")$("#hist").classList.add("none");
- if(qs.get("err")==="1"){const n=$("#note");n.textContent="Your server did not answer. This Mac will take it.";n.className="note err on";stage.classList.add("has-note");}}
+ if(qs.get("err")==="1"){const n=$("#note");n.textContent="Your server did not answer. Your Mac will take it.";n.className="note err on";stage.classList.add("has-note");}}
 /* the greeting traced in light once per visit (Balanced and Full), after the wordmark and the twist; then the afterglow */
 async function playHeadline(){const h1=$("#h1");if(!h1.classList.contains("shown")&&!reduce&&FX()!=="calm"){await traceIn(h1,{margin:56,speed:620,spread:.9,cut:true});
   h1.style.transition="none";greetShow();void h1.offsetWidth;h1.style.transition="";return;}   // the crisp text takes the light's place in one frame: never two copies at once
@@ -1268,7 +1271,7 @@ function run(){
 run();
 
 /* ---------- the mode (who works) and the effort (how long each one thinks) ---------- */
-const MACH={mlx:{ac:"#c9ccd2",ag:"#e4e7ee",name:"This Mac"},nvidia:{ac:"#76b900",ag:"#93dc1a",name:"Your server"},cloud:{ac:"#9fc0ff",ag:"#cfe0ff",name:"Cloud"}};
+const MACH={mlx:{ac:"#c9ccd2",ag:"#e4e7ee",name:"Your Mac"},nvidia:{ac:"#76b900",ag:"#93dc1a",name:"Your server"},cloud:{ac:"#9fc0ff",ag:"#cfe0ff",name:"Cloud"}};
 /* five modes, plain names (per the owner, 7.0 beta): Fast, Thinking, Pro (every model on your machines), Max (every model,
    every machine), Deep (keeps going until you stop it). Effort: Low, Medium, High, Extra, Ultra */
 const MODES=[{n:"Fast",d:"Fast answers"},{n:"Thinking",d:"Thinks it through"},{n:"Pro",d:"Every model on your machines"},{n:"Max",d:"Every model, every machine"},{n:"Deep",d:"Keeps going until you stop it"}];
@@ -1442,6 +1445,8 @@ function motesOn(on){clearInterval(moteI);clearTimeout(moteOutT);
 eff.addEventListener("input",paint);
 /* no tooltip and no explanations (per the owner: "pretty damn obvious"): the level's name beside the slider updates live */
 eff.addEventListener("keydown",()=>slider.classList.add("kb"));
+let kbNav=false;addEventListener("keydown",e=>{if(e.key==="Tab")kbNav=true;},true);addEventListener("pointerdown",()=>{kbNav=false;},true);
+eff.addEventListener("focus",()=>{if(kbNav)slider.classList.add("kb");});
 eff.addEventListener("blur",()=>slider.classList.remove("kb"));
 eff.addEventListener("pointerdown",()=>{slider.classList.remove("kb");slider.classList.add("drag");});
 addEventListener("pointerup",()=>slider.classList.remove("drag"));
