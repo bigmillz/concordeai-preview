@@ -52,13 +52,14 @@ textarea:focus-visible{box-shadow:none}
 /* the app */
 #ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;transition:opacity 1.4s var(--ease)}
 .home #ui{opacity:1}
-header{display:flex;align-items:center;gap:18px;padding-block:14px;position:relative;z-index:3}
-header .mark{font-size:12.5px;gap:7px;filter:drop-shadow(0 0 8px rgba(159,192,255,.4))}
+header{display:flex;align-items:center;gap:12px;padding-block:14px;position:relative;z-index:3}
+header .mark{font-size:10.5px;gap:6px}
+header .mark .glint{display:none}   /* a calm wordmark: no moving shine, no glow */
 .spacer{flex:1}
 nav{display:flex;gap:24px}
 nav span{font-size:14px;color:var(--ink3);line-height:40px}
 nav span.on{color:var(--ink);font-weight:500;box-shadow:inset 0 -1px 0 var(--ice)}
-.beta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:999px;padding:4px 8px;line-height:1}
+.beta{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:999px;padding:3px 7px;line-height:1;margin-left:-4px}
 
 /* your machines: one tiny die per machine, in its maker's colour */
 .rigs{display:flex;align-items:center;gap:2px}
@@ -89,9 +90,10 @@ nav span.on{color:var(--ink);font-weight:500;box-shadow:inset 0 -1px 0 var(--ice
 .tip .st{display:flex;align-items:center;gap:7px;margin-top:4px;color:var(--ink2)}
 .tip .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ag);box-shadow:0 0 8px var(--ag)}
 
-main{flex:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:820px;margin:0 auto;min-height:0;transition:margin .6s var(--ease),max-width .6s var(--ease)}
-.chat main{max-width:1000px}
-@media (min-width:1100px){.side-open main{margin-left:276px}}
+main{--mw:820px;flex:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:var(--mw);margin:0 auto;min-height:0;transition:margin .6s var(--ease),max-width .6s var(--ease)}
+.chat main{--mw:1000px}
+/* with the sidebar open, centre the column in the room to its right, never under it */
+@media (min-width:1100px){.side-open main{margin-left:max(282px,calc(282px + (100% - 282px - var(--mw)) / 2));margin-right:0}}
 
 /* the greeting */
 #hero{flex:1;display:flex;align-items:center;justify-content:center;min-height:160px;text-align:center}
@@ -331,6 +333,9 @@ aside.behind.on{opacity:1}
 @media (max-width:600px){nav{display:none}header{gap:12px}#hero h1{font-size:clamp(44px,13vw,64px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round{display:none}#menu{left:0;width:100%}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
   .row{gap:8px}.pick{height:34px;padding:0 8px 0 10px;gap:5px}.pick b{font-size:13.5px}.slider{width:108px}.elevel{min-width:0;font-size:12.5px}.send{width:38px;height:38px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.body.swapwait,.body.swapout{opacity:1}}
+/* the lane tabs sit over the column's centre, sidebar open or not */
+@media (min-width:760px){header nav{position:absolute;left:50%;transform:translateX(-50%);transition:left .6s var(--ease)}}
+@media (min-width:1100px){.side-open header nav{left:calc(282px + (100% - 282px) / 2)}}
 </style>
 </head>
 <body>
@@ -411,7 +416,6 @@ aside.behind.on{opacity:1}
 </div>
 <canvas id="comets" aria-hidden="true"></canvas>
 <footer id="foot">
-  <span class="own">Your own AI, on your own machines. Mac and Windows.</span>
   <span>Backdrop: <span id="clipname"></span>. <a href="https://eol.jsc.nasa.gov/BeyondThePhotography/CrewEarthObservationsVideos/" target="_blank" rel="noopener">Video courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center</a>.</span>
 </footer>
 
