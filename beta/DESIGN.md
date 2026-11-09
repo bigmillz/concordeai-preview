@@ -137,7 +137,13 @@ lengthen briefly along their arcs at the fastest moment (2 s in).
 Once per arrival at Ultra, about 900 ms, in Full and Balanced:
 - 0 ms: the diamond ignites — white core, a bloom `0 0 6px 2px #fff, 0 0 22px 8px
   violet .75, 0 0 44px 16px rose .45` at 18 %, gone by 900 ms. ULTRA is lit (a white text
-  glow that settles in 900 ms) and rests as a still gradient ice → violet → rose → ember.
+  glow that settles in 900 ms).
+- While at Ultra, the one approved loop on text: the label's gradient
+  `linear-gradient(90deg, #cfe0ff, #b9a8ff, #f2a6b4, #e8415a, #f1dcb2, #cfe0ff)` at
+  `background-size: 300%` flows across the letters, one cycle in 3.5 s, linear, crisp
+  letters, no blur; the diamond carries a faint 7 px glow of the same hue in step
+  (`diamondFlow`, 3.5 s). It stops the instant Ultra is left. Calm and reduced motion keep
+  the still gradient. The rim stays still.
 - 0–160 ms: a 22 px spark runs from the diamond back along the beam to its start.
 - 160–760 ms: a line of light leaves the beam's start and runs all the way round the
   composer's border (a conic reveal from that point's angle, `cubic-bezier(.45,0,.2,1)`),

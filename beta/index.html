@@ -327,13 +327,22 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 /* THE ULTRA MOMENT (per the owner: "that's where I want to use VFX"): on reaching Ultra, once, about 900 ms. The diamond
    ignites (a white core, a brief spectral bloom); a spark runs from the diamond back along the beam (160 ms); a line of
    light leaves the beam's end and runs all the way round the composer's border (600 ms) and settles into a still spectral
-   rim, ice to violet to rose to ember, no rotation, no loop; the aurora takes one breath; ULTRA is lit, then rests as a
-   still gradient. Leaving Ultra drains the rim back the way it came in 300 ms. Calm and reduced motion: the still rim and
-   the label only. The rim lives in three layers: a clip whose conic mask reveals from the beam's angle, the rim, and a
+   rim, ice to violet to rose to ember, no rotation, no loop; the aurora takes one breath; ULTRA is lit, then lives as a
+   slow spectral flow (below). Leaving Ultra drains the rim back the way it came in 300 ms. Calm and reduced motion: the
+   still rim and the still label only. The rim lives in three layers: a clip whose conic mask reveals from the beam's angle, the rim, and a
    white head at the reveal's edge. */
 @property --rev{syntax:'<angle>';initial-value:0deg;inherits:true}   /* inherited: the head layer reads the clip's angle */
-.spectral{background:linear-gradient(90deg,#cfe0ff,#b9a8ff,#f2a6b4,#e8415a);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.spectral{background:linear-gradient(90deg,#cfe0ff,#b9a8ff,#f2a6b4,#e8415a,#f1dcb2,#cfe0ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important}
 .elevel.spectral{transition:none}
+/* THE LIVING ULTRA (per the owner: "rival ultrathink"): the one approved loop on text, and only while at Ultra. The label's
+   spectral gradient flows across the letters, ice to violet to rose to ember to gold and round again, one cycle in 3.5 s,
+   crisp letters, no blur; the diamond carries a faint glow of the same hue. Leaving Ultra stops it at once (the class
+   goes). Calm and reduced motion keep the still gradient. The rim stays still: the life is in the word and the diamond. */
+html:not(.calm) .ultra .elevel.spectral{animation:flow 3.5s linear infinite}
+@keyframes flow{from{background-position:150% 0}to{background-position:0% 0}}
+html:not(.calm) .ultra .slider .sl-thumb::after{animation:diamondFlow 3.5s linear infinite}
+html:not(.calm) .ultra .slider.ignite .sl-thumb::after{animation:ignite .9s var(--out) both,diamondFlow 3.5s linear .9s infinite}
+@keyframes diamondFlow{0%,100%{box-shadow:0 0 7px 1px rgba(207,224,255,.5)}25%{box-shadow:0 0 7px 1px rgba(185,168,255,.5)}50%{box-shadow:0 0 7px 1px rgba(242,166,180,.5)}70%{box-shadow:0 0 7px 1px rgba(232,65,90,.45)}85%{box-shadow:0 0 7px 1px rgba(241,220,178,.5)}}
 .elevel.lit{animation:ultraLit .9s var(--out) both}
 @keyframes ultraLit{0%{text-shadow:0 0 1px #fff,0 0 12px rgba(255,255,255,.95),0 0 28px rgba(185,168,255,.7)}100%{text-shadow:0 0 0 rgba(255,255,255,0),0 0 0 rgba(255,255,255,0),0 0 0 rgba(185,168,255,0)}}
 .ultra .slider .sl-thumb::after{background:#fff}   /* at Ultra the diamond stays lit */
