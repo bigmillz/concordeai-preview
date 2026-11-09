@@ -860,7 +860,7 @@ async function ask(text){
   working(null);clearInterval(statT);stats();
   const secs=((performance.now()-t0q)/1000).toFixed(1);
   setStep("Done in "+secs+" s",machines);$("#live").classList.add("done");setBy("");ai.classList.remove("live");
-  machines.forEach(v=>machineRow(v,v==="mlx"?"38 tok/s":v==="nvidia"?"71 tok/s":"cloud"));
+  machines.forEach(v=>machineRow(v,v==="mlx"?"38 tok/s":v==="nvidia"?"71 tok/s":"54 tok/s"));
   finishRow(row,can.title,toks);$("#fine").classList.add("on");
   const cb=$(".cbox");cb.classList.remove("finish");void cb.offsetWidth;cb.classList.add("finish");setTimeout(()=>cb.classList.remove("finish"),1600);
   stage.classList.remove("busy");Sky&&Sky.busy(false);asking=false;
