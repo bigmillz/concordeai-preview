@@ -7,7 +7,7 @@
 <title>ConcordeAI 7.0 beta</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%272 2.3 19.6 16.4%27%3E%3Cg stroke=%27%23e6e9f4%27 stroke-width=%271.6%27 stroke-linecap=%27round%27 fill=%27none%27%3E%3Cline x1=%273.2%27 y1=%2717.5%27 x2=%2720.4%27 y2=%273.5%27/%3E%3Cline x1=%277.5%27 y1=%2717.5%27 x2=%2720.4%27 y2=%277%27/%3E%3Cline x1=%2711.8%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2710.5%27/%3E%3Cline x1=%2716.1%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2714%27/%3E%3Cline x1=%2719.3%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2716.6%27/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Michroma&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Michroma&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* BALANCE AND STING, the quiet version. Balanced is the default (html.bal); html.full brings the whole show back
    (the Effects toggle under the settings icon); html.calm is the stillest. Every light, trail, shimmer and flight
@@ -16,6 +16,7 @@
    (beta/DESIGN.md) and port to the app as they are. */
 :root{
   /* colour: the night, ink to deep indigo; type white or near-white; colour only in light */
+  --halo-navy:1px 0 1px rgba(7,11,28,.7),-1px 0 1px rgba(7,11,28,.7),0 1px 1px rgba(7,11,28,.7),0 -1px 1px rgba(7,11,28,.7),1px 1px 2px rgba(7,11,28,.5),-1px -1px 2px rgba(7,11,28,.5),0 0 4px rgba(7,11,28,.75),0 0 9px rgba(7,11,28,.45);   /* small labels over the sky: invisible on the night, holds AA at its brightest */
   --night:#070b1c; --indigo:#0d1434; --ink:#f4f5fa; --ink2:#c6cde0; --ink3:#9aa6c6; --read:#e8ebf5; --ice:#9fc0ff; --ember:#e8415a;
   --rose:#f2a6b4; --champagne:#f1dcb2;                                          /* the warm horizon, light only */
   /* hairlines in champagne silver */
@@ -136,10 +137,26 @@ header .mark{font-size:10.25px;gap:6px}
 header .mark .glint{display:none}   /* a calm wordmark: no moving shine, no glow */
 header .mark .glint .gm{animation:none}
 .spacer{flex:1}
-nav{display:flex;gap:28px}
-nav span{position:relative;font-size:var(--t-ui);color:var(--ink3);line-height:40px;letter-spacing:.005em;transition:color var(--t2) var(--out)}
-nav span.on{color:var(--ink);font-weight:500}
-nav span.on::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:1px;background:rgba(255,255,255,.85)}
+/* THE LANES (per the owner: "little boxes that are sliders"; "Funnels are kind of our killer feature"): one glass
+   segmented control, three equal segments, squared off like the effort slider (radius 6 outside, 4.5 inside); the lit box
+   slides between them in 200 ms on --out and the labels cross from dim to bright. 32 px tall, every segment a 32 px hit
+   area. Funnels wears a tiny four-point star; selected, its box carries a violet -> rose edge. Arrow keys move along. */
+nav.seg{position:relative;display:grid;grid-template-columns:repeat(3,1fr);height:32px;box-sizing:border-box;border-radius:6px;border:1px solid var(--hair2);
+  background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec)}
+.seg button{position:relative;z-index:1;min-width:88px;height:30px;padding:0 14px;border:0;margin:0;background:none;border-radius:4.5px;font:400 var(--t-ui)/1 var(--ui);letter-spacing:.005em;
+  color:var(--ink3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:color var(--t2) var(--out)}
+.seg button:hover{color:var(--ink2)}
+.seg button[aria-selected="true"]{color:var(--ink)}
+.seg button:focus-visible{box-shadow:inset 0 0 0 1px var(--ember)}
+.seg .fstar{opacity:.85;flex:none}
+html:not(.calm) .seg button:hover .fstar{animation:fstar 1.4s ease-in-out}
+@keyframes fstar{0%,100%{transform:scale(1) rotate(0);opacity:.85}40%{transform:scale(1.35) rotate(45deg);opacity:1}70%{transform:scale(.9) rotate(45deg);opacity:.7}}
+.seg-hi{position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px) / 3);border-radius:4.5px;pointer-events:none;transform:translateX(calc(var(--i,0) * 100%));
+  background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.06));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 1px rgba(150,165,255,.3),0 0 12px -3px rgba(110,130,255,.45);
+  transition:transform .2s var(--out),box-shadow .2s var(--out)}
+nav.seg[data-lane="code"] .seg-hi{--i:1}
+nav.seg[data-lane="funnels"] .seg-hi{--i:2;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 1px rgba(196,140,240,.42),0 0 14px -3px rgba(240,122,166,.45)}
 .beta{font-family:var(--mono);font-size:9px;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:var(--r-tag);padding:3px 6px 2px;line-height:1;margin-left:-4px}
 
 /* your machines: one tiny die per machine, in its maker's colour */
@@ -155,7 +172,7 @@ html:not(.full) .rigs{display:none}
 .full .status{display:none}
 /* the settings icon and its little Effects popover */
 #fxbtn{position:relative}
-#fxpop{position:absolute;right:0;top:44px;z-index:30;display:flex;align-items:center;gap:2px;padding:4px 4px 4px 12px;border-radius:var(--r-ctl);white-space:nowrap;border:1px solid var(--hair2);background:var(--glass-dense);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow-float);
+#fxpop{position:absolute;right:0;top:44px;z-index:30;display:flex;align-items:center;gap:2px;padding:4px;border-radius:var(--r-ctl);white-space:nowrap;border:1px solid var(--hair2);background:var(--glass-dense);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow-float);
   opacity:0;transform:translateY(-4px);pointer-events:none;visibility:hidden;transition:opacity var(--t2) var(--out),transform var(--t2) var(--out),visibility 0s linear var(--t2)}
 #fxpop.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity var(--t2) var(--out),transform var(--t2) var(--out)}
 #fxpop span{font-size:var(--t-label);color:var(--ink3);padding-right:8px}
@@ -202,7 +219,10 @@ main{--mw:800px;flex:1;display:flex;flex-direction:column;align-items:center;wid
    display size tuned so it reads at 1440, weight 500 and tight tracking; crisp white, no text shadow */
 #hero{flex:1;display:flex;align-items:center;justify-content:center;min-height:160px;text-align:center}
 #hero h1{margin:0;font-weight:500;font-size:var(--t-display);line-height:1;letter-spacing:var(--track-display);text-wrap:balance;position:relative;isolation:isolate;color:#f8faff;font-feature-settings:"kern" 1,"liga" 1;
-  opacity:0;transition:opacity .6s var(--out)}
+  opacity:0;transition:opacity .6s var(--out),text-shadow 2s var(--out)}
+/* the close glow (per the owner: the letters look lit): zero offset and wide blurs only, so it reads as light shaped like
+   the words, never a second copy; it rises with the afterglow and is then still */
+html:not(.calm) #hero h1.aglow{text-shadow:0 0 20px rgba(255,246,232,var(--ag-close)),0 0 36px rgba(255,240,222,calc(var(--ag-close) * .55))}
 #hero h1.shown{opacity:1}
 .full #hero h1{font-weight:600}
 /* THE AFTERGLOW (per the owner: "headline glow backdrop"): once the greeting has been traced in light, a soft warm-white
@@ -210,10 +230,11 @@ main{--mw:800px;flex:1;display:flex;flex-direction:column;align-items:center;wid
    backdrop of the box (a radial light), not a copy of the text, so it follows the text wherever it wraps. Balanced and
    Full; Calm and reduced motion get the plain greeting. */
 #hero h1::before{content:"";position:absolute;left:-22%;right:-22%;top:-72%;bottom:-72%;z-index:-1;pointer-events:none;opacity:0;
-  background:radial-gradient(closest-side,rgba(255,244,228,.3),rgba(255,242,224,.24) 22%,rgba(255,239,219,.15) 44%,rgba(255,236,214,.07) 66%,rgba(255,234,210,.02) 86%,rgba(255,234,210,0))}
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--hour-light,#ccdfff) 22%,transparent),transparent 72%),
+    radial-gradient(closest-side,rgba(255,244,228,.34),rgba(255,242,224,.27) 22%,rgba(255,239,219,.17) 44%,rgba(255,236,214,.08) 66%,rgba(255,234,210,.02) 86%,rgba(255,234,210,0))}
 html:not(.calm) #hero h1.aglow::before{opacity:var(--ag-rest);animation:afterglow 2s var(--out) both}
-#hero h1{--ag-rest:.5}
-.full #hero h1{--ag-rest:.62}
+#hero h1{--ag-rest:.66;--ag-close:.3}
+.full #hero h1{--ag-rest:.78;--ag-close:.38}
 @keyframes afterglow{0%{opacity:0;transform:scale(.9)}20%{opacity:1}100%{opacity:var(--ag-rest);transform:none}}
 @keyframes breathe{0%,100%{opacity:.42}50%{opacity:.7}}
 
@@ -265,7 +286,10 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 /* controls: 36 px, 8 px radius, a hairline; hover brightens, press settles */
 .round{width:36px;height:36px;border-radius:var(--r-ctl);border:1px solid var(--hair2);background:transparent;display:flex;align-items:center;justify-content:center;color:var(--ink2);cursor:pointer;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out),transform var(--t1) var(--out)}
 .round:hover{background:rgba(255,255,255,.06);border-color:var(--line);color:var(--ink)}
-.round:active,.pick:active,.sugg:active,.newchat:active,.ibtn:active,.send:active,.details:active,#fxpop button:active{transform:scale(.97)!important;transition-duration:var(--t1)}
+.round:active,.pick:active,.sugg:active,.newchat:active,.ibtn:active,.send:active,.details:active,#fxpop button:active,.seg button:active,.apbtn:active{transform:translateY(1px) scale(.985)!important;transition-duration:80ms}
+/* release: a soft glow that fades in 450 ms on --out (the composer's controls) */
+.rel{animation:relGlow .45s var(--out)}
+@keyframes relGlow{0%{box-shadow:0 0 0 1px rgba(207,224,255,.32),0 0 14px rgba(159,192,255,.32)}100%{box-shadow:0 0 0 1px rgba(207,224,255,0),0 0 14px rgba(159,192,255,0)}}
 /* the send key: a silver outline until there is text, then ember; navy arrow on ember reads 5:1 */
 .send{width:36px;height:36px;border-radius:var(--r-ctl);border:1px solid var(--line);background:transparent;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background var(--t2) var(--out),border-color var(--t2) var(--out),color var(--t2) var(--out),transform var(--t1) var(--out)}
 .send svg{transform:translateY(-.5px)}   /* the arrow's optical centre */
@@ -356,17 +380,21 @@ textarea::placeholder{color:var(--ink2);opacity:1}
    the hit area (a real range input on top): click anywhere to jump, arrows step. Geometry from three variables: --ph
    the pill's height, --ob the orb, --p the position (0 to 1). In a conversation the pill slims to 20 px. Calm and
    reduced motion: the same colours, still. */
-.slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:20px;--ob:16px;--p:.25;--snap:160ms cubic-bezier(.22,1,.36,1);
+.slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:16px;--ob:14px;--sr:4.5px;--kr:4px;--p:.25;--snap:160ms cubic-bezier(.22,1,.36,1);
   --ks:0 1px 2px rgba(4,8,30,.45),0 2px 6px rgba(4,8,30,.35);   /* the orb's own shadow, kept under every glow */
   --fill:linear-gradient(90deg,#4f8cff,#9b72ff 55%,#f07aa6);--halo:#4f8cff;--bloom:.32}
 .slider[data-lv="1"]{--halo:#6f80ff;--bloom:.4}
 .slider[data-lv="2"]{--halo:#9b72ff;--bloom:.5}
 .slider[data-lv="3"]{--halo:#c776d2;--bloom:.62}
 .slider[data-lv="4"]{--halo:#f07aa6;--bloom:.78}
-.chat .slider{width:200px;--sw:200px;--ph:16px;--ob:12px}   /* PINNED (per the owner, "slightly slimmer"): a 20 px pill on the home, 16 in a conversation, 20 on a phone; the hit area stays 36 (32 on a phone) */
-.elevel{font-size:var(--t-small);font-weight:500;color:var(--ink2);min-width:52px;margin-left:4px;letter-spacing:.005em;white-space:nowrap}
+.slider::before{content:"";position:absolute;top:50%;left:calc(100% + var(--lgap,12px) - 24px);width:80px;height:34px;margin-top:-17px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(7,11,28,.62),rgba(7,11,28,.56) 35%,rgba(7,11,28,.3) 62%,rgba(7,11,28,.1) 82%,rgba(7,11,28,0));opacity:0;transition:opacity .9s var(--inout)}
+.ultra .slider::before{opacity:1;transition:opacity .6s var(--out)}   /* "Ultra" holds AA over Full's lifted sky; the show itself is untouched */
+.listening .slider::before{opacity:0}
+.chat .slider{width:200px;--sw:200px;--ph:12px;--ob:11px;--sr:4px;--kr:3.5px}   /* PINNED (per the owner, "a little slimmer and more squared off"): a 16 px track on the home, 12 in a conversation, 16 on a phone, radius 4.5 (4); the hit area stays 36 (32 on a phone), invisibly */
+.elevel{position:relative;font-size:var(--t-small);font-weight:500;color:var(--ink2);min-width:52px;margin-left:4px;letter-spacing:.005em;white-space:nowrap}
 .slider .sl-glow{display:none}
-.slider .sl-track,.slider .sl-fill,.slider .sl-bloom{position:absolute;left:0;top:calc(50% - var(--ph) / 2);height:var(--ph);border-radius:calc(var(--ph) / 2)}
+.slider .sl-track,.slider .sl-fill,.slider .sl-bloom{position:absolute;left:0;top:calc(50% - var(--ph) / 2);height:var(--ph);border-radius:var(--sr)}
 .slider .sl-track{right:0;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.085));box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),inset 0 1px 2px rgba(0,0,0,.25)}
 /* keyboard focus only (a class set on keydown, cleared on pointerdown): a 1 px ember ring round the pill, stood off it */
 .slider.kb:has(input:focus) .sl-track{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 2px var(--night),0 0 0 3px var(--ember)}
@@ -382,19 +410,19 @@ html:not(.calm) .ultra .slider .sl-fill::after,html:not(.calm) .uout .slider .sl
 html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .sl-bloom::after{animation:fillflow 4s linear infinite}
 @keyframes fillflow{to{background-position:calc(var(--sw,220px) * -2) 0}}
 /* the five notches: dim in the channel, lit under the light */
-.slider .sl-det{position:absolute;top:calc(50% - 1.5px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:rgba(255,255,255,.22);transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
+.slider .sl-det{position:absolute;top:calc(50% - 1.25px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:2.5px;height:2.5px;margin-left:-1.25px;border-radius:.5px;background:rgba(255,255,255,.22);transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
 .slider .sl-det.on{background:rgba(255,255,255,.85);box-shadow:0 0 4px rgba(255,255,255,.7)}
 .slider .sl-thumb{position:absolute;top:calc(50% - var(--ob) / 2);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--p));width:var(--ob);height:var(--ob);margin-left:calc(var(--ob) / -2);transition:left var(--snap);pointer-events:none}
 /* the orb's halo, in the fill's colour where it stands; it rises past the pill while hovered or held, settles on release */
-.slider .sl-thumb::before{content:"";position:absolute;left:50%;top:50%;width:calc(var(--ob) * 2);height:calc(var(--ob) * 2);margin:calc(var(--ob) * -1) 0 0 calc(var(--ob) * -1);border-radius:50%;
-  background:radial-gradient(circle,var(--halo) 0%,color-mix(in srgb,var(--halo) 45%,transparent) 38%,transparent 70%);opacity:.45;transform:scale(.85);
+.slider .sl-thumb::before{content:"";position:absolute;left:50%;top:50%;width:calc(var(--ob) * 1.5);height:calc(var(--ob) * 1.5);margin:calc(var(--ob) * -.75) 0 0 calc(var(--ob) * -.75);border-radius:calc(var(--kr) * 1.6);
+  background:var(--halo);filter:blur(6px);opacity:.45;transform:scale(.85);   /* the halo: a soft rounded square, the knob's shape */
   transition:opacity .3s var(--out),transform .3s var(--out)}
 .slider:hover .sl-thumb::before{opacity:.7;transform:scale(1.05)}
 .slider.drag .sl-thumb::before{opacity:.85;transform:scale(1.22)}
 .ultra .slider .sl-thumb::before{background:conic-gradient(from 0deg,#4f8cff,#9b72ff,#f07aa6,#dce8ff,#4f8cff);
-  -webkit-mask:radial-gradient(circle,#000 18%,rgba(0,0,0,.5) 42%,transparent 70%);mask:radial-gradient(circle,#000 18%,rgba(0,0,0,.5) 42%,transparent 70%)}
+}
 /* the core: near-white, lit from above, a crisp edge, a soft shadow */
-.slider .sl-thumb::after{content:"";position:absolute;inset:0;border-radius:50%;box-sizing:border-box;border:1px solid rgba(255,255,255,.95);
+.slider .sl-thumb::after{content:"";position:absolute;inset:0;border-radius:var(--kr);opacity:1;box-sizing:border-box;border:1px solid rgba(255,255,255,.95);
   background:radial-gradient(110% 90% at 50% 25%,#fff 0%,#f4f7ff 45%,#dde5fa 100%);box-shadow:var(--ks);transition:transform var(--t1) var(--out)}
 .slider:hover .sl-thumb::after{transform:scale(1.05)}
 .slider.drag .sl-thumb::after{transform:scale(1.1)}
@@ -443,6 +471,21 @@ html:not(.calm) .ultra .send::after{opacity:1;animation:sheenSweep 3s cubic-bezi
 @keyframes flow{from{background-position:150% 0}to{background-position:0% 0}}
 html:not(.calm) .ultra .slider .sl-thumb::after{animation:knobFlow 3.5s linear infinite}
 html:not(.calm) .ultra .slider.ignite .sl-thumb::after{animation:ignite .9s var(--out) both,knobFlow 3.5s linear .9s infinite}
+/* ULTRA'S SLIDER (per the owner: "like ultracode on Claude, not just a rainbow"): the knob folds into a living star that
+   steps through its forms (four, six, eight points and back, 140 ms each, like Claude Code's thinking glyph), white at its
+   core with blue -> violet light; tiny four-point stars drift through the filled track, twinkling, clipped to it. Leaving,
+   the star folds back into the rounded square in 200 ms and the track's stars fade. Calm and reduced motion: a still star. */
+.slider .sl-thumb .kstar{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;overflow:visible;pointer-events:none;opacity:0;transform:scale(.45) rotate(-35deg);
+  filter:drop-shadow(0 0 2px rgba(220,232,255,.95)) drop-shadow(0 0 5px rgba(79,140,255,.85)) drop-shadow(0 0 9px rgba(155,114,255,.6));transition:opacity .2s var(--out),transform .2s var(--out)}
+.ultra .slider .sl-thumb .kstar{opacity:1;transform:none}
+.chat .slider .sl-thumb .kstar{width:18px;height:18px;margin:-9px 0 0 -9px}
+.slider .sl-thumb::after{transition:transform var(--t1) var(--out),opacity .2s var(--out),border-radius .2s var(--out)}
+.ultra .slider .sl-thumb::after{opacity:0;transform:scale(.55) rotate(45deg)}
+.slider .tst{position:absolute;left:0;top:var(--y);width:7px;height:7px;margin:-3.5px 0 0 -3.5px;opacity:0;pointer-events:none;
+  background:radial-gradient(circle,#fff 0 1px,rgba(255,255,255,0) 1.6px),linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent) center/100% 1px no-repeat,linear-gradient(0deg,transparent,rgba(255,255,255,.95),transparent) center/1px 100% no-repeat}
+html:not(.calm) .ultra .slider .tst{animation:tdrift var(--du) linear var(--dl) infinite}
+.chat .slider .tst{width:5px;height:5px;margin:-2.5px 0 0 -2.5px}
+@keyframes tdrift{0%{transform:translateX(-8px) scale(.6);opacity:0}12%{opacity:.95}35%{opacity:.4;transform:translateX(calc(var(--sw) * .3)) scale(1)}55%{opacity:.9}80%{opacity:.35}100%{transform:translateX(var(--sw)) scale(.7);opacity:0}}
 @keyframes knobFlow{0%,100%{box-shadow:var(--ks),0 0 9px 2px rgba(79,140,255,.6)}33%{box-shadow:var(--ks),0 0 9px 2px rgba(155,114,255,.6)}66%{box-shadow:var(--ks),0 0 9px 2px rgba(240,122,166,.55)}}
 .elevel.lit{animation:ultraLit .9s var(--out) both}
 @keyframes ultraLit{0%{text-shadow:0 0 1px #fff,0 0 12px rgba(255,255,255,.95),0 0 28px rgba(185,168,255,.7)}100%{text-shadow:0 0 0 rgba(255,255,255,0),0 0 0 rgba(255,255,255,0),0 0 0 rgba(185,168,255,0)}}
@@ -509,7 +552,7 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .suggs{display:flex;gap:8px;width:100%;margin-top:8px;opacity:0;transform:translateY(8px);transition:opacity 1s var(--out) 1.4s,transform 1s var(--out) 1.4s}
 .home .suggs{opacity:1;transform:none}
 .chat .suggs{display:none}
-.sugg{flex:1 1 0;min-width:0;height:32px;padding:0 10px;border-radius:var(--r-ctl);border:1px solid var(--hair);background:transparent;color:var(--ink2);font-size:var(--t-small);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
+.sugg{flex:1 1 0;min-width:0;height:32px;padding:0 10px;border-radius:var(--r-ctl);border:1px solid var(--hair);background:rgba(7,11,28,.22);color:var(--ink2);text-shadow:var(--halo-navy);font-size:var(--t-small);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
 .sugg:hover{background:rgba(255,255,255,.06);border-color:var(--hair2);color:var(--ink)}
 .under{height:var(--under,clamp(110px,22vh,260px));flex:none}   /* set so the composer's centre sits at the golden point of the free height */
 .chat .under{height:max(16px,env(safe-area-inset-bottom,0px))}
@@ -524,9 +567,12 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .newchat:hover{background:rgba(255,255,255,.06);border-color:var(--line)}
 .newchat svg{color:var(--ink2)}
 .hist{flex:1;overflow:auto;scrollbar-width:none;margin-top:8px;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 24px),transparent)}
-.day{margin:16px 8px 6px;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);line-height:16px}
+.day{margin:16px 8px 6px;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);line-height:16px;text-shadow:var(--halo-navy)}
 .hist>.day:first-child{margin-top:8px}
 .hrow{display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:var(--r-ctl);font-size:var(--t-ui);color:var(--ink2);cursor:pointer;overflow:hidden;transform-origin:0 50%;transition:background var(--t1) var(--out),color var(--t1) var(--out)}
+button.hrow{width:100%;margin:0;border:0;background:transparent;font-family:inherit;font-weight:400;text-align:left;-webkit-appearance:none;appearance:none}
+.hrow:focus-visible{box-shadow:inset 0 0 0 1px var(--ember)}   /* inside the row: the list clips anything outside it */
+html:not(.calm) .ultra .hrow:focus-visible{box-shadow:inset 0 0 0 1px #9b72ff}
 .hrow .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s}
 .hrow:hover{background:rgba(255,255,255,.06);color:var(--ink)}
 .hrow.on{background:rgba(255,255,255,.09);color:var(--ink)}
@@ -554,11 +600,50 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
    about 70 characters; "Behind this answer" folded under Details */
 #convo{flex:1;width:100%;margin:0 auto;padding:24px 0 24px;overflow-x:hidden;overflow-y:auto;min-height:0;scrollbar-width:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 24px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(180deg,transparent,#000 24px,#000 calc(100% - 32px),transparent)}
 #convo[hidden]{display:none}
+/* the lane views (Code, Funnels): the reading column, the same type and glass */
+#laneview{flex:1;width:100%;margin:0 auto;padding:24px 0;overflow-y:auto;min-height:0;scrollbar-width:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 24px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(180deg,transparent,#000 24px,#000 calc(100% - 32px),transparent)}
+#laneview[hidden],.lv[hidden]{display:none}
+.lane #convo{display:none}
+.lv{max-width:640px;margin-right:auto;animation:rise .6s var(--out) both}
+@media (max-width:1199px){.lv{margin-left:auto}}
+.lvh{margin:0 0 24px}
+.lvk{display:block;font-family:var(--mono);font-size:var(--t-micro);font-weight:500;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.lvh h2{margin:0 0 6px;font-size:var(--t-h2);font-weight:500;letter-spacing:-.012em;color:var(--ink);line-height:1.3}
+.lvh p{margin:0;font-size:var(--t-ui);color:var(--ink2);line-height:1.5}
+.runs{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:14px}
+.runs li{display:grid;grid-template-columns:auto 1fr;column-gap:10px;row-gap:6px;align-items:baseline}
+.runs code,.approve code{font-family:var(--mono);font-size:var(--t-small);color:var(--ink);overflow-wrap:anywhere}
+.runs pre{grid-column:2;margin:0;padding:10px 12px;border-radius:var(--r-ctl);background:rgba(4,7,18,.55);border:1px solid var(--hair);font:400 12px/1.6 var(--mono);color:var(--ink2);overflow:auto;scrollbar-width:thin}
+.runs .note2{grid-column:2;margin:0;font-size:var(--t-small);color:var(--ink2)}
+.risk{font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:4px;padding:2px 5px 1px;line-height:1.3}
+.risk.w{color:#f3c9d3;border-color:rgba(232,65,90,.45)}
+.approve{padding:16px;border-radius:var(--r-panel);background:var(--glass);border:1px solid var(--hair2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow);display:flex;flex-direction:column;gap:10px}
+.aph{display:flex;align-items:center;gap:10px;font-size:var(--t-ui);font-weight:500;color:var(--ink)}
+.approve p{margin:0;font-size:var(--t-small);color:var(--ink2);line-height:1.55}
+.apb{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+.apbtn{height:32px;padding:0 14px;border-radius:var(--r-ctl);border:1px solid var(--hair2);background:transparent;color:var(--ink2);font:400 var(--t-ui)/1 var(--ui);cursor:pointer;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
+.apbtn:hover{background:rgba(255,255,255,.06);border-color:var(--line);color:var(--ink)}
+.apbtn.ok{color:var(--ink);border-color:var(--line)}
+.apdone:empty{display:none}
+.approve.done .apb{display:none}
+.stages{list-style:none;margin:0 0 20px;padding:0 0 0 18px;border-left:1px solid var(--hair2);display:flex;flex-direction:column;gap:18px}
+.stages li{display:flex;flex-direction:column;gap:8px}
+.sq{font-size:var(--t-ui);color:var(--ink2)}
+.ops{display:flex;flex-wrap:wrap;gap:6px}
+.op{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:var(--r-ctl);border:1px solid var(--hair);font-size:var(--t-small);color:var(--ink3)}
+.op.on{color:var(--ink);border-color:rgba(196,140,240,.45);background:rgba(255,255,255,.06);box-shadow:0 0 12px -4px rgba(240,122,166,.4)}
+.verdict{padding:18px 18px 16px;border-radius:var(--r-panel);background:var(--glass);border:1px solid var(--hair2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow)}
+.verdict h3{margin:0 0 8px;font-size:var(--t-h3);font-weight:600;color:var(--ink)}
+.verdict p{margin:0 0 10px;font-size:var(--t-read);line-height:1.6;color:var(--read)}
+.verdict p.next{margin:0;font-size:var(--t-ui);color:var(--ink2)}
+.verdict p.next b{color:var(--ink);font-weight:500}
+.lv .fine{margin-top:16px}
 .chat #hero{display:none}
 .chat .composer{max-width:640px;margin-right:auto}
 @media (max-width:1199px){.chat .composer{margin-right:auto;margin-left:auto}}
 .msg{animation:rise .9s var(--out) both}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
+#q:focus{outline:0;box-shadow:none}   /* opening a chat moves focus here, so a screen reader starts at the question */
 .msg.user{max-width:560px;margin:0 0 24px;font-size:var(--t-read);line-height:1.5;color:var(--ink2);white-space:pre-wrap;text-wrap:pretty}
 .msg.ai{display:grid;grid-template-columns:minmax(0,640px) 220px;column-gap:40px;align-items:start;margin:0 0 40px}
 .msg.ai>*{grid-column:1}
@@ -586,18 +671,20 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .full .live .liveline .die{animation:diepulse 1.2s ease-in-out infinite}
 .liveline em{font-style:normal}
 .liveline.done .lstep{color:var(--ink3)}
-.liveline .lstats{margin-left:auto;display:flex;gap:16px;font-family:var(--mono);font-size:var(--t-label);color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.liveline.done .lstats{display:none}
+@media (max-width:600px){.liveline .lstats{flex-basis:100%;min-width:0;justify-content:flex-start;margin-left:0}}   /* a phone: the numbers always on their own line, so the step's length never moves the answer */   /* landed: the numbers live in Details (subtract: they were said twice) */
+.liveline .lstats{margin-left:auto;min-width:244px;justify-content:flex-end;display:flex;gap:16px;font-family:var(--mono);font-size:var(--t-label);color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
 
 /* READING: 17 px on 1.65, about 70 characters a line, paragraphs a line apart; headings, lists, quotes, code and
    tables set to the same rhythm; digits in Plex Mono where they line up */
-.body{font-size:var(--t-read);line-height:1.65;letter-spacing:.002em;color:var(--read);min-width:0;text-wrap:pretty;transition:color .9s ease,text-shadow .9s ease}
+.body{font-size:var(--t-read);line-height:1.65;letter-spacing:.002em;color:var(--read);min-width:0;text-wrap:wrap;   /* not "pretty": it re-breaks earlier lines as words arrive */transition:color .9s ease,text-shadow .9s ease}
 .body p{margin:0 0 16px}
 .body>:last-child{margin-bottom:0}
 .body b,.body strong{color:var(--ink);font-weight:600}
 .body em{font-style:italic}
 .body a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line);text-decoration-thickness:1px}
 .body a:hover{text-decoration-color:var(--ink)}
-.body h2{font-size:var(--t-h2);font-weight:500;line-height:1.3;letter-spacing:-.012em;color:var(--ink);margin:32px 0 12px;text-wrap:balance}
+.body h2{font-size:var(--t-h2);font-weight:500;line-height:1.3;letter-spacing:-.012em;color:var(--ink);margin:32px 0 12px}
 .body h3{font-size:var(--t-h3);font-weight:600;line-height:1.4;color:var(--ink);margin:24px 0 8px}
 .body h2:first-child,.body h3:first-child{margin-top:0}
 .body ul,.body ol{margin:0 0 16px;padding:0 0 0 24px}
@@ -636,6 +723,33 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
   background:linear-gradient(90deg,rgba(240,122,166,0),rgba(240,122,166,.55) 30%,rgba(155,114,255,.8) 58%,rgba(79,140,255,.9) 82%,#e6efff)}
 .star.prism .tail{opacity:1}
 .plain{animation:swapIn .35s ease both}
+/* THE INK: each word fades in over 220 ms with a 1 px rise and a 2 px blur coming sharp; its faint light fades over the
+   next words' arrival (300 ms in all), so the newest three or four glow like wet ink and settle to plain white */
+.body{transition:color .9s ease,text-shadow .9s ease,height .24s var(--out)}
+.body.inking{font-kerning:none}
+.ink{display:inline-block;white-space:pre;animation:inkIn .3s cubic-bezier(.2,.7,.2,1) both,inkWeight .28s cubic-bezier(.2,.7,.2,1) both}
+.ink.hold,.ink.nw{animation:inkIn .3s cubic-bezier(.2,.7,.2,1) both}
+@keyframes inkWeight{from{font-variation-settings:"wght" var(--w0,320)}to{font-variation-settings:"wght" var(--w1,400)}}
+@keyframes inkIn{0%{opacity:0;transform:translateY(1px);filter:blur(2px) drop-shadow(0 0 6px rgba(214,228,255,.6))}
+  40%{filter:blur(.8px) drop-shadow(0 0 6px rgba(214,228,255,.38))}
+  73%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,.14))}
+  100%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,0))}}
+.ink.c{animation:inkFade .22s ease both}
+@keyframes inkFade{from{opacity:0}}
+.body .ink-in{animation:inkSpace .12s var(--out) both}   /* a new paragraph or list item: its space opens */
+.body li.ink-in{animation-name:inkSpaceLi}
+@keyframes inkSpace{from{margin-top:-16px}}
+@keyframes inkSpaceLi{from{margin-top:-6px}}
+.body .ink-head{animation:inkHead .34s var(--out) both}
+@keyframes inkHead{from{opacity:0;transform:translateY(3px)}}
+.body ol>li.ink-in::before{animation:inkFade .3s var(--out) both}
+.body .ink-block{animation:inkFade .4s var(--out) both}   /* code and tables arrive whole */
+/* draft -> polish: changed passages dim out of the draft, then shimmer into their new words; the rest stays */
+.ink-old{transition:opacity .2s ease,filter .2s ease}
+.dissolving .ink-old{opacity:.12;filter:blur(1.5px)}
+.ink-new{animation:inkShimmer .62s var(--out) both}
+.ink-new.c{animation:inkFade .4s ease both}
+@keyframes inkShimmer{0%{opacity:0;filter:blur(1.5px) drop-shadow(0 0 6px rgba(214,228,255,.6))}55%{opacity:1;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,.35))}100%{opacity:1;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,0))}}
 .wf{display:inline-block;animation:wordIn .16s var(--out) both}
 @keyframes wordIn{from{opacity:0;transform:translateY(2px)}}
 .msg.ai.live .details{opacity:0;pointer-events:none}
@@ -698,7 +812,9 @@ html:not(.full) #aurora{display:none}
 #motes.out{opacity:0;transform:translateY(-24px)}
 
 html.calm #motes,html.calm #sparks{display:none}
-#sparks{position:fixed;inset:0;z-index:29;pointer-events:none;overflow:hidden}   /* the arrival burst, above the glass */
+#sparks{position:fixed;inset:0;z-index:29;pointer-events:none;overflow:hidden}
+#fxgl{position:fixed;left:0;top:0;width:100%;height:100%;z-index:29;pointer-events:none}   /* the burst and the hero glint, on the GPU */
+html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
 /* THE SPARKLES (per the owner: "sparkly and rainbow"): a four-point glint, a white core with rays in a rainbow tint */
 .spk,.mote{position:absolute;left:0;top:0;width:2px;height:2px;margin:-1px 0 0 -1px;border-radius:50%;background:#fff;opacity:0;box-shadow:0 0 3px 1px var(--c),0 0 8px 1px var(--c);will-change:transform,opacity}
 .spk::before,.spk::after,.mote::before,.mote::after{content:"";position:absolute;left:50%;top:50%;width:var(--g,9px);height:1px;margin:-.5px 0 0 calc(var(--g,9px) / -2);
@@ -719,22 +835,24 @@ html.calm #motes,html.calm #sparks{display:none}
 /* the footer */
 #foot{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;align-items:baseline;justify-content:space-between;gap:6px 18px;flex-wrap:wrap;line-height:20px;
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  font-size:var(--t-label);color:var(--ink3);opacity:0;transition:opacity 1.6s var(--out) 1.6s;pointer-events:none}
+  font-size:var(--t-label);color:var(--ink3);opacity:0;transition:opacity 1.6s var(--out) 1.6s;pointer-events:none;text-shadow:var(--halo-navy)}
 #stage.home~#foot{opacity:1;pointer-events:auto}
 #foot a{padding:8px 0;color:var(--ink2);text-decoration-color:var(--hair2);text-underline-offset:3px;transition:color var(--t1) var(--out),text-decoration-color var(--t1) var(--out)}
 #foot a:hover{color:var(--ink);text-decoration-color:var(--line)}
 #foot .own{color:var(--ink2)}
+#foot>span{position:relative}
+#foot>span::before{content:"";position:absolute;inset:-8px -14px;z-index:-1;pointer-events:none;border-radius:14px;background:rgba(7,11,28,.34);filter:blur(10px)}   /* a feathered backing under the credit only: AA over the noon sky and the brightest footage */
 #foot .maclink{padding:6px 0;margin:-6px 0;color:var(--ink2);white-space:nowrap}   /* the native preview (Apple silicon and Intel), offline */
 #stage.chat~#foot{display:none}
 
 @media (max-width:760px){.rig b{display:none}.rig{padding:0 8px;min-width:32px;justify-content:center}.rig .tip{right:auto;left:50%;transform:translate(-50%,-4px)}.rig:hover .tip,.rig:focus-visible .tip{transform:translate(-50%,0)}.beta{display:none}}
-@media (max-width:600px){nav{display:none}header{gap:12px}#hero h1{font-size:clamp(40px,11.5vw,56px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round:not(.mic){display:none}#menu{left:0;width:100%;box-sizing:border-box}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
-  .pick{height:32px;padding:0 8px 0 10px;gap:6px}.slider,.chat .slider{width:88px;height:32px;--ph:20px;--ob:16px;--sw:88px}.elevel{min-width:0;font-size:12px}.send,.round{width:32px;height:32px}.mic.on{width:80px}.row{gap:6px;flex-wrap:nowrap}.slider{flex:0 1 88px;min-width:80px}.listening .elevel{display:none}
-  .body table{font-size:var(--t-ui)}.body pre{padding:12px;margin-inline:-4px}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}#hero h1::before,.uline,.cbox .itint,.cbox .rimbloom,.sl-rays,#motes,#sparks{display:none}.body.swapwait,.body.swapout{opacity:1}#ui{transition:opacity .5s ease!important}}
+@media (max-width:600px){nav.seg{position:absolute;left:50%;top:62px;transform:translateX(-50%);z-index:4}.seg button{min-width:76px;padding:0 10px}main{padding-top:36px}header{gap:12px}#hero h1{font-size:clamp(40px,11.5vw,56px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round:not(.mic){display:none}#menu{left:0;width:100%;box-sizing:border-box}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
+  .pick{height:32px;padding:0 8px 0 10px;gap:6px}.slider,.chat .slider{width:88px;height:32px;--ph:16px;--ob:14px;--sr:4.5px;--kr:4px;--sw:88px;--lgap:10px}.elevel{min-width:0;font-size:12px}.send,.round{width:32px;height:32px}.mic.on{width:80px}.row{gap:6px;flex-wrap:nowrap}.slider{flex:0 1 88px;min-width:80px}.listening .elevel{display:none}
+  .body table{font-size:var(--t-ui)}.body pre{padding:12px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}#hero h1{text-shadow:none!important}#hero h1::before,.uline,.cbox .itint,.cbox .rimbloom,.sl-rays,#motes,#sparks{display:none}.body.swapwait,.body.swapout{opacity:1}#ui{transition:opacity .5s ease!important}}
 /* the lane tabs sit over the column's centre, sidebar open or not */
-@media (min-width:760px){header nav{position:absolute;left:50%;transform:translateX(-50%);transition:left .6s var(--out)}}
-@media (min-width:1100px){.side-open header nav{left:calc(282px + (100% - 282px) / 2)}}
+@media (min-width:760px){header nav.seg{position:absolute;left:50%;transform:translateX(-50%);transition:left .6s var(--out)}}
+@media (min-width:1100px){.side-open header nav.seg{left:calc(282px + (100% - 282px) / 2)}}
 </style>
 </head>
 <body>
@@ -758,7 +876,7 @@ html.calm #motes,html.calm #sparks{display:none}
         <span class="glint" aria-hidden="true"><span class="gm"><svg width="22" height="18" viewBox="2 2.3 19.6 16.4"><g stroke-width="1.5" stroke-linecap="round"><line x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line x1="7.5" y1="17.5" x2="20.4" y2="7"/><line x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line x1="16.1" y1="17.5" x2="20.4" y2="14"/><line x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span>Concorde<b>AI</b></span></span></span></span>
       <span class="beta">7.0 beta</span>
       <span class="spacer"></span>
-      <nav aria-label="Lane"><span class="on">Chat</span><span>Code</span><span>Funnels</span></nav>
+      <nav class="seg" id="lanes" role="tablist" aria-label="Lane" data-lane="chat"><i class="seg-hi" aria-hidden="true"></i><button type="button" role="tab" id="tab-chat" data-lane="chat" aria-selected="true" aria-controls="hero">Chat</button><button type="button" role="tab" id="tab-code" data-lane="code" aria-selected="false" aria-controls="v-code" tabindex="-1">Code</button><button type="button" role="tab" id="tab-funnels" data-lane="funnels" aria-selected="false" aria-controls="v-funnels" tabindex="-1"><svg class="fstar" width="9" height="9" viewBox="-5 -5 10 10" aria-hidden="true"><path d="M0 -5Q.7 -.7 5 0Q.7 .7 0 5Q-.7 .7 -5 0Q-.7 -.7 0 -5Z" fill="currentColor"/></svg>Funnels</button></nav>
       <span class="spacer"></span>
       <div class="status" id="status" tabindex="0" aria-label="Your machines: ready"><i></i><span class="tip"><strong>Ready</strong><span class="m"><i class="die" style="--ac:#c9ccd2;--ag:#e4e7ee"></i>Your Mac, Apple silicon</span><span class="m"><i class="die" style="--ac:#76b900;--ag:#93dc1a"></i>Your server, NVIDIA graphics</span></span></div>
       <div class="rigs" role="list" aria-label="Your machines">
@@ -766,24 +884,24 @@ html.calm #motes,html.calm #sparks{display:none}
         <div class="rig nvidia" role="listitem" tabindex="0"><i class="die"></i><b>NVIDIA</b><span class="tip"><strong>Your server</strong><span>NVIDIA graphics</span><span class="st">Ready</span></span></div>
       </div>
       <div id="fxbtn"><button class="ibtn" id="fxtog" type="button" aria-label="Effects" aria-expanded="false" aria-controls="fxpop"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="15.5" cy="7" r="2.2"/><circle cx="9.5" cy="17" r="2.2"/></svg></button>
-        <div id="fxpop" role="group" aria-label="Effects"><span>Effects</span><button type="button" data-fx="calm" aria-pressed="false">Calm</button><button type="button" data-fx="bal" aria-pressed="true">Balanced</button><button type="button" data-fx="full" aria-pressed="false">Full</button></div></div>
+        <div id="fxpop" role="group" aria-label="Effects"><button type="button" data-fx="calm" aria-pressed="false">Calm</button><button type="button" data-fx="bal" aria-pressed="true">Balanced</button><button type="button" data-fx="full" aria-pressed="false">Full</button></div></div>
     </header>
     <aside id="side" aria-label="Chats">
       <button class="newchat" id="newchat" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New chat</button>
       <div class="hist" id="hist">
         <p class="empty"><b>No chats yet</b>Ask something and it will appear here.</p>
         <p class="day">Today</p>
-        <div id="today"><div class="hrow"><span class="t">Compare two job offers</span></div><div class="hrow"><span class="t">Explain this lease clause</span></div></div>
+        <div id="today"><button type="button" class="hrow" data-chat="offers"><span class="t">Compare two job offers</span></button><button type="button" class="hrow" data-chat="lease"><span class="t">Explain this lease clause</span></button></div>
         <p class="day">Yesterday</p>
-        <div><div class="hrow"><span class="t">Fix the SSH key error</span></div><div class="hrow"><span class="t">Summarise the board notes</span></div></div>
+        <div><button type="button" class="hrow" data-chat="ssh"><span class="t">Fix the SSH key error</span></button><button type="button" class="hrow" data-chat="board"><span class="t">Summarise the board notes</span></button></div>
         <p class="day">This week</p>
-        <div><div class="hrow"><span class="t">Plan a week in Lisbon</span></div><div class="hrow"><span class="t">Pick a NAS for backups</span></div></div>
+        <div><button type="button" class="hrow" data-chat="lisbon"><span class="t">Plan a week in Lisbon</span></button><button type="button" class="hrow" data-chat="nas"><span class="t">Pick a NAS for backups</span></button></div>
       </div>
     </aside>
     <main>
       <section id="hero"><h1 id="h1"></h1></section>
       <section id="convo" hidden aria-live="polite">
-        <div class="msg user" id="q"></div>
+        <div class="msg user" id="q" tabindex="-1"></div>
         <div class="msg ai live" id="ai">
           <div class="who"><i class="dot" aria-hidden="true"></i><b id="by">Concorde Thinking</b><span class="st" id="byst"></span><button type="button" class="details" id="details" aria-expanded="false" aria-controls="behind">Details</button></div>
           <div class="liveline" id="live"><span class="lstep" id="step"></span><span class="lstats" id="stats"></span></div>
@@ -797,6 +915,38 @@ html.calm #motes,html.calm #sparks{display:none}
           </aside>
         </div>
       </section>
+      <section id="laneview" hidden>
+        <article class="lv" id="v-code" role="tabpanel" aria-labelledby="tab-code" hidden>
+          <div class="lvh"><span class="lvk">Sample task</span><h2>Free up disk space on the server</h2><p>Over SSH with your key. Reads run on their own; anything that writes waits for you.</p></div>
+          <ol class="runs">
+            <li><span class="risk">read</span><code>df -h /</code><pre>Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  468G  441G  4.1G  99% /</pre></li>
+            <li><span class="risk">read</span><code>sudo du -xh /var --max-depth=2 | sort -h | tail -3</code><pre>18G   /var/log/journal
+19G   /var/log
+26G   /var</pre><p class="note2">The system journal holds most of it.</p></li>
+          </ol>
+          <div class="approve" id="approve" role="group" aria-labelledby="ap-h">
+            <div class="aph" id="ap-h"><span class="risk w">write</span>Needs your approval</div>
+            <code>sudo journalctl --vacuum-size=500M</code>
+            <p>Keeps the newest 500 MB of the system journal and deletes older entries. Frees about 17 GB; nothing outside the journal is touched.</p>
+            <div class="apb"><button type="button" class="apbtn">Skip</button><button type="button" class="apbtn ok">Approve</button></div>
+            <p class="apdone" role="status"></p>
+          </div>
+          <p class="fine on">Sample task. This preview runs no commands.</p>
+        </article>
+        <article class="lv" id="v-funnels" role="tabpanel" aria-labelledby="tab-funnels" hidden>
+          <div class="lvh"><span class="lvk">Sample funnel</span><h2>What to cook for six on Saturday</h2><p>One vegetarian, about two hours, oven only.</p></div>
+          <ol class="stages">
+            <li><span class="sq">How should it be served?</span><span class="ops"><span class="op on">Shared, on the table</span><span class="op">Plated courses</span><span class="op">A buffet</span></span></li>
+            <li><span class="sq">Which direction?</span><span class="ops"><span class="op on">Mediterranean</span><span class="op">Mexican</span><span class="op">Indian</span></span></li>
+            <li><span class="sq">How hands-on?</span><span class="ops"><span class="op on">Mostly in the oven</span><span class="op">Some stovetop</span><span class="op">Made the day before</span></span></li>
+          </ol>
+          <div class="verdict"><span class="lvk">The pick</span><h3>A Mediterranean traybake spread</h3>
+            <p>Two big trays in a 200 °C oven: chicken thighs with lemon, garlic and oregano on one; chickpeas, red onion, peppers and courgette with feta on the other, a full main for the vegetarian rather than a side. Add warm flatbreads and a yogurt and tahini sauce. Both trays roast in about 45 minutes, which leaves time to set the table and clear up inside two hours.</p>
+            <p class="next"><b>Next step:</b> buy 10 chicken thighs, two tins of chickpeas, 400 g of feta and the flatbreads.</p></div>
+          <p class="fine on">Sample funnel. Each answer narrows the next question. This preview runs no models.</p>
+        </article>
+      </section>
       <form class="composer" id="form" autocomplete="off">
         <div class="halo" aria-hidden="true"></div><i class="uline" aria-hidden="true"></i>
         <div class="cbox">
@@ -807,9 +957,9 @@ html.calm #motes,html.calm #sparks{display:none}
             <button type="button" class="round" aria-label="Attach a file"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
             <button type="button" class="pick" id="pick" aria-haspopup="menu" aria-expanded="false" aria-controls="menu"><b id="mName"></b><i class="ubadge" aria-hidden="true"><span class="lum go">Ultra</span></i><i class="under" id="under" aria-hidden="true"></i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
             <div class="slider" id="slider">
-              <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"></span>
+              <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"><i class="tst" style="--y:32%;--dl:0s;--du:3.6s"></i><i class="tst" style="--y:66%;--dl:-.7s;--du:4.4s"></i><i class="tst" style="--y:48%;--dl:-1.5s;--du:3.2s"></i><i class="tst" style="--y:24%;--dl:-2.2s;--du:4.8s"></i><i class="tst" style="--y:72%;--dl:-2.9s;--du:3.9s"></i><i class="tst" style="--y:40%;--dl:-3.4s;--du:4.2s"></i><i class="tst" style="--y:58%;--dl:-1.1s;--du:5s"></i></span>
               <span class="sl-det" style="--k:0"></span><span class="sl-det" style="--k:.25"></span><span class="sl-det" style="--k:.5"></span><span class="sl-det" style="--k:.75"></span><span class="sl-det" style="--k:1"></span>
-              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i></span><span class="sl-spark" id="spark"></span>
+              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i><svg class="kstar" viewBox="-11 -11 22 22" aria-hidden="true"><defs><radialGradient id="ksg"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#e6efff"/><stop offset="1" stop-color="#a99bff"/></radialGradient></defs><path id="kpath" fill="url(#ksg)"/></svg></span><span class="sl-spark" id="spark"></span>
               <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="4" step="1" value="1"></label>
             </div>
             <span class="elevel" id="eName">Medium</span>
@@ -846,7 +996,9 @@ function fxClass(m){const r=document.documentElement.classList;FXMODES.forEach(x
 fxClass(fxPref);
 const FX=()=>FXMODES.find(m=>document.documentElement.classList.contains(m))||"bal";
 const FULL=()=>FX()==="full",BAL=()=>FX()==="bal";
-const now=new Date(), hour=now.getHours()+now.getMinutes()/60;
+const hourQ=parseFloat(new URLSearchParams(location.search).get("hour"));   // ?hour=6|12|18|23 pins the clock (dev checks: dawn, day, dusk, night)
+function hourNow(){if(hourQ>=0&&hourQ<24)return hourQ;const d=new Date();return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600;}
+const now=new Date(), hour=hourNow();
 const greet=hour<5?"Good evening.":hour<12?"Good morning.":hour<18?"Good afternoon.":"Good evening.";   // plain lines only
 let asking=false;
 /* NASA night footage, shared with the night page */
@@ -866,9 +1018,23 @@ const age=(((now.getTime()-Date.UTC(2000,0,6,18,14))/864e5)%29.530588853+29.5305
 const moonLit=(1-Math.cos(2*Math.PI*age/29.530588853))/2;
 const KEYS=[[0,.68,.80,1.06,.92,0],[5,.68,.80,1.06,.92,0],[6.5,.86,.82,1.0,1.0,.85],[8,.80,.89,1.06,1.1,.1],[16.5,.80,.89,1.06,1.1,.1],[18.5,.88,.80,.98,1.0,.9],[20.5,.68,.80,1.06,.92,.05],[24,.68,.80,1.06,.92,0]];
 function grade(h){for(let i=0;i<KEYS.length-1;i++){const a=KEYS[i],b=KEYS[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>v+(b[k]-v)*t);}}return KEYS[0];}
-const G=grade(hour);
-const SKY=[[0,3,4,10,6,11,28,16,34,79],[5,3,4,10,6,11,28,16,34,79],[6.5,8,10,26,24,26,58,52,46,96],[8,6,14,38,14,34,84,34,74,150],[16.5,6,14,38,14,34,84,34,74,150],[18.5,6,8,22,22,22,56,64,46,96],[20.5,3,4,10,6,11,28,16,34,79],[24,3,4,10,6,11,28,16,34,79]];
-const SK=(function(h){for(let i=0;i<SKY.length-1;i++){const a=SKY[i],b=SKY[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>(v+(b[k]-v)*t)/255);}}return SKY[0].map(v=>v/255);})(hour);
+let G=grade(hour);
+const SKY=[[0,4,5,9,7,10,20,18,27,52],[5,4,5,9,7,10,20,18,27,52],[6.5,12,11,24,34,28,52,72,52,84],[8,8,15,32,20,36,70,52,80,128],[16.5,8,15,32,20,36,70,52,80,128],[18.5,10,9,20,32,24,48,84,54,72],[20.5,4,5,9,7,10,20,18,27,52],[24,4,5,9,7,10,20,18,27,52]];   // the blue cast halved (per the owner: "less blue"), day and its edges a touch warmer
+function skyAt(h){return (function(h){for(let i=0;i<SKY.length-1;i++){const a=SKY[i],b=SKY[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>(v+(b[k]-v)*t)/255);}}return SKY[0].map(v=>v/255);})(h);}
+let SK=skyAt(hour);
+/* THE HOUR'S GRADE (per the owner: "make this beautiful"): the footage is mapped on its luminance into the hour's palette,
+   shadow -> middle -> light, so its dark ground takes the hour's deep sky and its lights the hour's light; about a fifth
+   of the real colour stays so cities and auroras still read as real. The moods change at 5:30, 7:30, 17:30 and 19:30,
+   each over 20 minutes on a smoothstep, following the visitor's clock while the page is open (never a snap). */
+const P255=a=>a.map(v=>v*255);   // the fourth row: [kept real colour, footage weight, how much the sky's gradient thins over the footage]
+const MOODS={night:[[7,8,14],[58,61,88],[230,233,242],P255([.55,1.45,.1])],dawn:[[26,20,40],[201,135,122],[255,224,176],P255([.52,1.32,.1])],
+  day:[[20,34,56],[143,179,217],[255,246,232],P255([.58,1.28,.14])],dusk:[[36,26,48],[217,148,74],[255,208,188],P255([.52,1.32,.1])]};   // per the owner: more NASA, less blue, a little more day colour
+const MOOD_AT=[[5.5,"night","dawn"],[7.5,"dawn","day"],[17.5,"day","dusk"],[19.5,"dusk","night"]],MOOD_W=1/3;
+function moodAt(h){for(const [b,a,c] of MOOD_AT)if(Math.abs(h-b)<=MOOD_W/2){const u=(h-b)/MOOD_W+.5,t=u*u*(3-2*u);return MOODS[a].map((x,i)=>x.map((v,k)=>(v+(MOODS[c][i][k]-v)*t)/255));}
+  return MOODS[h<5.5||h>=19.5?"night":h<7.5?"dawn":h<17.5?"day":"dusk"].map(x=>x.map(v=>v/255));}
+let GP=moodAt(hour);
+const hourLight=()=>document.documentElement.style.setProperty("--hour-light","rgb("+GP[2].map(v=>Math.round(v*255)).join(",")+")");hourLight();   // a hint of the hour in the greeting's bloom
+setInterval(()=>{const h=hourNow();G=grade(h);SK=skyAt(h);GP=moodAt(h);hourLight();},20000);   // the sky's own gradient follows the clock too
 const waxing=age<29.530588853/2;
 function moonGeom(){const R=Math.max(innerWidth,innerHeight)*.9;return {x:waxing?innerWidth*1.08:-innerWidth*.08,y:-innerHeight*.12,r:R};}   // off the corner: a glow with no disc and no edge
 
@@ -893,6 +1059,32 @@ const BLUR_FS="precision highp float;varying vec2 uv;uniform sampler2D src;unifo
 function glBlur(gl,prog,quad,src,srcW,srcH,dst,dx,dy){gl.useProgram(prog);quad(prog);gl.bindFramebuffer(gl.FRAMEBUFFER,dst.f);gl.viewport(0,0,dst.w,dst.h);
   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,src);gl.uniform1i(prog.U.src,0);gl.uniform2f(prog.U.stp,dx/srcW,dy/srcH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
 
+/* ---------- PARTICLES ON THE GPU (Ultra's stars): one tiny program for four-point stars and hairlines, drawn as quads
+   from a pooled vertex array (no allocation per frame). The sky uses it for the constellation, the shooting stars and
+   the star rain (behind the glass); a canvas above the glass uses it for the arrival burst and the hero glint. ---------- */
+const PFX_VS="attribute vec2 p;attribute vec4 c;attribute vec3 l;uniform vec2 res;varying vec4 vc;varying vec3 vl;void main(){vc=c;vl=l;vec2 z=p/res*2.-1.;gl_Position=vec4(z.x,-z.y,0.,1.);}";
+const PFX_FS="precision mediump float;varying vec4 vc;varying vec3 vl;void main(){float a;"+
+  "if(vl.z<.5){a=smoothstep(1.,.15,abs(vl.y));}"+   // a hairline: soft across its width
+  "else{vec2 q=vl.xy;a=exp(-dot(q,q)*70.)*1.3+(exp(-abs(q.x)*24.)*exp(-abs(q.y)*2.8)+exp(-abs(q.y)*24.)*exp(-abs(q.x)*2.8))*.8;a*=smoothstep(1.,.8,max(abs(q.x),abs(q.y)));}"+   // a four-point star: a point and four arms falling off, no disc
+  "a*=vc.a;gl_FragColor=vec4(vc.rgb*a,a);}";
+function pfxProgram(gl){const sh=(k,s)=>{const x=gl.createShader(k);gl.shaderSource(x,s);gl.compileShader(x);return x;};const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,PFX_VS));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,PFX_FS));gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))return null;
+  const buf=gl.createBuffer(),f=new Float32Array(9*6*700),aP=gl.getAttribLocation(p,"p"),aC=gl.getAttribLocation(p,"c"),aL=gl.getAttribLocation(p,"l"),uR=gl.getUniformLocation(p,"res");let n=0;
+  const v=(x,y,r,g,b,a,lx,ly,k)=>{if(n>=4200)return;const o=n*9;f[o]=x;f[o+1]=y;f[o+2]=r;f[o+3]=g;f[o+4]=b;f[o+5]=a;f[o+6]=lx;f[o+7]=ly;f[o+8]=k;n++;};
+  return {clear(){n=0;},count(){return n;},
+    star(x,y,s,col,a,rot){if(a<.004||s<.3)return;const c=Math.cos(rot||0)*s,si=Math.sin(rot||0)*s,P=[[-1,-1],[1,-1],[1,1],[-1,-1],[1,1],[-1,1]];for(const [u,w] of P)v(x+u*c-w*si,y+u*si+w*c,col[0],col[1],col[2],a,u,w,1);},
+    line(x0,y0,x1,y1,wd,col,a0,a1){if(a0<.004&&a1<.004)return;const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy)||1,h=wd/2+1,nx=-dy/L*h,ny=dx/L*h;
+      const P=[[x0+nx,y0+ny,a0,1],[x0-nx,y0-ny,a0,-1],[x1-nx,y1-ny,a1,-1],[x0+nx,y0+ny,a0,1],[x1-nx,y1-ny,a1,-1],[x1+nx,y1+ny,a1,1]];for(const [x,y,a,w] of P)v(x,y,col[0],col[1],col[2],a,0,w*h/(wd/2+.5),0);},
+    draw(cssW,cssH,additive){if(!n)return;gl.useProgram(p);gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,f.subarray(0,n*9),gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(aP);gl.vertexAttribPointer(aP,2,gl.FLOAT,false,36,0);gl.enableVertexAttribArray(aC);gl.vertexAttribPointer(aC,4,gl.FLOAT,false,36,8);gl.enableVertexAttribArray(aL);gl.vertexAttribPointer(aL,3,gl.FLOAT,false,36,24);
+      gl.uniform2f(uR,cssW,cssH);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,additive?gl.ONE:gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLES,0,n);gl.disable(gl.BLEND);
+      gl.disableVertexAttribArray(aC);gl.disableVertexAttribArray(aL);}};}
+const hexRGB=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
+const UCOL=["#ffffff","#dce8ff","#cfe0ff","#86b0ff","#b9a2ff","#9b72ff","#ffffff","#e6efff"].map(hexRGB);   // white, ice-blue, violet
+/* the sky's star hash, mirrored on the CPU in float32 (the same as the shader's), so the constellation links real stars */
+const F32=Math.fround,fr32=x=>F32(x-Math.floor(x));
+function skyHash(x,y){x=F32(x);y=F32(y);const k=F32(.1031),e=F32(33.33);let a=fr32(F32(x*k)),b=fr32(F32(y*k)),c=fr32(F32(x*k));
+  const d=F32(F32(F32(a*F32(b+e))+F32(b*F32(c+e)))+F32(c*F32(a+e)));a=F32(a+d);b=F32(b+d);c=F32(c+d);return fr32(F32(F32(a+b)*c));}
 /* ---------- THE SKY: footage + long-exposure light trails + bloom + moonlight + neon aurora + grain ---------- */
 const Sky=(function(){
   const cv=$("#sky"), gl=cv.getContext("webgl",{alpha:false,antialias:false,premultipliedAlpha:false,powerPreference:"high-performance"});
@@ -912,10 +1104,10 @@ const Sky=(function(){
     vec3 lit=min(c*hi,p.rgb*decay+vec3(atk));
     gl_FragColor=vec4(max(lit,p.rgb*decay-1.5/255.),max(e,p.a*edecay-2./255.));
   }`;
-  const SHOW=HEAD+`uniform sampler2D vid,trail,bl1,bl2,stk,aur;uniform vec2 px,res,mpos,ctw;uniform float time,boost,expo,warm,moon,mrad,dscale,foot,rise,calm,fw,tw,twist,arc,starB,glint,wa,ww,wa2,wr2,vg;uniform vec3 tint,skyTop,skyMid,skyLow,wv;
+  const SHOW=HEAD+`uniform sampler2D vid,trail,bl1,bl2,stk,aur;uniform vec2 px,res,mpos,ctw;uniform float time,boost,expo,warm,moon,mrad,dscale,foot,rise,calm,fw,tw,twist,arc,starB,glint,wa,ww,wa2,wr2,vg;uniform vec3 gS,gM,gH,gx,skyTop,skyMid,skyLow,wv;
   vec3 spec(float t){t=fract(t)*5.;vec3 a=vec3(.86,.91,1.),b=vec3(.31,.55,1.),c=vec3(.61,.45,1.),d=vec3(.94,.48,.65),e=vec3(.61,.45,1.);   // ice, electric blue, violet, soft rose, violet: Ultra's cool light
     if(t<1.)return mix(a,b,t);if(t<2.)return mix(b,c,t-1.);if(t<3.)return mix(c,d,t-2.);if(t<4.)return mix(d,e,t-3.);return mix(e,a,t-4.);}
-  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  float hash(vec2 p){vec3 p3=fract(vec3(p.xyx)*.1031);p3+=dot(p3,p3.yzx+33.33);return fract((p3.x+p3.y)*p3.z);}   // a hash the CPU can repeat exactly (skyHash), so the constellation finds the real stars
   float starLayer(vec2 p,float cell,float keep,float sz,vec2 cq){vec2 c=floor(p/cell),f=p-c*cell;float h=hash(c);if(h<keep)return 0.;
     vec2 o=(vec2(hash(c+1.7),hash(c+3.1))*.8+.1)*cell;vec2 rel=f-o;
     // at the fastest moment of the opening's twist each star lengthens a little along its arc round the centre, like a
@@ -931,6 +1123,9 @@ const Sky=(function(){
     return core+gb*(gx+gy)*.55;}
   vec4 moonRamp(float r){return vec4(mix(vec3(.965,.945,.894),vec3(.624,.753,1.),smoothstep(0.,.9,r)),.26*exp(-r*r*5.5));}   // smooth falloff, no ring
   vec3 screen(vec3 a,vec3 b){return 1.-(1.-a)*(1.-b);}
+  vec3 gmap(float l){return l<.5?mix(gS,gM,smoothstep(0.,.5,l)):mix(gM,gH,smoothstep(.5,1.,l));}
+  vec3 gradeF(vec3 c){float l=L(c);return mix(gmap(l)*smoothstep(0.,.18,l),c,gx.x);}   // the footage: black stays the sky, dim ground the hour's deep colour, lights its light
+  vec3 gradeL(vec3 c){float l=L(c);vec3 m=gmap(min(1.,.35+l));return mix(m*(l/max(L(m),.02)),c,gx.x);}   // trails and bloom: the hour's hue at their own brightness
   void main(){
     vec2 pc=vec2(uv.x,1.-uv.y)*res/dscale; float s=1.-uv.y;
     vec3 sky=s<.56?mix(skyTop,skyMid,smoothstep(0.,.56,s)):mix(skyMid,skyLow,smoothstep(.56,.72,s));
@@ -946,13 +1141,14 @@ const Sky=(function(){
     float r=length(pc-mpos)/mrad;vec4 mg=moonRamp(r);float an=atan(pc.y-mpos.y,pc.x-mpos.x);
     float shafts=(.55+.45*sin(an*17.+time*.013)*sin(an*29.-time*.009))*exp(-r*1.7)*.08;
     vec3 moonL=(mg.rgb*mg.a+vec3(.8,.86,1.)*shafts*(1.-calm))*moon*mix(1.,.75,calm);
-    vec3 base=texture2D(vid,V(uv)).rgb;base=pow(base,vec3(1.12))*expo;float l=L(base);base=mix(vec3(l),base,.82)*tint;
+    vec3 base=gradeF(pow(texture2D(vid,V(uv)).rgb,vec3(1.12))*expo)*gx.y;
     vec4 tc=texture2D(trail,uv); vec3 g1=vec3(texture2D(bl1,uv+vec2(px.x*5.,0.)).r,texture2D(bl1,uv).g,texture2D(bl1,uv-vec2(px.x*5.,0.)).b), g2=texture2D(bl2,uv).rgb; float sk=L(texture2D(stk,uv).rgb);
     float wf=foot*(1.-smoothstep(0.,rise,uv.y)), wl=min(1.,foot*2.4)*(1.-smoothstep(0.,rise*1.07,uv.y));
-    vec3 earth=base*wf*fw+((tc.rgb*.42+g1*.9+g2*1.1+vec3(.55,.7,1.)*sk*.45)*boost*wl+vec3(.62,.76,1.)*tc.a*.1*wl)*(1.-calm);
+    float ef=smoothstep(0.,.08,uv.x)*smoothstep(1.,.92,uv.x)*smoothstep(0.,.12,uv.y);   // feathered into the gradient at the sides and the foot: no frame
+    vec3 earth=(base*wf*fw+(gradeL(tc.rgb*.42+g1*.9+g2*1.1+vec3(.55,.7,1.)*sk*.45)*boost*wl+gH*tc.a*.1*wl)*(1.-calm))*ef;
     // the knee: above .45 the bloom rolls off toward .85, so a bright city glows and never burns to a white blob
     earth=mix(earth,.45+(earth-.45)/(1.+(earth-.45)*2.5),step(.45,earth));
-    vec3 col=screen(screen(screen(sky,earth),moonL),texture2D(aur,uv).rgb);
+    vec3 col=screen(screen(screen(sky*(1.-gx.z*wf*fw*ef),earth),moonL),texture2D(aur,uv).rgb);   // the gradient thins a little where the footage is
     if(wr>.001){vec3 wc=mix(vec3(.98,.99,1.),mix(vec3(.31,.55,1.),vec3(.61,.45,1.),uv.x),smoothstep(.2*ww,1.4*ww,abs(dw)));col=screen(col,wc*wr*.6);}   // white at its core, blue to violet at its edges
     if(vg>.001){vec2 e=(uv-.5)*2.;float ed=smoothstep(.78,1.,max(abs(e.x),abs(e.y)));col=screen(col,spec(atan(e.y,e.x)*.159+time*.03)*ed*vg);}   // the spectral vignette: colour at the edges   // white within, spectral at its edge
     col+=vec3(1.,.62,.36)*warm*(1.-smoothstep(0.,.75,uv.y))*.07;
@@ -1000,7 +1196,7 @@ const Sky=(function(){
   // 40 % above Full's level for the mode. Leaving: everything eases back to the chosen level over about 800 ms.
   const SURGE_T=1,WAVE_MS=700,UTW_DEG=5.5,UTW_S=1.6,EASE_S=.3;   // EASE_S: 95 % in about 900 ms
   let A,B,fA,fB,W=0,H=0,ready=false,last=0,boost=1,boostTo=1,par=[0,0],parTo=[0,0],calm=FULL()?0:1,calmTo=calm,odd=false,fw=1,fwTo=1,tw=0,twTo=0,spd=.035,one=0,lastAur=0,skyMode="full",warmed=false;
-  const lowPower=innerWidth<760;
+  const lowPower=innerWidth<760;const gp=GP.map(x=>x.slice());
   function target(){const t=glTex(gl);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,W,H,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
     const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);
     gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);return [t,f];}
@@ -1019,6 +1215,101 @@ const Sky=(function(){
     par[0]+=(parTo[0]-par[0])*.04;par[1]+=(parTo[1]-par[1])*.04;   // pointer parallax: per frame is fine, it only follows the hand
     const ox=par[0]*.018+.01*Math.sin(t*.05), oy=-par[1]*.014;
     return [sx,sy*ch,.5-.5*sx+ox,cr[0]+ch*(.5-.5*sy+oy)];}
+  /* ULTRA'S SKY (per the owner: "more stars and VFX", kept classy): a constellation forms round the composer from the
+     sky's own stars, shooting stars cross the upper sky beside the text, and a sparse star rain falls at the far edges.
+     All of it rides ultraE, so leaving Ultra fades it with the rest (about 900 ms). Calm and reduced motion: none. */
+  const pfx=pfxProgram(gl);let cons=null,shoot=null,nextShoot=0,rain=[],nextRain=0;
+  const ICE=hexRGB("#cfe0ff"),WHITE=[1,1,1];
+  function rects(){const R=e=>{if(!e)return null;const r=e.getBoundingClientRect();return r.width&&r.height?r:null;};const out=[];
+    if(stage.classList.contains("side-open"))out.push(R($("#side")));out.push(R($("header")));
+    if(stage.classList.contains("chat"))out.push(R($("#convo")));else{out.push(R($("#h1")));out.push(R($("#suggs")));}
+    out.push(R($(".cbox")));return out.filter(Boolean);}
+  const inR=(x,y,r,m)=>x>r.left-m&&x<r.right+m&&y>r.top-m&&y<r.bottom+m;
+  function toScreen(qx,qy,t){const a=t*.002618,ca=Math.cos(a),sa=Math.sin(a),W2=innerWidth*.5,cx=W2,cy=innerHeight*.12,px=W2,py=-innerHeight*.9;
+    const vx=ca*qx-sa*qy,vy=sa*qx+ca*qy,ptx=vx-cx+px,pty=vy-cy+py,ct=Math.cos(twistNow),st=Math.sin(twistNow);return [ct*ptx-st*pty+cx,st*ptx+ct*pty+cy];}
+  function toSky(x,y,t){const a=t*.002618,ca=Math.cos(a),sa=Math.sin(a),W2=innerWidth*.5,cx=W2,cy=innerHeight*.12,px=W2,py=-innerHeight*.9,ct=Math.cos(twistNow),st=Math.sin(twistNow);
+    const dx=x-cx,dy=y-cy,ptx=ct*dx+st*dy,pty=-st*dx+ct*dy,qx=ptx+cx-px,qy=pty+cy-py;return [ca*qx+sa*qy,-sa*qx+ca*qy];}
+  function buildCons(t){const cb=$(".cbox").getBoundingClientRect();if(!cb.width)return null;const ex=rects().filter(r=>r!==null);const h1=$("#h1").getBoundingClientRect();
+    const areas=[[cb.left-120,Math.max(stage.classList.contains("chat")?cb.top:h1.bottom+16,cb.top-220),cb.right+120,cb.top-14],[cb.left-290,cb.top-170,cb.left-16,cb.bottom+70],[cb.right+16,cb.top-170,cb.right+290,cb.bottom+70]];
+    const seen=new Set(),pts=[];
+    for(const [x0,y0,x1,y1] of areas){if(x1-x0<20||y1-y0<20)continue;const cs=[[x0,y0],[x1,y0],[x0,y1],[x1,y1]].map(([x,y])=>toSky(x,y,t));
+      const qx0=Math.min(...cs.map(c=>c[0])),qx1=Math.max(...cs.map(c=>c[0])),qy0=Math.min(...cs.map(c=>c[1])),qy1=Math.max(...cs.map(c=>c[1]));
+      for(let gx=Math.floor(qx0/46);gx<=Math.floor(qx1/46);gx++)for(let gy=Math.floor(qy0/46);gy<=Math.floor(qy1/46);gy++){const key=gx+","+gy;if(seen.has(key))continue;seen.add(key);
+        const h=skyHash(gx,gy);if(h<.84)continue;const ox=(skyHash(F32(gx+F32(1.7)),F32(gy+F32(1.7)))*.8+.1)*46,oy=(skyHash(F32(gx+F32(3.1)),F32(gy+F32(3.1)))*.8+.1)*46;
+        const qx=gx*46+ox,qy=gy*46+oy,[sx,sy]=toScreen(qx,qy,t);
+        if(sx<x0||sx>x1||sy<y0||sy>y1||sx<8||sx>innerWidth-8||sy<8||sy>innerHeight*.92)continue;if(ex.some(r=>inR(sx,sy,r,10)))continue;
+        pts.push({qx,qy,b:(h-.84)/.16,sx,sy});}}
+    if(pts.length<5)return null;
+    pts.sort((a,b)=>b.b-a.b);const k=Math.min(pts.length,7+Math.floor(Math.random()*6)),P=pts.slice(0,k);
+    // a minimum spanning tree: the shortest lines that join them all, in the order they join
+    const inT=[0],drop=new Set(),edges=[];while(inT.length+drop.size<P.length){let best=null;for(const i of inT)for(let j=0;j<P.length;j++){if(inT.includes(j)||drop.has(j))continue;const d=Math.hypot(P[i].sx-P[j].sx,P[i].sy-P[j].sy);if(!best||d<best[2])best=[i,j,d];}
+      if(best[2]>260){drop.add(best[1]);continue;}inT.push(best[1]);edges.push([best[0],best[1]]);}
+    if(edges.length<4)return null;
+    return {P,edges:edges.map((e,i)=>[e[0],e[1],i*(340/edges.length)]),t0:performance.now()};}
+  /* THE STAR CHANDELIER (per the owner: "hang them like something"): as Ultra arrives, a curtain of 14–22 hairline threads
+     lowers from the top edge, each ending in a four-point star (a few heroes, some with a tiny one partway up), in the top
+     third, only where no text or control sits below the thread's anchor. They lower in over 700 ms (staggered, a soft
+     spring), then sway like slow pendulums (each its own period and phase, never in unison), twinkle softly, and a few
+     neighbours are joined by faint constellation lines. The pointer nudges the nearest with a push that springs back.
+     Leaving Ultra, the curtain lifts back up and fades (600 ms). Calm and reduced motion: hung and still. */
+  let chand=null,chandOff=0;const ptr={x:-999,y:-999};addEventListener("pointermove",e=>{ptr.x=e.clientX;ptr.y=e.clientY;},{passive:true});
+  function buildChand(){const W_=innerWidth,H_=innerHeight,top3=H_/3,R=e=>{if(!e)return null;const r=e.getBoundingClientRect();return r.width&&r.height?r:null;};
+    const blocks=[];   // anything a thread must stop above: header pieces, the lanes, the sidebar, the greeting, the column, the composer
+    document.querySelectorAll("header>*:not(.spacer)").forEach(e=>{const r=R(e);if(r)blocks.push(r);});
+    if(stage.classList.contains("side-open"))blocks.push(R($("#side")));
+    if(stage.classList.contains("chat"))blocks.push(R(stage.classList.contains("lane")?$("#laneview"):$("#convo")));else blocks.push(R($("#h1")));
+    blocks.push(R($(".cbox")));const B=blocks.filter(Boolean);
+    const maxAt=x=>{let m=top3;for(const r of B)if(x>r.left-14&&x<r.right+14)m=Math.min(m,r.top-22);return m;};
+    const cand=[];for(let x=20;x<W_-20;x+=6){const m=maxAt(x);if(m>=56)cand.push([x,m]);}
+    if(cand.length<6)return null;
+    const n=Math.max(8,Math.min(22,Math.round(cand.length/5)));const picks=[];
+    for(let k=0;k<n;k++){const c=cand[Math.floor((k+.2+Math.random()*.6)/n*cand.length)];if(!c||picks.some(p=>Math.abs(p.x-c[0])<16))continue;
+      const L=40+Math.random()*(c[1]-40);picks.push({x:c[0],L,hero:false,mid:Math.random()<.3?.35+Math.random()*.3:0,A:(1.4+Math.random()*2.2)*Math.PI/180,w:2*Math.PI/(3.6+Math.random()*2.6),ph:Math.random()*6.28,
+        s:3.4+Math.random()*1.8,col:UCOL[Math.floor(Math.random()*UCOL.length)],tw:Math.random()*6.28,dl:0,push:[0,0]});}
+    if(picks.length<5)return null;
+    picks.sort((a,b)=>a.x-b.x);picks.forEach((p,i)=>{p.dl=i*(320/picks.length)+Math.random()*60;});
+    [...picks].sort((a,b)=>b.L-a.L).slice(0,3).forEach(p=>{p.hero=true;p.s=7+Math.random()*2;p.col=[1,1,1];});
+    const links=[];for(let i=0;i+1<picks.length;i++){const a=picks[i],b=picks[i+1];if(b.x-a.x<110&&Math.abs(a.L-b.L)<70&&links.length<6&&Math.random()<.6)links.push([i,i+1]);}
+    return {P:picks,links,t0:performance.now()};}
+  function chandStar(p,nowT,t,still){const age=(nowT-chand.t0-p.dl)/1000;let e;if(still)e=1;else if(age<=0)e=0;else{const u=age/.7;e=u>=2.5?1:1-Math.exp(-4.6*u)*Math.cos(5.2*u);}   // lowers in ~700 ms, a soft settle
+    let lift=1;if(chandOff){const u=Math.min(1,(nowT-chandOff)/600);lift=1-u*u*(3-2*u);}
+    const L=p.L*e*lift,th=still?0:p.A*Math.sin(p.w*t+p.ph);let x=p.x+Math.sin(th)*L,y=Math.cos(th)*L;
+    if(!still){const dx=x-ptr.x,dy=y-ptr.y,d=Math.hypot(dx,dy),want=d<70?[dx/(d||1)*(1-d/70)*16,dy/(d||1)*(1-d/70)*10]:[0,0],k=d<70?.18:.05;p.push[0]+=(want[0]-p.push[0])*k;p.push[1]+=(want[1]-p.push[1])*k;x+=p.push[0];y+=p.push[1];}
+    return [x,y,e*lift,th];}
+  function drawChand(nowT,t){if(!chand)return;const still=reduce||skyMode==="calm";const fade=chandOff?Math.max(0,1-(nowT-chandOff)/600):1;if(chandOff&&fade<=0){chand=null;chandOff=0;return;}
+    const S=chand.P.map(p=>chandStar(p,nowT,t,still));
+    chand.P.forEach((p,i)=>{const [x,y,e,th]=S[i];if(e<=.01)return;const tw=still?.9:.72+.28*Math.sin(t*(1.1+p.w)+p.tw);
+      pfx.line(p.x,0,x,y,.5,ICE,.05*fade,.16*fade);   // the thread: barely there
+      if(p.mid){const mx=p.x+(x-p.x)*p.mid,my=y*p.mid;pfx.star(mx,my,2.2,ICE,.55*tw*fade,0);}
+      pfx.star(x,y,p.s*(p.hero?1:.9),p.col,(p.hero?1:.85)*tw*fade,still?0:th*2);});
+    chand.links.forEach(([i,j])=>{const a=S[i],b=S[j];const m=Math.min(a[2],b[2]);if(m<.9)return;pfx.line(a[0],a[1],b[0],b[1],.6,ICE,.12*fade,.12*fade);});
+    chand.now=S.map(s=>[s[0],s[1]]);}
+  function skyFx(nowT,t,dt){if(!pfx)return;pfx.clear();const ue=ultraE;
+    drawChand(nowT,t);
+    if(ue<.002&&!ultraWant){cons=null;shoot=null;rain.length=0;if(pfx.count()){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}return;}
+    const on=ultraWant&&lift();
+    // the constellation: each line draws in over 260 ms (all within about 600), holds, then fades over 1.2 s
+    if(cons){const age=nowT-cons.t0,fade=age<1100?1:Math.max(0,1-(age-1100)/1200);if(fade<=0)cons=null;else{
+      const S=cons.P.map(p=>toScreen(p.qx,p.qy,t)),lit=new Set();
+      for(const [i,j,d0] of cons.edges){const u=Math.max(0,Math.min(1,(age-d0)/260));if(u<=0)continue;const e=1-Math.pow(1-u,3);lit.add(i);if(u>.98)lit.add(j);
+        const [x0,y0]=S[i],[x1,y1]=S[j];pfx.line(x0,y0,x0+(x1-x0)*e,y0+(y1-y0)*e,.8,ICE,.3*fade*ue,.42*fade*ue);}
+      lit.forEach(i=>pfx.star(S[i][0],S[i][1],5.5,WHITE,.5*fade*ue,0));}}
+    // shooting stars: one every 6 to 12 s, about 500 ms, in the upper sky beside the text column, never over it
+    if(on&&ue>.9&&nowT>nextShoot&&!shoot){nextShoot=nowT+10000+Math.random()*6000;
+      const ex=rects(),col=stage.classList.contains("chat")?$("#convo").getBoundingClientRect():(()=>{const a=$("#h1").getBoundingClientRect(),b=$(".cbox").getBoundingClientRect();return {left:Math.min(a.left,b.left),right:Math.max(a.right,b.right)};})();
+      const side=stage.classList.contains("side-open")?$("#side").getBoundingClientRect().right+20:20;
+      const regs=[[side,col.left-24],[col.right+24,innerWidth-20]].filter(r=>r[1]-r[0]>=120);
+      if(regs.length){const r=regs[Math.floor(Math.random()*regs.length)],len=Math.min(260,r[1]-r[0]-10),ang=(18+Math.random()*14)*Math.PI/180,dir=Math.random()<.5?1:-1;
+        const L=len,dx=Math.cos(ang)*L*dir,dy=Math.sin(ang)*L,x0=dir>0?r[0]+Math.random()*(r[1]-r[0]-Math.abs(dx)):r[1]-Math.random()*(r[1]-r[0]-Math.abs(dx)),y0=72+Math.random()*(innerHeight*.26-72);
+        if(!ex.some(q=>inR(x0,y0,q,4)||inR(x0+dx,y0+dy,q,4)))shoot={x0,y0,dx,dy,t0:nowT};}}
+    if(shoot){const u=(nowT-shoot.t0)/500;if(u>=1)shoot=null;else{const e=1-Math.pow(1-u,2),a=Math.min(1,u/.15)*Math.min(1,(1-u)/.3)*ue,hx=shoot.x0+shoot.dx*e,hy=shoot.y0+shoot.dy*e,tl=Math.min(e,.42),tx=shoot.x0+shoot.dx*(e-tl),ty=shoot.y0+shoot.dy*(e-tl);
+      pfx.line(tx,ty,hx,hy,1.1,[.86,.91,1],0,.9*a);pfx.star(hx,hy,4.5,WHITE,a,0);}}
+    // the star rain: a sparse, slow fall of tiny stars at the far left and right edges, out of the reading area
+    if(on&&ue>.5&&nowT>nextRain&&rain.length<22){nextRain=nowT+350+Math.random()*300;const band=Math.min(innerWidth*.06,90),left=Math.random()<.5;
+      rain.push({x:left?4+Math.random()*(band-4):innerWidth-4-Math.random()*(band-4),y:-10+Math.random()*innerHeight*.3,v:14+Math.random()*16,sw:2+Math.random()*4,ph:Math.random()*6.28,per:3+Math.random()*2,s:1.6+Math.random()*1.6,a:.35+Math.random()*.4,t0:nowT,col:UCOL[Math.floor(Math.random()*UCOL.length)]});}
+    for(let i=rain.length-1;i>=0;i--){const d=rain[i],age=(nowT-d.t0)/1000;d.y+=d.v*dt;const end=innerHeight*.86,out=Math.max(0,Math.min(1,(end-d.y)/80));if(out<=0){rain.splice(i,1);continue;}
+      const tw=.6+.4*Math.sin(age*2.1+d.ph);pfx.star(d.x+Math.sin(age*6.283/d.per+d.ph)*d.sw,d.y,d.s*2.4,d.col,d.a*tw*Math.min(1,age/.6)*out*ue,0);}
+    if(pfx.count()){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}}
   function frame(nowT){
     requestAnimationFrame(frame);
     if(document.hidden)return;
@@ -1067,8 +1358,12 @@ const Sky=(function(){
     gl.uniform4fv(pS.U.vmap,m);gl.uniform2f(pS.U.px,1/W,1/H);gl.uniform2f(pS.U.res,W,H);gl.uniform1f(pS.U.time,t);
     const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo-footMul)*k(.045);gl.uniform1f(pS.U.foot,clip.foot*footMul);gl.uniform1f(pS.U.rise,clip.rise);
     gl.uniform3f(pS.U.skyTop,SK[1],SK[2],SK[3]);gl.uniform3f(pS.U.skyMid,SK[4],SK[5],SK[6]);gl.uniform3f(pS.U.skyLow,SK[7],SK[8],SK[9]);
-    gl.uniform1f(pS.U.boost,boost);gl.uniform1f(pS.U.calm,calm);gl.uniform1f(pS.U.fw,fw);gl.uniform1f(pS.U.tw,tw);gl.uniform1f(pS.U.twist,twistNow);gl.uniform1f(pS.U.arc,arcNow);gl.uniform1f(pS.U.starB,starB);gl.uniform1f(pS.U.glint,ultraE*(1+1.6*flareNow));   // the brightest stars flash a glint as Ultra arrives, then settle to their twinklegl.uniform3f(pS.U.wv,waveX,waveR,0);gl.uniform1f(pS.U.wa,waveA);gl.uniform1f(pS.U.ww,7);gl.uniform1f(pS.U.vg,vg);gl.uniform2f(pS.U.ctw,innerWidth*.5,innerHeight*.12);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit)*(1+.08*ultraE));gl.uniform1f(pS.U.warm,G[5]);gl.uniform3f(pS.U.tint,G[1],G[2],G[3]);
+    gl.uniform1f(pS.U.boost,boost);gl.uniform1f(pS.U.calm,calm);gl.uniform1f(pS.U.fw,fw);gl.uniform1f(pS.U.tw,tw);gl.uniform1f(pS.U.twist,twistNow);gl.uniform1f(pS.U.arc,arcNow);gl.uniform1f(pS.U.starB,starB);gl.uniform1f(pS.U.glint,ultraE*(1+1.6*flareNow));   // the brightest stars flash a glint as Ultra arrives, then settle to their twinkle
+    gl.uniform3f(pS.U.wv,waveX,waveR,0);gl.uniform1f(pS.U.wa,waveA);gl.uniform1f(pS.U.ww,7);gl.uniform1f(pS.U.vg,vg);gl.uniform2f(pS.U.ctw,innerWidth*.5,innerHeight*.12);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit)*(1+.08*ultraE));gl.uniform1f(pS.U.warm,G[5]);
+    {const e=1-Math.exp(-dt/2);for(let i=0;i<4;i++)for(let j=0;j<3;j++)gp[i][j]+=(GP[i][j]-gp[i][j])*e;}   // the grade eases toward the hour's palette, never a step
+    gl.uniform3fv(pS.U.gS,gp[0]);gl.uniform3fv(pS.U.gM,gp[1]);gl.uniform3fv(pS.U.gH,gp[2]);gl.uniform3fv(pS.U.gx,gp[3]);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    skyFx(nowT,t,dt);
     if(calm<.999){[A,B]=[B,A];[fA,fB]=[fB,fA];}else if(warm)reset();
   }
   requestAnimationFrame(frame);
@@ -1087,16 +1382,19 @@ const Sky=(function(){
   function reset(){[fA,fB].forEach(f=>{gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);});gl.bindFramebuffer(gl.FRAMEBUFFER,null);}
   const lift=()=>ultraWant&&!reduce&&skyMode!=="calm";   // Ultra lifts the sky to Full, except in Calm and reduced motion
   function eff(){return lift()?"full":skyMode;}
-  function apply(){const m=eff();if(m==="full"&&calm>.999)reset();calmTo=m==="full"?0:1;fwTo=m==="full"?1:m==="bal"?.75:.6;twTo=m==="bal"||lift()?1:0;spdTo=m==="bal"?.012:.035;c2To=m==="full"?1:0;setNeon();}
+  function apply(){const m=eff();if(m==="full"&&calm>.999)reset();calmTo=m==="full"?0:1;fwTo=m==="full"?1:m==="bal"?.85:.6;twTo=m==="bal"||lift()?1:0;spdTo=m==="bal"?.012:.035;c2To=m==="full"?1:0;setNeon();}
   function mode(m){skyMode=m;one=m==="bal"?1:0;apply();}
   mode(FX());c2E=c2To;spd=spdTo;   // the first level is not eased in
-  return {ultra(on,x,y){ultraWant=on;
+  return {hangs(){return chand&&chand.now&&!chandOff?chand.now.map((p,i)=>[p[0],p[1],chand.P[i].x]):[];},
+    ultra(on,x,y){ultraWant=on;
+      if(on){if(!chand||chandOff){chand=buildChand();chandOff=0;}}else if(chand&&!chandOff)chandOff=performance.now();
       {const n=performance.now();if(!on&&uTwAt){uTwFrom=uTwDeg(n);uTwTo=0;uTwAt=n;}}
       if(on&&lift()){const n=performance.now();surgeAt=n;uTwFrom=uTwDeg(n);uTwTo=UTW_DEG;uTwAt=n;
+        cons=buildCons((n-t0)/1000);nextShoot=n+4000+Math.random()*3000;nextRain=n+300;
         if(x!=null){waveX=x;waveY=y;waveR=y;waveAt=n;}}
       apply();},
     twistLeft(){return readyAt&&twistDeg?Math.max(0,readyAt+TWIST_S*1000-performance.now()):0;},
-    busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.45,.58,.66][m]+Math.min(e,3)*.035;setNeon();},mode,state(){return {mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,neonBase:+neonBase.toFixed(3),ultraE:+ultraE.toFixed(3),eff:eff(),c2:+c2E.toFixed(3),wave:+waveA.toFixed(3),wave2:+waveA2.toFixed(3),vg:+vg.toFixed(3),uTwist:+uTwDeg(performance.now()).toFixed(2),rich:+rich.toFixed(3),starB:+starB.toFixed(3),spd,one,twistDeg,twistNowDeg:+(twistNow*180/Math.PI).toFixed(3),arc:+arcNow.toFixed(3),sinceReadyS:readyAt?+((performance.now()-readyAt)/1000).toFixed(2):null};}};
+    busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.45,.58,.66][m]+Math.min(e,3)*.035;setNeon();},mode,state(){return {chand:chand?chand.P.length:0,cons:cons?cons.edges.length:0,shoot:!!shoot,rain:rain.length,mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,neonBase:+neonBase.toFixed(3),ultraE:+ultraE.toFixed(3),eff:eff(),c2:+c2E.toFixed(3),wave:+waveA.toFixed(3),wave2:+waveA2.toFixed(3),vg:+vg.toFixed(3),uTwist:+uTwDeg(performance.now()).toFixed(2),rich:+rich.toFixed(3),starB:+starB.toFixed(3),spd,one,twistDeg,twistNowDeg:+(twistNow*180/Math.PI).toFixed(3),arc:+arcNow.toFixed(3),sinceReadyS:readyAt?+((performance.now()-readyAt)/1000).toFixed(2):null};}};
 })();
 /* mp4 first (WKWebView and Safari can freeze a .webm on its last frame), and a loop watchdog: if the clip stalls near
    its end while it should be playing, back to 0 and play */
@@ -1381,6 +1679,10 @@ function paint(){
 }
 /* the Ultra moment, once per arrival; the still rim and the label in every mode */
 let ultraT=0;
+/* the living star knob: n points (four, six, eight, six), crisp vector, one form every 140 ms while at Ultra */
+function starPath(n,R){const r=R*(n===4?.34:n===6?.44:.5);let d="";for(let k=0;k<n*2;k++){const a=-Math.PI/2+k*Math.PI/n,rr=k%2?r:R;d+=(k?"L":"M")+(Math.cos(a)*rr).toFixed(2)+" "+(Math.sin(a)*rr).toFixed(2);}return d+"Z";}
+const KFORMS=[4,6,8,6].map(n=>starPath(n,9.5));let kI=0,kT=0;$("#kpath").setAttribute("d",KFORMS[0]);
+function kstar(on){clearInterval(kT);kT=0;if(on&&!reduce&&FX()!=="calm")kT=setInterval(()=>{if(document.hidden)return;kI=(kI+1)%KFORMS.length;$("#kpath").setAttribute("d",KFORMS[kI]);},140);else{kI=0;$("#kpath").setAttribute("d",KFORMS[0]);}}
 function ultraOn(){const cb=$(".cbox"),clip=$("#rimclip"),en=$("#eName"),th=$("#thumb"),sp=$("#spark");
   // the light leaves the beam at its start: that point's angle from the composer's centre is where the rim begins
   const c=cb.getBoundingClientRect(),tr=slider.querySelector(".sl-track").getBoundingClientRect();
@@ -1396,11 +1698,11 @@ function ultraOn(){const cb=$(".cbox"),clip=$("#rimclip"),en=$("#eName"),th=$("#
   const tb=th.getBoundingClientRect();Sky&&Sky.ultra(true,tb.left+tb.width/2,c.top);   // the sweep leaves from the composer's top edge
   motesOn(true);mirrorSync(true);clearTimeout(lblT);lblT=setTimeout(()=>{if(stage.classList.contains("ultra"))en.classList.add("go");},reduce||FX()==="calm"?0:600);
   if(!reduce&&FX()!=="calm"){sparkle(th);liftComposer(cb);if(th.animate)th.animate([{transform:"scale(1)"},{transform:"scale(1.12)",offset:.45},{transform:"scale(1)"}],{duration:220,easing:"cubic-bezier(.2,.8,.2,1)"});}   // the knob clicks into place
-  cb.classList.add("ultra-on");}
+  cb.classList.add("ultra-on");kstar(true);}
 let uoutT=0,lblT=0;
 function ultraOff(){const cb=$(".cbox");cb.classList.remove("ultra-on","igniting");clearTimeout(ultraT);slider.classList.remove("ignite");$("#eName").classList.remove("lit");
   stage.classList.add("uout");clearTimeout(uoutT);uoutT=setTimeout(()=>stage.classList.remove("uout"),1000);   // everything eases back over 900 ms
-  Sky&&Sky.ultra(false);motesOn(false);}
+  Sky&&Sky.ultra(false);motesOn(false);Burst&&Burst.off();kstar(false);}
 /* the arrival's sparkles: twelve fine points fly out of the orb and fade in about 600 ms (compositor only); the composer
    lifts a touch (1.01) with a soft coloured shadow beneath, and settles */
 function sparkle(th){const sr=slider.getBoundingClientRect(),ph=parseFloat(getComputedStyle(slider).getPropertyValue("--ph"))||26,cx=sr.right-ph/2,cy=sr.top+sr.height/2;if(!sr.width||!document.body.animate)return;   // from where the orb lands at Ultra (it is still snapping there)
@@ -1410,7 +1712,46 @@ function sparkle(th){const sr=slider.getBoundingClientRect(),ph=parseFloat(getCo
     const T=(f,s)=>"translate("+(cx+Math.cos(a)*d*f+(up?(Math.random()-.5)*30*f:0)).toFixed(1)+"px,"+(cy+Math.sin(a)*d*f).toFixed(1)+"px) scale("+s.toFixed(2)+") rotate("+(f*40).toFixed(0)+"deg)";
     const an=m.animate([{transform:T(0,.4*s0),opacity:0},{transform:T(.35,s0),opacity:1,offset:.15},{transform:T(.55,s0*.8),opacity:.45,offset:.35},{transform:T(.72,s0),opacity:.95,offset:.55},{transform:T(.88,s0*.7),opacity:.35,offset:.78},{transform:T(1,.3*s0),opacity:0}],{duration:dur,easing:"cubic-bezier(.16,1,.3,1)",fill:"forwards"});
     const done=()=>m.remove();an.onfinish=done;setTimeout(done,dur+150);}};
+  if(Burst){const tb=th.getBoundingClientRect();Burst.trail(tb.left+tb.width/2,cx,cy);Burst.stream(cx,cy);Burst.burst(cx,cy);Burst.glint(cx,cy);return;}
   wave(56,false);setTimeout(()=>{if(stage.classList.contains("ultra"))wave(24,true);},200);}
+/* the arrival burst and the hero glint, above the glass: pooled four-point stars on their own small GPU canvas.
+   Three waves out of the orb (0, +200, +400 ms; 60, 36 and 24 stars), mostly tiny, six hero stars, in white, ice-blue
+   and violet, each twinkling twice as it flies out and fades (760 to 1700 ms); one 24 px star blooms at the orb (400 ms). */
+const Burst=(function(){if(reduce)return null;const cv=document.createElement("canvas");cv.id="fxgl";cv.setAttribute("aria-hidden","true");document.body.appendChild(cv);
+  const gl=cv.getContext("webgl",{alpha:true,premultipliedAlpha:true,antialias:false});if(!gl)return null;const P=pfxProgram(gl);if(!P)return null;
+  let parts=[],raf=0,tm=0,cw=0,ch=0,offAt=0;
+  function size(){const d=Math.min(2,devicePixelRatio||1);cw=innerWidth;ch=innerHeight;cv.width=Math.max(2,Math.round(cw*d));cv.height=Math.max(2,Math.round(ch*d));}
+  size();addEventListener("resize",size);
+  const OK=[0,.15,.35,.55,.78,1],OA=[0,1,.45,.95,.35,0],OS=[.4,1,.8,1,.7,.3];
+  const key=(u,V)=>{for(let i=1;i<OK.length;i++)if(u<=OK[i]){const f=(u-OK[i-1])/(OK[i]-OK[i-1]);return V[i-1]+(V[i]-V[i-1])*f;}return V[V.length-1];};
+  function loop(now){cancelAnimationFrame(raf);clearTimeout(tm);P.clear();const hangs=Sky&&Sky.hangs?Sky.hangs():[];const leave=stage.classList.contains("ultra")?1:Math.max(0,1-(now-offAt)/300);
+    for(let i=parts.length-1;i>=0;i--){const q=parts[i],u=(now-q.t0)/q.dur;if(u<0)continue;if(u>=1){parts.splice(i,1);continue;}
+      if(q.glint){const b=Math.pow(Math.sin(Math.PI*u),.7);P.star(q.x,q.y,q.s*(.35+.65*b),[1,1,1],b*leave,u*.45);P.star(q.x,q.y,q.s*.55*b,[.81,.88,1],.5*b*leave,Math.PI/4+u*.45);continue;}
+      if(!q.hang){const e=1-Math.pow(1-u,4),x=q.x+Math.cos(q.a)*q.d*e+q.dr*e,y=q.y+Math.sin(q.a)*q.d*e;P.star(x,y,q.s*key(u,OS),q.c,key(u,OA)*leave,e*.7);continue;}
+      // with drag: fast out, slowing, then floating like dust caught in light; some drift to the chandelier and settle near it
+      const age=(now-q.t0)/1000,e=1-Math.exp(-q.k*age),fl=Math.min(1,Math.max(0,(age-.3)/.6));
+      let x=q.x+Math.cos(q.a)*q.d*e+q.dr*e+Math.sin(age*1.3+q.p1)*2.2*fl,y=q.y+Math.sin(q.a)*q.d*e+Math.sin(age*1.7+q.p2)*3*fl-q.rise*fl*age;
+      if(q.tg!=null&&hangs[q.tg]){const g=Math.max(0,age-.45),gx=1-Math.exp(-g/.45),gy=1-Math.exp(-g/1.1);x+=(hangs[q.tg][0]+q.j[0]-x)*gx;y+=(hangs[q.tg][1]+q.j[1]-y)*gy;}
+      const a=Math.min(1,age/.08)*Math.min(1,(q.dur/1000-age)/.8)*(.62+.38*Math.sin(age*4.2+q.p1));P.star(x,y,q.s*(.6+.4*Math.min(1,age/.15)),q.c,a*leave,e*.7+age*.15);}
+    gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);P.draw(cw,ch,false);
+    if(parts.length){raf=requestAnimationFrame(loop);tm=setTimeout(()=>loop(performance.now()),60);}}   // a timer beside the frame: a hidden page still clears
+  function go(){cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);}
+  return {burst(cx,cy){const t=performance.now();let hero=0;
+      // where drifters may go: chandelier stars on the knob's side, outside the greeting's width (so none crosses text); home only
+      const h1=$("#h1").getBoundingClientRect(),H=(Sky&&Sky.hangs?Sky.hangs():[]).map((h,i)=>[h,i]).filter(([h])=>!stage.classList.contains("chat")&&(h[2]>h1.right+24||h[2]<h1.left-24)&&(h[2]>innerWidth/2)===(cx>innerWidth/2)).map(([,i])=>i);
+      const chatV=stage.classList.contains("chat");
+      [[60,0],[36,200],[24,400]].forEach(([n,dl],w)=>{for(let k=0;k<n;k++){const isHero=w===0&&k%10===0&&hero<6;if(isHero)hero++;const small=w>0,drift=H.length&&Math.random()<.4;
+        // into the open sky only, never down over the suggestions: the upper half on the home; in a conversation low and to the sides, clear of the answer
+        const f=(k+Math.random()*.7)/n,a=chatV?(f<.5?-Math.PI*(1-.2*f*2):-Math.PI*.2*(f-.5)*2):-Math.PI*(.04+.92*f),d=small?18+Math.random()*30:28+Math.random()*50;
+        parts.push({hang:true,t0:t+dl,x:cx,y:cy,a,d,dr:0,k:4.5+Math.random()*2.5,p1:Math.random()*6.28,p2:Math.random()*6.28,rise:2+Math.random()*4,
+          tg:drift?H[Math.floor(Math.random()*H.length)]:null,j:[(Math.random()-.5)*36,8+Math.random()*26],
+          dur:(drift?3200+Math.random()*1300:2000+Math.random()*2000),s:isHero?9+Math.random()*3:small?2.2+Math.random()*2.6:3+Math.random()*3.4,c:isHero?[1,1,1]:UCOL[Math.floor(Math.random()*UCOL.length)]});}});
+      go();},
+    glint(cx,cy){parts.push({glint:true,t0:performance.now(),x:cx,y:cy,s:16,dur:400});go();},
+    // a brief star trail along the track as the knob slides to Ultra (its 160 ms snap), and a small stream as it lands
+    trail(x0,x1,y){if(x1-x0<4)return;const t=performance.now();for(let k=0;k<18;k++){const f=k/17;parts.push({t0:t+f*160,x:x0+(x1-x0)*f,y:y+(Math.random()-.5)*4,a:-Math.PI/2+(Math.random()-.5)*2,d:3+Math.random()*7,dr:0,dur:380+Math.random()*120,s:1.8+Math.random()*2.2,c:UCOL[k%UCOL.length]});}go();},
+    stream(cx,cy){const t=performance.now();for(let k=0;k<12;k++)parts.push({t0:t+120+k*28,x:cx,y:cy,a:-Math.PI/2+(Math.random()-.35)*1.3,d:28+Math.random()*34,dr:(Math.random()-.5)*10,dur:640+Math.random()*220,s:2+Math.random()*2.6,c:UCOL[(k*3)%UCOL.length]});go();},
+    off(){offAt=performance.now();},count(){return parts.length;}};})();
 function charged(){return stage.classList.contains("ultra")&&!reduce&&FX()!=="calm"&&!!document.body.animate;}
 function sendGlint(){if(!charged())return;const r=sendBtn.getBoundingClientRect(),m=document.createElement("i");m.className="spk big";m.style.setProperty("--c","#cfe0ff");m.style.setProperty("--g","22px");$("#sparks").appendChild(m);
   const T=(s,a)=>"translate("+(r.left+r.width/2).toFixed(1)+"px,"+(r.top+r.height/2).toFixed(1)+"px) scale("+s+") rotate("+a+"deg)";
@@ -1451,6 +1792,7 @@ eff.addEventListener("focus",()=>{if(kbNav)slider.classList.add("kb");});
 eff.addEventListener("blur",()=>slider.classList.remove("kb"));
 eff.addEventListener("pointerdown",()=>{slider.classList.remove("kb");slider.classList.add("drag");});
 addEventListener("pointerup",()=>slider.classList.remove("drag"));
+document.addEventListener("pointerup",e=>{const c=e.target.closest&&e.target.closest(".cbox .round,.cbox .pick,.cbox .send,.seg button");if(!c||reduce)return;c.classList.remove("rel");void c.offsetWidth;c.classList.add("rel");setTimeout(()=>c.classList.remove("rel"),500);});
 setMode(1);paint();
 
 /* ---------- the sidebar: a new question arcs out of the composer into the top of your chats ---------- */
@@ -1459,8 +1801,7 @@ function setSide(on){stage.classList.toggle("side-open",on);sidetog.setAttribute
 sidetog.addEventListener("click",()=>setSide(!stage.classList.contains("side-open")));
 function popToSide(text,v){
   const ta=$("#ask").getBoundingClientRect(), list=$("#today");
-  list.querySelectorAll(".hrow.on").forEach(r=>r.classList.remove("on"));
-  const row=document.createElement("div");row.className="hrow new on live";
+  const row=document.createElement("button");row.type="button";row.className="hrow new on live";selectRow(row);
   const t=document.createElement("span");t.className="t";t.textContent=text;const d=dieEl(v);d.classList.add("ldie");
   row.append(t,d);
   list.prepend(row);void row.offsetWidth;row.classList.add("grow");
@@ -1479,17 +1820,31 @@ function popToSide(text,v){
              {transform:`translate(${dx}px,${dy}px) scale(${k})`,opacity:0}],
             {duration:820,easing:"cubic-bezier(.3,.7,.2,1)",fill:"forwards"}).onfinish=land;
   return row;}
+function selectRow(row){$("#hist").querySelectorAll(".hrow").forEach(r=>{const on=r===row;r.classList.toggle("on",on);if(on)r.setAttribute("aria-current","true");else r.removeAttribute("aria-current");});}
 function finishRow(row,title){row.classList.remove("live");const t=row.querySelector(".t");t.style.opacity=0;setTimeout(()=>{t.textContent=title;t.style.opacity="";},260);}
 function goHome(){if(asking)return;starShow(false);stage.classList.remove("chat","busy");$("#convo").hidden=true;$("#form").style.transform="";setTimeout(relayout,0);
-  $("#today").querySelectorAll(".hrow.on").forEach(r=>r.classList.remove("on"));if(innerWidth<1100)setSide(false);$("#ask").focus();}
-$("#newchat").addEventListener("click",goHome);
+  selectRow(null);if(innerWidth<1100)setSide(false);$("#ask").focus();}
+$("#newchat").addEventListener("click",()=>{laneUI("chat");goHome();});
+/* the lanes: Chat (home), Code and Funnels (a sample view each); arrow keys move along the group */
+const lanes=$("#lanes"),laneTabs=[...lanes.querySelectorAll("button")];
+function laneUI(l){lanes.dataset.lane=l;laneTabs.forEach(b=>{const on=b.dataset.lane===l;b.setAttribute("aria-selected",String(on));b.tabIndex=on?0:-1;});
+  const lv=$("#laneview");["code","funnels"].forEach(k=>{$("#v-"+k).hidden=k!==l;});lv.hidden=l==="chat";stage.classList.toggle("lane",l!=="chat");}
+function setLane(l){if(asking)return;laneUI(l);
+  if(l==="chat"){goHome();return;}
+  starShow(false);fx.cancel();closeMenu();selectRow(null);stage.classList.remove("busy");stage.classList.add("chat");$("#convo").hidden=true;$("#laneview").scrollTop=0;relayout();}
+laneTabs.forEach(b=>b.addEventListener("click",()=>setLane(b.dataset.lane)));
+lanes.addEventListener("keydown",e=>{const k=laneTabs.indexOf(document.activeElement);if(k<0)return;let n=null;
+  if(e.key==="ArrowRight")n=(k+1)%3;else if(e.key==="ArrowLeft")n=(k+2)%3;else if(e.key==="Home")n=0;else if(e.key==="End")n=2;if(n===null)return;
+  e.preventDefault();laneTabs[n].focus();setLane(laneTabs[n].dataset.lane);});
+$("#approve").addEventListener("click",e=>{const b=e.target.closest(".apbtn");if(!b)return;const ap=$("#approve");ap.classList.add("done");
+  ap.querySelector(".apdone").textContent=b.classList.contains("ok")?"Approved. In the app the agent runs it, reads the result and carries on. This preview runs nothing.":"Skipped. In the app the agent looks for another way, or stops and tells you.";});
 $("#details").addEventListener("click",()=>{const ai=$("#ai"),on=!ai.classList.contains("open");ai.classList.toggle("open",on);$("#details").setAttribute("aria-expanded",String(on));});
 
 /* ---------- Effects: Calm, Balanced (the default) or Full, remembered ---------- */
 const fxpop=$("#fxpop"),fxtog=$("#fxtog");
 function setFx(mode){const full=mode==="full";fxClass(mode);try{localStorage.setItem("concorde.beta.fx",mode==="bal"?"balanced":mode);}catch(e){}
   fxpop.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.fx===mode)));
-  Sky&&Sky.mode(mode);clipRate();fx.cancel();
+  Sky&&Sky.mode(mode);clipRate();fx.cancel();kstar(stage.classList.contains("ultra"));
   if(stage.classList.contains("home"))document.querySelectorAll(".rig").forEach(r=>r.classList.add("on"));
   if(!full){stage.classList.remove("busy","lit-mark");}
   setGreeting(greeting);greetShow();}
@@ -1500,24 +1855,24 @@ fxpop.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String
 
 /* ---------- the sample questions and their answers ---------- */
 const CANNED=[
- {q:"Why are there two high tides a day?",title:"Two high tides a day",key:/tide/i,
+ {q:"Why are there two high tides a day?",edits:[["The water on the side facing the Moon is pulled toward it a little more than the Earth's centre is, so it piles up.", "The water facing the Moon is pulled toward it more strongly than the Earth's centre, so it piles up."], ["so each high tide arrives roughly 50 minutes later than it did the day before.", "so the high tides come about 50 minutes later each day."], ["The shape of a coastline changes the pattern a lot:", "Coastlines change the pattern:"]],
+  title:"Two high tides a day",key:/tide/i,
   src:["oceanservice.noaa.gov","tidesandcurrents.noaa.gov","rmg.co.uk","britannica.com"],
-  draft:"The Moon pulls on the oceans. The water facing the Moon bulges toward it. The water on the far side bulges too, because the Moon pulls the solid Earth more than it pulls that water. Earth turns through both bulges once a day, so most coasts get two high tides. They come about 12 hours 25 minutes apart, because the Moon moves along its orbit while Earth spins.",
   html:"<p><b>The Moon raises two bulges in the ocean, and the Earth turns through both.</b> The water on the side facing the Moon is pulled toward it a little more than the Earth's centre is, so it piles up. The water on the far side is pulled a little less, so it is left behind as a second bulge.<sup class=\"cite\">1</sup></p>"+
    "<p>A point on the coast passes under each bulge once a day: two high tides and two low tides. Because the Moon moves along its orbit while the Earth spins, the whole cycle takes about 24 hours 50 minutes, so each high tide arrives roughly 50 minutes later than it did the day before.<sup class=\"cite\">2</sup></p>"+
    "<p>The Sun adds a smaller pull. When the Sun and Moon line up, at new and full moon, the tides are larger (spring tides); when they sit at right angles, the tides are smaller (neap tides). The shape of a coastline changes the pattern a lot: a few places get only one high tide a day, and the Bay of Fundy gets some of the largest tides in the world.<sup class=\"cite\">3</sup></p>"},
- {q:"Sourdough timing for a Saturday bake",title:"Saturday sourdough",key:/sour|bread|dough|bake/i,
+ {q:"Sourdough timing for a Saturday bake",edits:[["Feed the starter so it is bubbly and doubled by morning.", "Feed the starter so it is ready in the morning."], ["It is ready when it has grown by about half and jiggles when you shake the bowl.", "It is ready when it has grown and looks airy."], ["Cool for an hour before cutting.", "Let it cool before cutting."]],
+  title:"Saturday sourdough",key:/sour|bread|dough|bake/i,
   src:["kingarthurbaking.com","theperfectloaf.com"],
-  draft:"Feed the starter Friday night. Saturday morning, mix flour and water and let it rest an hour. Add the starter and salt. Let the dough rise 4 to 5 hours at room temperature, folding it a few times early on. Shape it, let it proof 2 to 3 hours, then bake in a hot Dutch oven, lid on, then lid off.",
   html:"<p><b>For a loaf out of the oven about 5:30 pm Saturday</b>, with the kitchen around 22 to 24 °C.</p>"+
    "<p><b>Friday, 9 pm.</b> Feed the starter so it is bubbly and doubled by morning.</p>"+
    "<p><b>Saturday, 8 am.</b> Mix the flour and water and leave it covered for an hour. <b>9 am.</b> Add the starter and salt and work them in.<sup class=\"cite\">1</sup></p>"+
    "<p><b>9 am to 2 pm.</b> Bulk rise at room temperature. Stretch and fold every 30 minutes for the first two hours, then leave it alone. It is ready when it has grown by about half and jiggles when you shake the bowl.</p>"+
    "<p><b>2 pm.</b> Shape the loaf and put it in a floured basket, seam up. Proof 2 to 3 hours at room temperature; a poke should spring back slowly. (Or put it in the fridge and bake on Sunday morning; a cold loaf scores more cleanly.)<sup class=\"cite\">2</sup></p>"+
    "<p><b>4 pm.</b> Heat the oven with a Dutch oven inside to 250 °C (480 °F). <b>4:45 pm.</b> Score the loaf and bake 20 minutes with the lid on, then 20 to 25 minutes at 230 °C (450 °F) with the lid off, until deep brown. Cool for an hour before cutting.</p>"},
- {q:"Which NAS should I buy for backups?",title:"A NAS for backups",key:/nas|backup|storage|drive/i,
+ {q:"Which NAS should I buy for backups?",edits:[["Two drives hold the same data, so one can fail and nothing is lost; you replace it and the mirror rebuilds.", "Both drives hold the same data, so if one fails nothing is lost."], ["they can slow to a crawl while a mirror rebuilds, which is exactly when you need them to be quick.", "they can be very slow while a mirror is rebuilding, and that is when you want speed."], ["The UGREEN is the best value and the fastest of the three, with 2.5-gigabit networking, but its software is younger.", "The UGREEN is cheaper and faster, but its software is newer."], ["A backup you have not restored from is a hope, not a backup.", "A backup only counts once you have restored a file from it, so try a restore early and then every few months after that."]],
+  title:"A NAS for backups",key:/nas|backup|storage|drive/i,
   src:["synology.com","ugreen.com","backblaze.com"],
-  draft:"For home backups, a two-bay NAS is enough. Put two drives in it, mirrored, so one can fail. Keep the backup software simple and let it run every night. Keep one more copy somewhere else, in the cloud or on a drive at a friend's house. The three worth looking at are the Synology DS224+, the UGREEN DXP2800 and the QNAP TS-264.",
   html:"<p><b>A two-bay NAS with mirrored drives covers a home.</b> Two drives hold the same data, so one can fail and nothing is lost; you replace it and the mirror rebuilds. Below are the three that are easy to live with, what they cost without drives, and what sets them apart.</p>"+
    "<h2>The short list</h2>"+
    "<table><thead><tr><th>Model</th><th class=\"num\">Bays</th><th class=\"num\">Memory</th><th class=\"num\">Idle power</th><th class=\"num\">Price</th></tr></thead><tbody>"+
@@ -1526,6 +1881,10 @@ const CANNED=[
    "<tr><td>QNAP TS-264</td><td class=\"num\">2</td><td class=\"num\">8 GB</td><td class=\"num\">12 W</td><td class=\"num\">$380</td></tr></tbody></table>"+
    "<span class=\"cap\">Prices are typical list prices in late 2026, without drives.<sup class=\"cite\">1</sup></span>"+
    "<p>The Synology is the easiest: its software is the most polished and its backup app runs on a schedule with no fuss. The UGREEN is the best value and the fastest of the three, with 2.5-gigabit networking, but its software is younger. The QNAP has the most ports and apps, and asks more of you.<sup class=\"cite\">2</sup></p>"+
+   "<h2>Choosing the drives</h2>"+
+   "<p>Buy two drives of the same model and size, made for a NAS. WD Red Plus, Seagate IronWolf and Toshiba N300 are the usual choices, and all three use conventional recording (CMR). Avoid shingled (SMR) drives here: they can slow to a crawl while a mirror rebuilds, which is exactly when you need them to be quick.</p>"+
+   "<p>For size, take what you expect to need in three years and go one step up. A mirror holds the capacity of one drive, so two 8 TB drives give you 8 TB. Larger drives usually cost less per terabyte, so the step up is rarely wasted.</p>"+
+   "<p>Two more things make the box easy to live with. Put it somewhere you will not hear it, since NAS drives hum and click as they work. And if you can, plug it into a small UPS, so a power cut lets it shut down cleanly instead of stopping in the middle of a write.</p>"+
    "<h2>What to do once it arrives</h2>"+
    "<ol><li><b>Fit two identical drives</b>, 4 TB or larger, made for a NAS (they tolerate running all day).</li>"+
    "<li><b>Mirror them</b> (RAID 1 on QNAP and UGREEN, SHR on Synology). You get the capacity of one drive and the safety of two.</li>"+
@@ -1535,15 +1894,195 @@ const CANNED=[
    "<pre><code><span class=\"c\"># mirror the Documents folder to the NAS, keeping deleted files for 30 days</span>\n<span class=\"k\">rsync</span> -a --delete --backup --backup-dir=<span class=\"s\">\"/volume1/backup/.trash/$(date +%F)\"</span> \\\n  ~/Documents/ <span class=\"s\">nas:/volume1/backup/documents/</span></code></pre>"+
    "<blockquote><p>A backup you have not restored from is a hope, not a backup. Pull one file back the first week, and once a season after that.</p></blockquote>"+
    "<p>The DS224+ is the safe answer. Pick the DXP2800 if you want the speed and do not mind newer software, and the TS-264 only if you know you will use the extra ports.</p>"},
- {q:"Packing list for a two-night weekend trip",title:"Weekend packing list",key:/pack|trip|weekend|travel/i,
+ {q:"Packing list for a two-night weekend trip",edits:[["For two nights you need less than it feels like.", "Two nights needs less than you think."], ["Check the forecast the night before, and swap the warm layer for a rain jacket if it looks wet.", "Check the forecast before you go."]],
+  title:"Weekend packing list",key:/pack|trip|weekend|travel/i,
   src:[],
-  draft:"Clothes for two days plus one spare top, something warm, sleepwear, and underwear and socks for three days. Toiletries in a small bag. Phone charger. Wallet, ID, tickets. Any medicine you take. A water bottle and something to read. Check the weather before you go.",
   html:"<p><b>Keep it to one bag.</b> For two nights you need less than it feels like.</p>"+
    "<p><b>Clothes.</b> Two tops, one spare pair of trousers or a skirt, a warm layer, three sets of underwear and socks, sleepwear, and the shoes you travel in. Add swimwear or a smarter outfit only if the plan calls for it.</p>"+
    "<p><b>Wash bag.</b> Toothbrush and toothpaste, deodorant, razor, any skincare, a comb or hair ties, and travel sizes of anything liquid if you are flying.</p>"+
    "<p><b>Essentials.</b> Phone and charger, wallet with ID and cards, tickets or booking details, keys, and any medicine you take, with a day to spare.</p>"+
    "<p><b>Nice to have.</b> A water bottle, headphones, a book, sunglasses, and a small folding bag for anything you buy.</p>"+
    "<p>Check the forecast the night before, and swap the warm layer for a rain jacket if it looks wet.</p>"}];
+/* ---------- the chats in the sidebar: each opens a short sample conversation, one question and its polished answer,
+   shown at once (it is history: no writing, no star). A chat asked here reopens the same way. ---------- */
+const FINE_ANSWER="Sample answer. This preview runs no models.",FINE_CHAT="Sample chat. This preview runs no models.";
+const CHATS={
+ offers:{m:1,secs:8.6,src:[],
+  q:"How do I compare two job offers when the salaries and benefits are different?",
+  html:`<p><b>Put both offers on the same footing: what each is worth to you in a year, first in money, then in time and growth.</b> The higher salary can be the smaller offer once benefits and costs are counted.</p>`+
+   `<h2>Count the money</h2>`+
+   `<p>For each offer, add the base salary, the bonus you can realistically expect and the employer's retirement contribution. Then take away what you would pay yourself: health insurance premiums and the cost of getting to work.</p>`+
+   `<table><thead><tr><th>Item</th><th class="num">Offer A</th><th class="num">Offer B</th></tr></thead><tbody>`+
+   `<tr><td>Base salary</td><td class="num">$95,000</td><td class="num">$102,000</td></tr>`+
+   `<tr><td>Expected bonus</td><td class="num">$5,000</td><td class="num">$0</td></tr>`+
+   `<tr><td>Retirement match (4% / none)</td><td class="num">$3,800</td><td class="num">$0</td></tr>`+
+   `<tr><td>Health premiums you pay</td><td class="num">−$1,800</td><td class="num">−$4,200</td></tr>`+
+   `<tr><td>Commute</td><td class="num">−$2,400</td><td class="num">$0</td></tr>`+
+   `<tr><td><b>Worth to you</b></td><td class="num"><b>$99,600</b></td><td class="num"><b>$97,800</b></td></tr></tbody></table>`+
+   `<span class="cap">Example figures for one year, before tax. Use your own.</span>`+
+   `<p>Equity needs its own line. Value it at what the shares would be worth if they vested today, and discount it heavily if the company is private, since it may be years before you can sell. Check the vesting schedule too; four years with a one-year cliff is common.</p>`+
+   `<h2>Then weigh what money misses</h2>`+
+   `<ul><li><b>Time.</b> Paid leave, the hours really expected and the commute. Ten extra days off is two working weeks.</li>`+
+   `<li><b>Growth.</b> Who you would learn from, and where the role leads in two years.</li>`+
+   `<li><b>Stability.</b> How the team and the company have done over the past year.</li>`+
+   `<li><b>Flexibility.</b> Remote days, and how fixed the schedule is.</li></ul>`+
+   `<p>If the totals are close, the second list usually decides it. It is also normal to ask the offer you prefer to close a gap, with the other offer's numbers to point to.</p>`},
+ lease:{m:2,secs:9.4,src:[],
+  q:"What does this clause in my lease mean?\n\n“Tenant shall not assign this lease or sublet the premises without Landlord's prior written consent, which shall not be unreasonably withheld.”",
+  html:`<p><b>You can't hand the lease to someone else, or rent the place out to someone, without asking the landlord first and getting a yes in writing. The landlord can't say no without a good reason.</b></p>`+
+   `<h2>Piece by piece</h2>`+
+   `<ul><li><b>Assign</b> means transferring the whole lease to someone else for the rest of its term. They take your place with the landlord.</li>`+
+   `<li><b>Sublet</b> means renting all or part of the place to someone while you stay the tenant. You remain responsible for the rent and for any damage.</li>`+
+   `<li><b>Prior written consent</b> means you ask before it happens and the approval is in writing. An email usually counts; keep it.</li>`+
+   `<li><b>Not unreasonably withheld</b> means the landlord needs a legitimate reason to refuse, such as a proposed subtenant who can't show they can pay the rent. Refusing for no reason at all is not allowed under this wording.</li></ul>`+
+   `<h2>If you want to sublet</h2>`+
+   `<ol><li><b>Write to the landlord</b> with the person's name, the dates, and evidence they can pay, such as references or proof of income.</li>`+
+   `<li><b>Ask for a reply</b> by a reasonable date.</li>`+
+   `<li><b>Wait for the written yes</b> before anyone moves in.</li></ol>`+
+   `<p>Rules on subletting differ by country, state and city, and some places give tenants more rights than the lease does. A local tenants' advice service can tell you how it works where you live.</p>`},
+ ssh:{m:1,secs:6.1,src:["man.openbsd.org","learn.microsoft.com"],
+  q:"ssh won't use my key. It says the permissions 0644 on ~/.ssh/id_ed25519 are too open. How do I fix it?",
+  html:`<p><b>Other users on the machine can read your private key, so ssh refuses to use it. Make the key readable by you alone.</b><sup class="cite">1</sup></p>`+
+   `<pre><code><span class="c"># only you can read and write the key</span>\n<span class="k">chmod</span> 600 <span class="s">~/.ssh/id_ed25519</span>\n<span class="c"># only you can open the folder</span>\n<span class="k">chmod</span> 700 <span class="s">~/.ssh</span></code></pre>`+
+   `<p>The public key, <code>id_ed25519.pub</code>, can stay at 644; it is meant to be shared. Then connect again. If it still fails, add <code>-v</code> to see which keys ssh offers and why the server turns them down:</p>`+
+   `<pre><code><span class="k">ssh</span> -v <span class="s">user@host</span></code></pre>`+
+   `<h2>If the error comes back</h2>`+
+   `<ul><li><b>The key was copied</b> from another machine or a USB drive. Copies often arrive with loose permissions; run the <code>chmod</code> again after each copy.</li>`+
+   `<li><b>The file isn't yours.</b> <code>ls -l ~/.ssh</code> shows the owner. If it is someone else, <code>sudo chown "$USER" ~/.ssh/id_ed25519</code> makes it yours.</li>`+
+   `<li><b>On Windows</b>, OpenSSH checks the file's access list instead. In the key's Properties, under Security, leave only your own account, SYSTEM and Administrators.<sup class="cite">2</sup></li></ul>`},
+ board:{m:0,secs:4.2,src:[],
+  q:"Summarise these board notes into decisions, actions and open questions.\n\nQ3 revenue came in 4% above plan. The board approved the new office lease from 1 March. The hiring freeze is lifted for two engineering roles. The treasurer will bring a revised budget to the December meeting. The website relaunch slips to January while two vendor quotes are compared. Members asked whether the reserve policy should be reviewed; no decision was taken.",
+  html:`<p><b>A good quarter, two approvals, and a revised budget due in December.</b></p>`+
+   `<h3>Decisions</h3>`+
+   `<ul><li>The new office lease is approved, from 1 March.</li><li>Two engineering roles can be filled; the hiring freeze is lifted for those two only.</li></ul>`+
+   `<h3>Actions</h3>`+
+   `<ul><li><b>Treasurer:</b> bring a revised budget to the December meeting.</li><li><b>No owner named:</b> compare the two vendor quotes for the website relaunch, now planned for January.</li></ul>`+
+   `<h3>Open questions</h3>`+
+   `<ul><li>Whether to review the reserve policy. It was raised and nothing was decided; it may belong on the December agenda.</li></ul>`+
+   `<h3>For the record</h3>`+
+   `<p>Q3 revenue was 4% above plan.</p>`},
+ lisbon:{m:2,secs:11.8,src:["visitlisboa.com","parquesdesintra.pt","cp.pt"],
+  q:"Plan a relaxed week in Lisbon, with a couple of day trips.",
+  html:`<p><b>Seven days, one area a day: the busy sights in the morning, slow afternoons.</b> Lisbon is hilly and its pavements are cobbled, so comfortable shoes matter more than anything else you pack.</p>`+
+   `<ol><li><b>Alfama and the castle.</b> Walk up through Alfama to São Jorge Castle in the morning, then down to the Santa Luzia viewpoint for the view over the river.</li>`+
+   `<li><b>Belém.</b> The Jerónimos Monastery and the Belém Tower, then custard tarts at the bakery next to the monastery. The monastery is closed on Mondays.<sup class="cite">1</sup></li>`+
+   `<li><b>Sintra.</b> A day trip by train from Rossio station, about 40 minutes each way. Book Pena Palace ahead and go early; Quinta da Regaleira is a short walk from the town centre.<sup class="cite">2</sup></li>`+
+   `<li><b>Baixa and Chiado.</b> The grid of streets rebuilt after the 1755 earthquake, Praça do Comércio on the river, and the cafés and bookshops of Chiado.</li>`+
+   `<li><b>Cascais.</b> The coast train from Cais do Sodré takes about 40 minutes. A morning on the beach, then lunch by the harbour.<sup class="cite">3</sup></li>`+
+   `<li><b>Gulbenkian and Parque das Nações.</b> The Gulbenkian Museum and its garden (the museum is closed on Tuesdays), then the Oceanário in the afternoon.</li>`+
+   `<li><b>A slow last day.</b> Tram 28 early, before the queues, a long lunch, and sunset at the Senhora do Monte viewpoint.</li></ol>`+
+   `<p>Buy a Viva Viagem card at any metro station and load it with credit; it covers the metro, trams, buses and the trains to Sintra and Cascais. Check the closing days against your dates and swap days around if one falls badly.</p>`},
+ nas:{m:1,secs:10.3,src:CANNED[2].src,q:CANNED[2].q,html:CANNED[2].html}};
+const RATE={mlx:"38 tok/s",nvidia:"71 tok/s",cloud:"54 tok/s"};
+const rowChat=new WeakMap();   // chats asked here, by their row
+function srcFill(list){const sr=$("#srcs");sr.innerHTML="";list.forEach((s,k)=>{const c=document.createElement("span");c.className="srcchip";const n=document.createElement("span");n.className="sn";n.textContent=k+1;c.append(n,document.createTextNode(s));sr.appendChild(c);});sr.classList.toggle("on",list.length>0);}
+function showChat(c,row){
+  if(asking||lis)return;laneUI("chat");
+  const cv=$("#convo"),ai=$("#ai"),q=$("#q");cv.setAttribute("aria-live","off");   // focus carries the reader to the question; the region does not read the whole answer out
+  starShow(false);fx.cancel();closeMenu();stage.classList.remove("busy");stage.classList.add("chat");cv.hidden=false;
+  q.textContent=c.q;[q,ai].forEach(x=>{x.style.animation="none";void x.offsetWidth;x.style.animation="";});
+  ai.classList.remove("live","open");$("#details").setAttribute("aria-expanded","false");setBy("");
+  const ans=$("#ans");ans.className="body";ans.style.minHeight="";ans.innerHTML=c.html;srcFill(c.src);
+  const by=$("#by");
+  if(c.snap){by.innerHTML=c.snap.by;by.className=c.snap.byClass;$("#step").innerHTML=c.snap.step;$("#stats").innerHTML=c.snap.stats;$("#bt").textContent=c.snap.bt;$("#spine").innerHTML=c.snap.spine;$("#machines").innerHTML=c.snap.machines;}
+  else{   // the steps the mode would have taken, the same as a live answer's
+    const used=MODELS.filter(x=>x.from<=c.m),mach=[...new Set(used.map(x=>x.v))],words=ans.textContent.split(/\s+/).filter(Boolean).length,toks=Math.round(words*2.6+c.src.length*90);
+    by.className="";by.textContent="Concorde "+MODES[c.m].n;
+    setStep("Done in "+c.secs.toFixed(1)+" s",mach);
+    const st=$("#stats");st.innerHTML="";[toks.toLocaleString()+" tokens",Math.round(toks/c.secs)+" tok/s",c.secs.toFixed(1)+" s"].forEach(t=>{const x=document.createElement("span");x.textContent=t;st.appendChild(x);});
+    $("#bt").textContent=c.secs.toFixed(1)+" s";$("#spine").innerHTML="";$("#machines").innerHTML="";
+    if(c.src.length)spineDone(spineAdd("Reading "+c.src.length+" sources",null,""),c.src.length+" pages");
+    spineDone(spineAdd(used.length>1&&c.m>=2?"Drafting, "+used.length+" models":"Writing a first draft",c.m>=2?mach:used[0].v,""),Math.round(words*.9)+" tokens");
+    spineDone(spineAdd("Polishing",(used.length>1?used[1]:used[0]).v,""),Math.round(words*1.4)+" tokens");
+    mach.forEach(v=>machineRow(v,RATE[v]));}
+  $("#live").classList.add("done");$("#behind").classList.add("on");
+  const fine=$("#fine");fine.textContent=c.fine||FINE_CHAT;fine.classList.add("on");
+  selectRow(row);cv.scrollTop=0;relayout();
+  if(innerWidth<1100)setSide(false);
+  q.focus({preventScroll:true});setTimeout(()=>cv.setAttribute("aria-live","polite"),300);
+}
+$("#hist").addEventListener("click",e=>{const r=e.target.closest(".hrow");if(!r)return;const c=r.dataset.chat?CHATS[r.dataset.chat]:rowChat.get(r);if(c)showChat(c,r);});
+function draftOf(c){let h=c.html;(c.edits||[]).forEach(([a,b])=>{h=h.replace(a,b);});return h;}   // the first draft: the same answer in plainer words, passage by passage
+/* ---------- THE INK (per the owner: "where it just strings beautifully"). The answer streams the way a real stream
+   does: tokens arrive in uneven bursts into a buffer and leave it at an even cadence, word by word (30 a second, 36 at
+   Extra and Ultra, a little slower when the buffer runs low, a short breath at a sentence's end). Each word fades in
+   over 220 ms with a 1 px rise and a 2 px blur coming sharp; the newest few carry a faint light that settles to plain
+   white. A word that has settled is unwrapped to plain text, so the DOM stays light. Blocks open softly: a paragraph's
+   or a list item's space opens in 120 ms, headings rise in, code and tables fade in whole. The answer's height grows
+   smoothly and the reading column follows gently (until the reader scrolls away). Calm: a plain per-word fade.
+   Reduced motion: the words, no animation. ---------- */
+const INK={rate:30,rateHi:36,breath:.09,settle:420,blocks:/^(P|LI|H2|H3|BLOCKQUOTE)$/,whole:/^(PRE|TABLE)$/};
+function inkOps(html){const t=document.createElement("template");t.innerHTML=html;const ops=[];
+  (function walk(n){for(const c of [...n.childNodes]){
+    if(c.nodeType===3){const s=c.textContent;const lead=s.match(/^\s+/);if(lead)ops.push({k:"sp",t:lead[0]});(s.slice(lead?lead[0].length:0).match(/[^\s-]+-+(?=[^\s-])|\S+\s*/g)||[]).forEach(w=>ops.push({k:"w",t:w}));/* split at hyphens: text may break there, so the stream must too */}
+    else if(c.nodeType===1){if(INK.whole.test(c.tagName)||c.classList.contains("cap")){ops.push({k:"blk",n:c,cost:c.tagName==="TABLE"?8:Math.max(4,c.textContent.split("\n").length*2)});continue;}
+      ops.push({k:"open",n:c});walk(c);ops.push({k:"close"});}}})(t.content);
+  return ops;}
+function inkStream(box,html,o){return new Promise(done=>{
+  const ops=inkOps(html),mode=o.mode,calm=mode==="calm",still=reduce;let i=0,arrived=0,credit=0,last=0,fin=false;const stack=[box],live=[],cv=$("#convo");
+  let follow=true;const away=()=>{if(cv.scrollHeight-cv.scrollTop-cv.clientHeight>140)follow=false;};cv.addEventListener("wheel",away,{passive:true});cv.addEventListener("touchmove",away,{passive:true});
+  // the network: tokens land in bursts of 1 to 8 words, 30 to 170 ms apart, after a short first wait
+  const words=ops.filter(x=>x.k==="w"||x.k==="blk").length;let tArr=0;
+  const arrive=()=>{if(fin)return;arrived=Math.min(words,arrived+1+Math.floor(Math.random()*8));if(arrived<words)tArr=setTimeout(arrive,30+Math.random()*140);};tArr=setTimeout(arrive,still?0:120);
+  let released=0,newest=null,hT=0;
+  const grow=()=>{if(still)return;const h=box.scrollHeight;if(h>hT+.5){hT=h;box.style.height=h+"px";}};
+  box.classList.add("inking");   /* no kerning while words are separate boxes: a settled word then sits exactly where its box did */
+  let pendSp=null;const flushSp=()=>{if(pendSp){pendSp[0].appendChild(document.createTextNode(pendSp[1]));pendSp=null;}};
+  function emit(){   // release ops up to and including the next word (or block)
+    while(i<ops.length){const op=ops[i++],top=stack[stack.length-1];
+      if(op.k==="sp"){flushSp();top.appendChild(document.createTextNode(op.t));continue;}
+      if(op.k==="open"){const el=op.n.cloneNode(false),blk=INK.blocks.test(el.tagName),after=!!top.lastElementChild;flushSp();
+        if(!still&&blk&&after)el.classList.add(calm?"ink-in-c":"ink-in");if(!still&&/^H[23]$/.test(el.tagName))el.classList.add("ink-head");top.appendChild(el);stack.push(el);
+        if(!still&&blk&&after){credit-=.17*o.rate;return "pause";}continue;}   // the space opens before its first word arrives, so nothing on screen moves
+      if(op.k==="close"){flushSp();stack.pop();continue;}
+      if(op.k==="blk"){flushSp();const el=op.n.cloneNode(true);if(!still)el.classList.add("ink-block");top.appendChild(el);released++;credit-=op.cost-1;newest=el;return op;}
+      // a word: its trailing space stays outside the span, so lines break exactly as the settled text will
+      const w=op.t.replace(/\s+$/,""),sp=op.t.slice(w.length);
+      if(still){flushSp();top.appendChild(document.createTextNode(op.t));released++;return op;}
+      // a word's trailing space is laid down just before the next word, so a space never lands alone at a line's start and moves
+      flushSp();const s=document.createElement("span");s.className=calm?"ink c":"ink hold";s.textContent=w;top.appendChild(s);if(sp)pendSp=[top,sp];
+      if(!calm){   // the weight settles from lighter (ink spreading into the page); its width is held at the rest weight, so the line never reflows
+        const fw=+getComputedStyle(top).fontWeight||400,code=!!top.closest("code,pre");if(code)s.className="ink nw";else{s.style.width=s.getBoundingClientRect().width+"px";s.style.setProperty("--w1",fw);s.style.setProperty("--w0",Math.max(300,fw>=550?fw-150:fw-80));s.className="ink";}}
+      live.push([s,performance.now()]);released++;newest=s;if(/[.!?:]["”)]?$/.test(w))credit-=INK.breath*o.rate;return op;}
+    return null;}
+  function settle(now,all){while(live.length&&(all||now-live[0][1]>INK.settle)){const [s]=live.shift();if(s.parentNode)s.replaceWith(s.textContent);}}
+  function tick(now){if(fin)return;const dt=last?Math.min(.1,(now-last)/1000):0;last=now;
+    const buf=arrived-released,rate=o.rate*(buf<6?.82:buf>30?1.12:1);   // even: a touch slower when the buffer is thin, a touch quicker when it is deep
+    if(still)credit=buf;else credit=Math.min(credit+dt*rate,3);
+    let n=0;while(credit>=1&&released<arrived){const op=emit();if(!op||op==="pause")break;credit-=1;n++;if(o.onWord)o.onWord(op);}
+    if(n){grow();if(o.star&&newest&&newest.classList&&newest.classList.contains("ink")){starAfter(newest);starShow(true);}}
+    settle(now,false);
+    if(follow&&newest&&!still){const r=newest.getBoundingClientRect(),cr=cv.getBoundingClientRect(),over=r.bottom-(cr.bottom-72);if(over>0)cv.scrollTop+=over*Math.min(1,dt*9);}   // the column follows gently
+    if(released>=words){flushSp();fin=true;clearTimeout(tArr);cv.removeEventListener("wheel",away);cv.removeEventListener("touchmove",away);
+      setTimeout(()=>{settle(0,true);box.normalize();hT=0;done();},still?0:INK.settle);   /* the height stays held: the dissolve takes it from here and lets it go when it is done */return;}
+    schedule();}
+  let rafId=0,toId=0;function schedule(){rafId=requestAnimationFrame(t=>{clearTimeout(toId);tick(t);});clearTimeout(toId);toId=setTimeout(()=>{cancelAnimationFrame(rafId);tick(performance.now());},50);}   // a timer beside the frame: a hidden page still finishes
+  schedule();});}
+/* draft -> polish: a calm dissolve. The draft and the polish share their structure; word by word, what is unchanged
+   stays where it is, and only the changed passages dim out of the draft and shimmer softly into their new words. */
+function inkDiff(a,b){const n=a.length,m=b.length,D=Array.from({length:n+1},()=>new Uint16Array(m+1));
+  for(let x=n-1;x>=0;x--)for(let y=m-1;y>=0;y--)D[x][y]=a[x]===b[y]?D[x+1][y+1]+1:Math.max(D[x+1][y],D[x][y+1]);
+  const ka=new Array(n).fill(false),kb=new Array(m).fill(false);let x=0,y=0;while(x<n&&y<m){if(a[x]===b[y]){ka[x]=kb[y]=true;x++;y++;}else if(D[x+1][y]>=D[x][y+1])x++;else y++;}return [ka,kb];}
+function inkMark(html,keep,cls){const t=document.createElement("template");t.innerHTML=html;const tn=[];(function w(n){for(const c of n.childNodes){if(c.nodeType===3)tn.push(c);else if(c.nodeType===1&&!INK.whole.test(c.tagName))w(c);}})(t.content);return {t,tn};}
+function inkDissolve(box,fromHtml,toHtml,o){return new Promise(async done=>{
+  const calm=o.mode==="calm";
+  const A=inkMark(fromHtml),B=inkMark(toHtml);
+  if(reduce||A.tn.length!==B.tn.length){box.innerHTML=toHtml;box.classList.remove("inking");return done();}   // a different shape: plain swap
+  const h0=box.getBoundingClientRect().height;
+  const wrap=(nodes,keeps,cls)=>nodes.forEach((tn,j)=>{const parts=tn.textContent.split(/(\s+)/),k=keeps[j];let wi=0;const frag=document.createDocumentFragment();let run=null;
+    parts.forEach(p=>{if(!p)return;if(/^\s+$/.test(p)){(run||frag).appendChild(document.createTextNode(p));return;}const keep=k[wi++];
+      if(keep){if(run){const ws=run.lastChild&&run.lastChild.nodeType===3&&/^\s+$/.test(run.lastChild.textContent)?run.lastChild:null;if(ws)frag.appendChild(ws);run=null;}frag.appendChild(document.createTextNode(p));}
+      else{if(!run){run=document.createElement("span");run.className=cls;frag.appendChild(run);}run.appendChild(document.createTextNode(p));}});
+    tn.replaceWith(frag);});
+  const keepsA=[],keepsB=[];A.tn.forEach((tn,j)=>{const a=tn.textContent.split(/\s+/).filter(Boolean),b=B.tn[j].textContent.split(/\s+/).filter(Boolean);const [ka,kb]=inkDiff(a,b);keepsA.push(ka);keepsB.push(kb);});
+  wrap(A.tn,keepsA,"ink-old");wrap(B.tn,keepsB,calm?"ink-new c":"ink-new");
+  box.style.height=h0+"px";box.innerHTML="";box.appendChild(A.t.content);   // the draft again, the same words, its changes now marked
+  void box.offsetWidth;box.classList.add("dissolving");await wait(calm?160:220);
+  box.innerHTML="";box.appendChild(B.t.content);box.classList.remove("inking");
+  box.querySelectorAll(".ink-new").forEach((s,k)=>s.style.animationDelay=Math.min(k*45,480)+"ms");
+  box.style.height=box.scrollHeight+"px";box.classList.remove("dissolving");
+  await wait(calm?420:1100);
+  box.querySelectorAll(".ink-new").forEach(s=>s.replaceWith(...s.childNodes));box.normalize();box.style.height="";done();});}
 let cannedNext=0;
 function pickCanned(text){const hit=CANNED.find(c=>c.key.test(text));if(hit)return hit;return CANNED[(cannedNext++)%CANNED.length];}
 CANNED.slice(0,3).forEach(c=>{const b=document.createElement("button");b.type="button";b.className="sugg";b.textContent=c.q;b.addEventListener("click",()=>{sendGlint();strike();ask(c.q);});$("#suggs").appendChild(b);});
@@ -1586,7 +2125,7 @@ function spineDone(li,nums){li.classList.remove("live");if(nums!=null)li.querySe
 function machineRow(v,rate){const r=document.createElement("div");r.className="mrow";const a=document.createElement("span");a.appendChild(dieEl(v));a.appendChild(document.createTextNode(MACH[v].name));
   const m=document.createElement("span");m.className="mono";m.textContent=rate;r.append(a,m);$("#machines").appendChild(r);}
 async function ask(text){
-  if(asking||!text)return;asking=true;
+  if(asking||!text)return;if(stage.classList.contains("lane"))laneUI("chat");asking=true;
   const i=mode, e=+eff.value, used=MODELS.filter(x=>x.from<=i), machines=[...new Set(used.map(m=>m.v))], can=pickCanned(text);
   const row=popToSide(text,machines[machines.length-1]);
   const form=$("#form"),r0=form.getBoundingClientRect();
@@ -1598,7 +2137,7 @@ async function ask(text){
   if(e===4){const u=document.createElement("span");u.className="lum go";u.textContent="Ultra";by.append(" · ",u);}   // the effort, its light gliding while it writes
   setBy("thinking");
   const ai=$("#ai");ai.classList.add("live");ai.style.animation="none";void ai.offsetWidth;ai.style.animation="";
-  const ans=$("#ans");ans.innerHTML="";ans.className="body";ans.style.minHeight="";$("#srcs").innerHTML="";$("#srcs").classList.remove("on");$("#fine").classList.remove("on");
+  const ans=$("#ans");ans.innerHTML="";ans.className="body";ans.style.minHeight="";$("#srcs").innerHTML="";$("#srcs").classList.remove("on");$("#fine").classList.remove("on");$("#fine").textContent=FINE_ANSWER;
   $("#spine").innerHTML="";$("#machines").innerHTML="";$("#behind").classList.remove("on");$("#live").classList.remove("done");$("#bt").textContent="";ai.classList.remove("open");$("#details").setAttribute("aria-expanded","false");
   // at Ultra a bright star streaks from the send key to where the answer will start, leaving tiny stars; the writing star is born there
   if(e===4&&anim){const sb=sendBtn.getBoundingClientRect(),ar=ans.getBoundingClientRect();if(sb.width&&ar.width){const tx=ar.left+4,ty=ar.top+14;
@@ -1617,25 +2156,22 @@ async function ask(text){
     setStep("Merging "+used.length+" drafts",machines);setBy("merging the drafts");await wait(700);
     setStep("Writing a first draft…",drafter.v);setBy("writing a first draft");working(drafter.v);
   } else await wait(600);
-  const p=document.createElement("p");ans.appendChild(p);
-  if(anim){   // the star rides at the end of the newest word; each word fades in just behind it
-    starPrism(e===4);   // at Ultra the star is a prism: a short spectral tail behind it
-    for(const w of can.draft.split(" ")){const sp=document.createElement("span");sp.className="wf";sp.textContent=w;p.append(sp," ");toks+=2;starAfter(sp);starShow(true);await wait(e>=3?30:40);}
-    starPrism(false);}
-  else{p.className="plain";p.textContent=can.draft;toks+=can.draft.split(" ").length*2;await wait(Math.min(2600,can.draft.split(" ").length*(e>=3?26:34)));}
-  spineDone(liD,Math.round(can.draft.split(" ").length*1.4)+" tokens");
+  // the draft streams in ink; the star rides the newest word (at Ultra a prism, with a short spectral tail)
+  const draftHtml=draftOf(can),dw=draftHtml.replace(/<[^>]+>/g," ").split(/\s+/).filter(Boolean).length;
+  starPrism(anim&&e===4);
+  await inkStream(ans,draftHtml,{rate:e>=3?INK.rateHi:INK.rate,mode:FX(),star:anim,onWord:()=>{toks+=2;}});
+  starPrism(false);
+  spineDone(liD,Math.round(dw*1.4)+" tokens");
   if(i>=3){setStep("Reviewing the draft",used[1].v);setBy("reviewing the draft");working(used[1].v);const li=spineAdd("Reviewing the draft",used[1].v,"");await wait(1100);spineDone(li,"2 notes");}
-  // the polish takes the draft's place with a soft crossfade while the star runs down the left edge; the box keeps its height
+  // the polish: a calm dissolve (unchanged words stay, changed passages shimmer into their new words) while the star runs down the left edge
   const polisher=used.length>1?used[1]:used[0];
   setStep("Polishing…",polisher.v);setBy("polishing");working(polisher.v);
   const liP=spineAdd("Polishing",polisher.v,"");
-  const h=ans.getBoundingClientRect().height;if(h>0)ans.style.minHeight=h+"px";ans.classList.add("swapwait");
+  ans.classList.add("swapwait");
   await wait(900);
   ans.classList.remove("swapwait");const pass=anim?starPass(ans):Promise.resolve();
-  ans.classList.add("swapout");await wait(170);
-  ans.classList.remove("swapout");ans.innerHTML=can.html;ans.classList.add("swapin");toks+=Math.round(ans.textContent.split(/\s+/).length*1.4);
-  setTimeout(()=>{ans.classList.remove("swapin");ans.style.minHeight="";},320);
-  await pass;if(anim)await starToEnd(ans);
+  const dis=inkDissolve(ans,draftHtml,can.html,{mode:FX()});toks+=Math.round(can.html.replace(/<[^>]+>/g," ").split(/\s+/).length*1.4);
+  await pass;if(anim)await starToEnd(ans);await dis;
   await wait(400);spineDone(liP,Math.round(ans.textContent.split(/\s+/).length*1.4)+" tokens");
   if(i>=3){setStep("Checking the facts",used[3].v);setBy("checking the facts");working(null);const li=spineAdd("Checking the facts",used[3].v,"");await wait(1000);spineDone(li,"all held");}
   // the answer landed: the star becomes the byline's dot, then sources, Details and the fine print follow
@@ -1647,8 +2183,9 @@ async function ask(text){
   if(anim)await starLand(ai.querySelector(".who .dot"));
   $("#by").querySelectorAll(".lum").forEach(x=>x.classList.remove("go"));   // landed: the byline's light settles, a still gradient
   ai.classList.remove("live");
-  if(can.src.length){const sr=$("#srcs");can.src.forEach((s,k)=>{const c=document.createElement("span");c.className="srcchip";const n=document.createElement("span");n.className="sn";n.textContent=k+1;c.append(n,document.createTextNode(s));sr.appendChild(c);});sr.classList.add("on");}
+  srcFill(can.src);
   $("#fine").classList.add("on");
+  rowChat.set(row,{q:text,html:can.html,src:can.src,fine:FINE_ANSWER,snap:{by:$("#by").innerHTML,byClass:$("#by").className,step:$("#step").innerHTML,stats:$("#stats").innerHTML,bt:$("#bt").textContent,spine:$("#spine").innerHTML,machines:$("#machines").innerHTML}});
   stage.classList.remove("busy");Sky&&Sky.busy(false);asking=false;
 }
 /* ---------- DICTATION. It starts the instant the button is pressed (or Space is held in an empty composer): the

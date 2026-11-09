@@ -222,7 +222,7 @@ main{--mw:800px;flex:1;display:flex;flex-direction:column;align-items:center;wid
   opacity:0;transition:opacity .6s var(--out),text-shadow 2s var(--out)}
 /* the close glow (per the owner: the letters look lit): zero offset and wide blurs only, so it reads as light shaped like
    the words, never a second copy; it rises with the afterglow and is then still */
-html:not(.calm) #hero h1.aglow{text-shadow:0 0 14px rgba(255,246,232,var(--ag-close)),0 0 28px rgba(255,240,222,calc(var(--ag-close) * .55))}
+html:not(.calm) #hero h1.aglow{text-shadow:0 0 20px rgba(255,246,232,var(--ag-close)),0 0 36px rgba(255,240,222,calc(var(--ag-close) * .55))}
 #hero h1.shown{opacity:1}
 .full #hero h1{font-weight:600}
 /* THE AFTERGLOW (per the owner: "headline glow backdrop"): once the greeting has been traced in light, a soft warm-white
@@ -387,8 +387,8 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 .slider[data-lv="2"]{--halo:#9b72ff;--bloom:.5}
 .slider[data-lv="3"]{--halo:#c776d2;--bloom:.62}
 .slider[data-lv="4"]{--halo:#f07aa6;--bloom:.78}
-.slider::before{content:"";position:absolute;top:50%;left:calc(100% + var(--lgap,12px) - 36px);width:104px;height:44px;margin-top:-22px;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(7,11,28,.52),rgba(7,11,28,.47) 30%,rgba(7,11,28,.28) 56%,rgba(7,11,28,.12) 78%,rgba(7,11,28,0));opacity:0;transition:opacity .9s var(--inout)}
+.slider::before{content:"";position:absolute;top:50%;left:calc(100% + var(--lgap,12px) - 24px);width:80px;height:34px;margin-top:-17px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(7,11,28,.62),rgba(7,11,28,.56) 35%,rgba(7,11,28,.3) 62%,rgba(7,11,28,.1) 82%,rgba(7,11,28,0));opacity:0;transition:opacity .9s var(--inout)}
 .ultra .slider::before{opacity:1;transition:opacity .6s var(--out)}   /* "Ultra" holds AA over Full's lifted sky; the show itself is untouched */
 .listening .slider::before{opacity:0}
 .chat .slider{width:200px;--sw:200px;--ph:12px;--ob:11px;--sr:4px;--kr:3.5px}   /* PINNED (per the owner, "a little slimmer and more squared off"): a 16 px track on the home, 12 in a conversation, 16 on a phone, radius 4.5 (4); the hit area stays 36 (32 on a phone), invisibly */
@@ -552,7 +552,7 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .suggs{display:flex;gap:8px;width:100%;margin-top:8px;opacity:0;transform:translateY(8px);transition:opacity 1s var(--out) 1.4s,transform 1s var(--out) 1.4s}
 .home .suggs{opacity:1;transform:none}
 .chat .suggs{display:none}
-.sugg{flex:1 1 0;min-width:0;height:32px;padding:0 10px;border-radius:var(--r-ctl);border:1px solid var(--hair);background:transparent;color:var(--ink2);font-size:var(--t-small);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
+.sugg{flex:1 1 0;min-width:0;height:32px;padding:0 10px;border-radius:var(--r-ctl);border:1px solid var(--hair);background:rgba(7,11,28,.22);color:var(--ink2);text-shadow:var(--halo-navy);font-size:var(--t-small);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
 .sugg:hover{background:rgba(255,255,255,.06);border-color:var(--hair2);color:var(--ink)}
 .under{height:var(--under,clamp(110px,22vh,260px));flex:none}   /* set so the composer's centre sits at the golden point of the free height */
 .chat .under{height:max(16px,env(safe-area-inset-bottom,0px))}
@@ -671,6 +671,8 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .full .live .liveline .die{animation:diepulse 1.2s ease-in-out infinite}
 .liveline em{font-style:normal}
 .liveline.done .lstep{color:var(--ink3)}
+.liveline.done .lstats{display:none}
+@media (max-width:600px){.liveline .lstats{flex-basis:100%;min-width:0;justify-content:flex-start;margin-left:0}}   /* a phone: the numbers always on their own line, so the step's length never moves the answer */   /* landed: the numbers live in Details (subtract: they were said twice) */
 .liveline .lstats{margin-left:auto;min-width:244px;justify-content:flex-end;display:flex;gap:16px;font-family:var(--mono);font-size:var(--t-label);color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
 
 /* READING: 17 px on 1.65, about 70 characters a line, paragraphs a line apart; headings, lists, quotes, code and
@@ -724,6 +726,7 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 /* THE INK: each word fades in over 220 ms with a 1 px rise and a 2 px blur coming sharp; its faint light fades over the
    next words' arrival (300 ms in all), so the newest three or four glow like wet ink and settle to plain white */
 .body{transition:color .9s ease,text-shadow .9s ease,height .24s var(--out)}
+.body.inking{font-kerning:none}
 .ink{display:inline-block;white-space:pre;animation:inkIn .3s cubic-bezier(.2,.7,.2,1) both,inkWeight .28s cubic-bezier(.2,.7,.2,1) both}
 .ink.hold,.ink.nw{animation:inkIn .3s cubic-bezier(.2,.7,.2,1) both}
 @keyframes inkWeight{from{font-variation-settings:"wght" var(--w0,320)}to{font-variation-settings:"wght" var(--w1,400)}}
@@ -837,6 +840,8 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
 #foot a{padding:8px 0;color:var(--ink2);text-decoration-color:var(--hair2);text-underline-offset:3px;transition:color var(--t1) var(--out),text-decoration-color var(--t1) var(--out)}
 #foot a:hover{color:var(--ink);text-decoration-color:var(--line)}
 #foot .own{color:var(--ink2)}
+#foot>span{position:relative}
+#foot>span::before{content:"";position:absolute;inset:-8px -14px;z-index:-1;pointer-events:none;border-radius:14px;background:rgba(7,11,28,.34);filter:blur(10px)}   /* a feathered backing under the credit only: AA over the noon sky and the brightest footage */
 #foot .maclink{padding:6px 0;margin:-6px 0;color:var(--ink2);white-space:nowrap}   /* the native preview (Apple silicon and Intel), offline */
 #stage.chat~#foot{display:none}
 
@@ -1014,7 +1019,7 @@ const moonLit=(1-Math.cos(2*Math.PI*age/29.530588853))/2;
 const KEYS=[[0,.68,.80,1.06,.92,0],[5,.68,.80,1.06,.92,0],[6.5,.86,.82,1.0,1.0,.85],[8,.80,.89,1.06,1.1,.1],[16.5,.80,.89,1.06,1.1,.1],[18.5,.88,.80,.98,1.0,.9],[20.5,.68,.80,1.06,.92,.05],[24,.68,.80,1.06,.92,0]];
 function grade(h){for(let i=0;i<KEYS.length-1;i++){const a=KEYS[i],b=KEYS[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>v+(b[k]-v)*t);}}return KEYS[0];}
 let G=grade(hour);
-const SKY=[[0,3,4,10,6,11,28,16,34,79],[5,3,4,10,6,11,28,16,34,79],[6.5,8,10,26,24,26,58,52,46,96],[8,6,14,38,14,34,84,34,74,150],[16.5,6,14,38,14,34,84,34,74,150],[18.5,6,8,22,22,22,56,64,46,96],[20.5,3,4,10,6,11,28,16,34,79],[24,3,4,10,6,11,28,16,34,79]];
+const SKY=[[0,4,5,9,7,10,20,18,27,52],[5,4,5,9,7,10,20,18,27,52],[6.5,12,11,24,34,28,52,72,52,84],[8,8,15,32,20,36,70,52,80,128],[16.5,8,15,32,20,36,70,52,80,128],[18.5,10,9,20,32,24,48,84,54,72],[20.5,4,5,9,7,10,20,18,27,52],[24,4,5,9,7,10,20,18,27,52]];   // the blue cast halved (per the owner: "less blue"), day and its edges a touch warmer
 function skyAt(h){return (function(h){for(let i=0;i<SKY.length-1;i++){const a=SKY[i],b=SKY[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>(v+(b[k]-v)*t)/255);}}return SKY[0].map(v=>v/255);})(h);}
 let SK=skyAt(hour);
 /* THE HOUR'S GRADE (per the owner: "make this beautiful"): the footage is mapped on its luminance into the hour's palette,
@@ -1022,8 +1027,8 @@ let SK=skyAt(hour);
    of the real colour stays so cities and auroras still read as real. The moods change at 5:30, 7:30, 17:30 and 19:30,
    each over 20 minutes on a smoothstep, following the visitor's clock while the page is open (never a snap). */
 const P255=a=>a.map(v=>v*255);   // the fourth row: [kept real colour, footage weight, how much the sky's gradient thins over the footage]
-const MOODS={night:[[5,8,26],[41,46,117],[204,223,255],P255([.36,1.25,.1])],dawn:[[20,20,54],[199,112,138],[255,226,176],P255([.33,1.15,.08])],
-  day:[[10,31,77],[79,149,217],[255,255,255],P255([.4,1.1,.12])],dusk:[[36,18,63],[217,135,60],[255,194,184],P255([.33,1.15,.08])]};
+const MOODS={night:[[7,8,14],[58,61,88],[230,233,242],P255([.55,1.45,.1])],dawn:[[26,20,40],[201,135,122],[255,224,176],P255([.52,1.32,.1])],
+  day:[[20,34,56],[143,179,217],[255,246,232],P255([.58,1.28,.14])],dusk:[[36,26,48],[217,148,74],[255,208,188],P255([.52,1.32,.1])]};   // per the owner: more NASA, less blue, a little more day colour
 const MOOD_AT=[[5.5,"night","dawn"],[7.5,"dawn","day"],[17.5,"day","dusk"],[19.5,"dusk","night"]],MOOD_W=1/3;
 function moodAt(h){for(const [b,a,c] of MOOD_AT)if(Math.abs(h-b)<=MOOD_W/2){const u=(h-b)/MOOD_W+.5,t=u*u*(3-2*u);return MOODS[a].map((x,i)=>x.map((v,k)=>(v+(MOODS[c][i][k]-v)*t)/255));}
   return MOODS[h<5.5||h>=19.5?"night":h<7.5?"dawn":h<17.5?"day":"dusk"].map(x=>x.map(v=>v/255));}
@@ -1734,8 +1739,10 @@ const Burst=(function(){if(reduce)return null;const cv=document.createElement("c
   return {burst(cx,cy){const t=performance.now();let hero=0;
       // where drifters may go: chandelier stars on the knob's side, outside the greeting's width (so none crosses text); home only
       const h1=$("#h1").getBoundingClientRect(),H=(Sky&&Sky.hangs?Sky.hangs():[]).map((h,i)=>[h,i]).filter(([h])=>!stage.classList.contains("chat")&&(h[2]>h1.right+24||h[2]<h1.left-24)&&(h[2]>innerWidth/2)===(cx>innerWidth/2)).map(([,i])=>i);
+      const chatV=stage.classList.contains("chat");
       [[60,0],[36,200],[24,400]].forEach(([n,dl],w)=>{for(let k=0;k<n;k++){const isHero=w===0&&k%10===0&&hero<6;if(isHero)hero++;const small=w>0,drift=H.length&&Math.random()<.4;
-        const a=k/n*Math.PI*2+Math.random()*.3+w*.4,d=small?18+Math.random()*30:28+Math.random()*50;
+        // into the open sky only, never down over the suggestions: the upper half on the home; in a conversation low and to the sides, clear of the answer
+        const f=(k+Math.random()*.7)/n,a=chatV?(f<.5?-Math.PI*(1-.2*f*2):-Math.PI*.2*(f-.5)*2):-Math.PI*(.04+.92*f),d=small?18+Math.random()*30:28+Math.random()*50;
         parts.push({hang:true,t0:t+dl,x:cx,y:cy,a,d,dr:0,k:4.5+Math.random()*2.5,p1:Math.random()*6.28,p2:Math.random()*6.28,rise:2+Math.random()*4,
           tg:drift?H[Math.floor(Math.random()*H.length)]:null,j:[(Math.random()-.5)*36,8+Math.random()*26],
           dur:(drift?3200+Math.random()*1300:2000+Math.random()*2000),s:isHero?9+Math.random()*3:small?2.2+Math.random()*2.6:3+Math.random()*3.4,c:isHero?[1,1,1]:UCOL[Math.floor(Math.random()*UCOL.length)]});}});
@@ -2019,6 +2026,7 @@ function inkStream(box,html,o){return new Promise(done=>{
   const arrive=()=>{if(fin)return;arrived=Math.min(words,arrived+1+Math.floor(Math.random()*8));if(arrived<words)tArr=setTimeout(arrive,30+Math.random()*140);};tArr=setTimeout(arrive,still?0:120);
   let released=0,newest=null,hT=0;
   const grow=()=>{if(still)return;const h=box.scrollHeight;if(h>hT+.5){hT=h;box.style.height=h+"px";}};
+  box.classList.add("inking");   /* no kerning while words are separate boxes: a settled word then sits exactly where its box did */
   let pendSp=null;const flushSp=()=>{if(pendSp){pendSp[0].appendChild(document.createTextNode(pendSp[1]));pendSp=null;}};
   function emit(){   // release ops up to and including the next word (or block)
     while(i<ops.length){const op=ops[i++],top=stack[stack.length-1];
@@ -2046,7 +2054,7 @@ function inkStream(box,html,o){return new Promise(done=>{
     settle(now,false);
     if(follow&&newest&&!still){const r=newest.getBoundingClientRect(),cr=cv.getBoundingClientRect(),over=r.bottom-(cr.bottom-72);if(over>0)cv.scrollTop+=over*Math.min(1,dt*9);}   // the column follows gently
     if(released>=words){flushSp();fin=true;clearTimeout(tArr);cv.removeEventListener("wheel",away);cv.removeEventListener("touchmove",away);
-      setTimeout(()=>{settle(0,true);box.normalize();if(!still){box.style.height="";}hT=0;done();},still?0:INK.settle);return;}
+      setTimeout(()=>{settle(0,true);box.normalize();hT=0;done();},still?0:INK.settle);   /* the height stays held: the dissolve takes it from here and lets it go when it is done */return;}
     schedule();}
   let rafId=0,toId=0;function schedule(){rafId=requestAnimationFrame(t=>{clearTimeout(toId);tick(t);});clearTimeout(toId);toId=setTimeout(()=>{cancelAnimationFrame(rafId);tick(performance.now());},50);}   // a timer beside the frame: a hidden page still finishes
   schedule();});}
@@ -2059,7 +2067,7 @@ function inkMark(html,keep,cls){const t=document.createElement("template");t.inn
 function inkDissolve(box,fromHtml,toHtml,o){return new Promise(async done=>{
   const calm=o.mode==="calm";
   const A=inkMark(fromHtml),B=inkMark(toHtml);
-  if(reduce||A.tn.length!==B.tn.length){box.innerHTML=toHtml;return done();}   // a different shape: plain swap
+  if(reduce||A.tn.length!==B.tn.length){box.innerHTML=toHtml;box.classList.remove("inking");return done();}   // a different shape: plain swap
   const h0=box.getBoundingClientRect().height;
   const wrap=(nodes,keeps,cls)=>nodes.forEach((tn,j)=>{const parts=tn.textContent.split(/(\s+)/),k=keeps[j];let wi=0;const frag=document.createDocumentFragment();let run=null;
     parts.forEach(p=>{if(!p)return;if(/^\s+$/.test(p)){(run||frag).appendChild(document.createTextNode(p));return;}const keep=k[wi++];
@@ -2070,7 +2078,7 @@ function inkDissolve(box,fromHtml,toHtml,o){return new Promise(async done=>{
   wrap(A.tn,keepsA,"ink-old");wrap(B.tn,keepsB,calm?"ink-new c":"ink-new");
   box.style.height=h0+"px";box.innerHTML="";box.appendChild(A.t.content);   // the draft again, the same words, its changes now marked
   void box.offsetWidth;box.classList.add("dissolving");await wait(calm?160:220);
-  box.innerHTML="";box.appendChild(B.t.content);
+  box.innerHTML="";box.appendChild(B.t.content);box.classList.remove("inking");
   box.querySelectorAll(".ink-new").forEach((s,k)=>s.style.animationDelay=Math.min(k*45,480)+"ms");
   box.style.height=box.scrollHeight+"px";box.classList.remove("dissolving");
   await wait(calm?420:1100);

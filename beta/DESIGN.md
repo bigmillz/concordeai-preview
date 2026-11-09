@@ -35,7 +35,11 @@ and labels), **Michroma** (the wordmark, with the wing).
   numbers in mono 13 with `tabular-nums`, right-aligned (`.num`).
 - Labels in caps track +0.12em (`--track-label`). Nothing else is tracked.
 - Space Grotesk at 500 with −0.03em is the display voice; 600 in Full's greeting. The greeting is one text node in
-  one box in every mode, crisp `#f8faff`, no text shadow.
+  one box in every mode, crisp `#f8faff`. Its light, two layers, both zero offset and from that one node (never a copy):
+  a close glow on the letters, `text-shadow: 0 0 20px rgba(255,246,232,a), 0 0 36px rgba(255,240,222,.55a)` with
+  a = .30 (Balanced) / .38 (Full); and the wide bloom behind the block (the afterglow), now resting at .66 / .78 (was
+  .50 / .62), its warm white touched by the hour's light (22 % of the palette's light colour in a second radial). Both
+  rise with the afterglow over 2 s and are then still. Calm and reduced motion: none.
 
 ## Colour
 
@@ -54,6 +58,14 @@ rim, the horizon, the ember at decisions.
 | `--ice` | `#9fc0ff` | | light only (the die for Cloud, the writing star's warmth) |
 | `--rose` | `#f2a6b4` | | light only (horizon, Ultra rim) |
 | `--champagne` | `#f1dcb2` | | light only (horizon, focused composer's top light) |
+
+Small labels straight over the sky (the sidebar's day labels, the footer's credit and links) wear a tight halo in the
+night navy, `--halo-navy: ±1px 0 1px and 0 ±1px 1px at rgba(7,11,28,.7), 1px 1px 2px and −1px −1px 2px at .5,
+0 0 4px at .75, 0 0 9px at .45` (a blur alone barely reaches past a 1 px stroke; the offsets give it body), so a bright
+star or the noon sky behind cannot take them under 4.5:1 within 2 px of the ink. Invisible on the night; `--ink3`
+itself and the sky are unchanged. Two places also get a soft local backing, since the noon sky and the brightest
+footage sit right behind them: the suggestion pills (`rgba(7,11,28,.22)` fill plus the halo) and the footer's credit
+(a `rgba(7,11,28,.34)` block, `blur(10px)`, 8 px above and below and 14 px either side of the text, under the credit only).
 
 Hairlines are champagne silver, never pure white:
 
@@ -153,19 +165,19 @@ lengthen briefly along their arcs at the fastest moment (2 s in).
 - Calm and reduced motion: the plain greeting, no trace, no afterglow.
 
 ### The effort slider
-A 20 px pill, a segmented control in Gemini's luminous language (one `<input type=range>` on top for the hit area).
+A slim, squared-off track, a segmented control in Gemini's luminous language (one `<input type=range>` on top for the hit area).
 
 | Part | Value |
 |---|---|
-| Size | PINNED ("slightly slimmer", superseding the earlier 26 px): 220 × 36 (hit), pill `--ph: 20px`; in a conversation 200 wide, `--ph: 16px`; under 600 px 88 × 32, `--ph: 20px`, the composer's row on one line with the phone's 6 px gaps (the pill may give up to 8 px rather than wrap). The level sits beside it |
+| Size | PINNED ("a little slimmer and more squared off", superseding the 20 px pill): 220 × 36 (hit), track `--ph: 16px`, radius `--sr: 4.5px`; in a conversation 200 wide, `--ph: 12px`, `--sr: 4px`; under 600 px 88 × 32, `--ph: 16px`, `--sr: 4.5px`; the hit area stays 36 (32 on a phone) whatever the track, the composer's row on one line with the phone's 6 px gaps (the pill may give up to 8 px rather than wrap). The level sits beside it |
 | Channel | `linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.085))`, inset 1 px `rgba(255,255,255,.08)`, inset `0 1px 2px rgba(0,0,0,.25)` |
 | Fill | from the left to round the orb: `linear-gradient(90deg, #4f8cff, #9b72ff 55%, #f07aa6)` fixed to the track (each step has its own colour); 1 px inner top light |
 | Bloom | a copy of the fill beneath it, `blur(8px)`, opacity by step `.32 / .40 / .50 / .62 / .78` |
-| Notches | five 3 px dots on the centre line: `rgba(255,255,255,.22)`; passed ones `.85` with a 4 px glow |
-| Orb | `--ob: 16px` (12 in a conversation, 16 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
-| Halo | 2 × the orb, the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), opacity .45 at scale .85; hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
+| Notches | five 2.5 px squares (radius .5 px) on the centre line: `rgba(255,255,255,.22)`; passed ones `.85` with a 4 px glow |
+| Knob | a rounded square, `--ob: 14px`, radius `--kr: 4px` (11 and 3.5 in a conversation, 14 and 4 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
+| Halo | the knob's shape: a rounded square 1.5 × the knob (radius 1.6 × `--kr`) in the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), `blur(6px)`, opacity .45 at scale .85 (at Ultra the cool conic gradient, blurred the same); hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
 | Snap | 160 ms `cubic-bezier(.22,1,.36,1)`, no bounce |
-| Level | beside it, Space Grotesk 13/500 `--ink2`, 4 px off the pill, updating live: Low · Medium · High · Extra · Ultra. No tooltip and no explanations of the levels anywhere (per the owner: "pretty damn obvious") |
+| Level | beside it, Space Grotesk 13/500 `--ink2`, PINNED 12 px off the track (10 on a phone: the row's gap plus 4), so the knob's glow at the track's end has room and never touches the word; updating live: Low · Medium · High · Extra · Ultra. No tooltip and no explanations of the levels anywhere (per the owner: "pretty damn obvious") |
 
 Click anywhere to jump, arrows step. Calm and reduced motion: the same look, no transitions.
 
@@ -178,6 +190,12 @@ rare glint (one sparkle in twelve). No green, orange or red. Text tints that pas
   20 % of a 250 % background) that glides across once every 2.5 s (across in about 1.1 s on
   `cubic-bezier(.45,0,.25,1)`, then rest), `drop-shadow(0 0 6px rgba(155,114,255,.4))`. The byline reads
   "Concorde Thinking · Ultra"; its sweep stops when the answer lands (a still gradient).
+  Under the composer's label, a feathered navy pill holds it at AA at the sky's brightest (Full at 1280 and on a phone
+  dipped to 3.5:1, and 2.9:1 under the noon sky): the slider's first layer, 80 × 34 centred on the word (its left edge
+  at the track's end + the label gap − 24 px), `radial-gradient(closest-side, rgba(7,11,28,.62), .56 35%, .30 62%,
+  .10 82%, transparent)`, in with Ultra (600 ms), out with it (900 ms) and while dictating. It sits under the
+  slider's fill, bloom and knob and under the word, so nothing of the show is dimmed; feathered wide so it reads as
+  shade, not a shape.
 - **The typed words:** a mirror over the textarea carries the same light in near-white tints (`#dbe6ff`, `#e4dcff`,
   `#f8dde9`), a subtler sweep every 3.6 s; "Ask anything" at .85 (AA in Full). Leaving Ultra crossfades back to white in 600 ms.
 - **The send key** (with text): `#6f9bff → #9b72ff → #f07aa6 → #fff → #9b72ff`, flowing one 108 px period per 4 s; navy arrow.
@@ -190,11 +208,39 @@ Arriving (about 1.5 s), Balanced and Full:
 - **The beat** (under 1.2 s): 0 ms the orb clicks into place (scale 1 → 1.12 → 1, 220 ms) as the first star wave and
   the sweep leave; +200 ms the second star wave and the sky's glint flash; +400 ms the lit glass edge comes up (the
   line of light runs round in 600 ms); +600 ms the ULTRA label's light sweep starts and the chip's badge appears.
-- **The stars lead.** Two waves of four-point stars burst from where the orb lands (80 in all). The first, 56: 5 hero
-  stars (11–14 px rays), the rest 4–8 px, each twinkling twice (opacity 1 → .45 → .95 → .35 → 0, scale with it) as it
-  flies 26–72 px and fades in 760–1040 ms on `--out`, seven of them drifting up across the composer (70–150 px,
-  1.3–1.7 s). The second, 200 ms later: 24 smaller ones (3–6 px), 18–46 px. Above the glass, clipped to the screen;
-  compositor work only (transform and opacity on pooled-size elements).
+- **The slider becomes the star (per the owner: "like ultracode"):** the knob folds into a living star, crisp vector,
+  white at its core (`#fff → #e6efff → #a99bff`) with blue → violet light, stepping through four, six, eight and six
+  points, one form every 140 ms; leaving, it folds back into the rounded square in 200 ms. Seven tiny four-point stars
+  drift left to right through the filled track (3.2–5 s each, twinkling, clipped to it). The label keeps its light sweep
+  on `#9cc0ff → #c4b0ff → #f7a3c3`. Calm and reduced motion: a still four-point star, no drift.
+- **A star trail and a stream:** as the knob slides to Ultra, 18 tiny stars light along the track behind it (over its
+  160 ms snap, each 380–500 ms); as it lands, 12 stars stream up out of it (28 ms apart, 640–860 ms).
+- **The stars lead.** Three waves of four-point stars burst from where the knob lands (120 in all), drawn on the GPU
+  (a canvas above the glass, pooled quads, no DOM): 0 ms, 60 (6 hero stars, 9–12 px half-arms, white; the rest
+  3–6.4 px), flying 26–74 px; +200 ms, 36 smaller (2.2–4.8 px), 16–46 px; +400 ms, 24 more of those. White, ice-blue
+  and violet (`#fff`, `#dce8ff`, `#cfe0ff`, `#86b0ff`, `#b9a2ff`, `#9b72ff`). Each twinkles twice as it flies and fades
+  (opacity 0 → 1 → .45 → .95 → .35 → 0 at 0 / 15 / 35 / 55 / 78 / 100 %, scale .4 → 1 → .8 → 1 → .7 → .3, ease
+  with drag: out fast and slowing (1 − e^(−kt), k 4.5–7 /s), then floating like dust in light (a 2–3 px bob, a slow
+  rise), dissolving at 2–4 s, staggered; on the home 40 % drift to the chandelier on the knob's side (x over .45 s, y
+  over 1.1 s) and settle near a hanging star (3.2–4.5 s). Nothing leaves the screen.
+  They fly only into open sky, never over text: the upper half on the home (not down over the suggestions), and low
+  to the sides in a conversation (not up over the answer).
+- **The chandelier (per the owner: "hang them like something"):** 8–22 hairline threads lower from the top edge as Ultra
+  arrives, only where no text or control sits under the thread (each ends 22 px above the nearest), in the top third:
+  each a 0.5 px `#cfe0ff` line (.05 at the top to .16 at the star) ending in a four-point star (three heroes, white,
+  7–9 px; the rest 3–5 px in white, ice-blue and violet), three in ten with a tiny star partway up. They lower over
+  700 ms each (a soft spring, 1 − e^(−4.6u) cos 5.2u), staggered across 320 ms, then sway as slow pendulums (1.4–3.6°,
+  3.6–6.2 s, each its own phase), twinkle (.72–1), and up to six neighbours are joined by faint lines (.12). The pointer
+  pushes the nearest within 70 px (up to 16 px) and they spring back. Leaving, the curtain lifts and fades in 600 ms.
+  Calm and reduced motion: hung and still.
+- **The hero glint:** one 24 px four-point star (plus a fainter one turned 45°) blooms at the knob, sin(πu)^.7 over
+  400 ms, turning 25°. The signature beat.
+- **The constellation:** 7–12 of the sky's own brightest stars near the composer (above it on the home, beside it in a
+  conversation; never over the greeting, the reading column, the sidebar or the glass) are joined by their minimum
+  spanning tree in hairlines (0.8 px, `#cfe0ff`, .30 → .42 along each line, additive), each line drawing in over 260 ms
+  (all within about 600), a faint point at each joined star; it holds to 1.1 s and fades over 1.2 s, riding the
+  field's turn. Different every time; lines, no circles. (The sky's star hash is one the CPU repeats exactly, so the
+  lines meet real stars.)
 - The sky's brightest stars (now the top 4.5 %, three times as many) flash their four-point glint at +200 ms
   (2.6 × at .55 s, x e^(1−x)), then settle to their gentle twinkle.
 - The orb flares: eight fine rays (38 px, 400 ms) and a small bloom `0 0 6px 2px #fff, 0 0 12px 3px violet .7`.
@@ -234,8 +280,15 @@ While at Ultra:
 - The slider's fill flows (`#4f8cff → #9b72ff → #f07aa6 → #fff → #9b72ff → #4f8cff`, one 2 × width period per 4 s)
   with its bloom; the orb's halo turns to the cool spectrum; the knob's glow cycles blue, violet, rose (3.5 s).
 
+- **Shooting stars:** every 10–16 s (the first 4–7 s after arriving), one thin streak (1.1 px, white, a tail fading to
+  nothing over the last 42 % of its run, a 4.5 px glint at its head) crosses 120–260 px of the upper sky (72 px to
+  26 % down) at 18–32° in 500 ms, only in the sky beside the text column (never over it, the sidebar or the header).
+- **Star rain:** at the far left and right edges (6 % of the width, at most 90 px), tiny stars (1.6–3.2 px) fall at
+  14–30 px/s with a 2–6 px sway and a twinkle, one every 350–650 ms, at most 22, fading out by 86 % down.
+
 Leaving Ultra, the power-down: the accent drains back in 800 ms, the drifting stars drift 24 px up and fade (800 ms),
-the sky eases back to the chosen level (time constant .3 s, about 900 ms) and its twist springs back; the rim drains
+the sky eases back to the chosen level (time constant .3 s, about 900 ms) and its twist springs back, the constellation,
+shooting stars and rain fade with it, the burst fades in 300 ms; the rim drains
 back the way it came; tints, line, glow and knob fade in 900 ms.
 
 Calm and reduced motion: the still rim, the still gradient label and a brighter still sky (stars 30 % brighter,
@@ -247,6 +300,95 @@ No layer may widen the page. The colour wash (12 % past each side) and the auror
 selection drag, which is how the page once slid sideways at 2000 px); a guard returns any window or stage scroll to 0;
 the conversation scrolls vertically only. Checked: `scrollWidth === innerWidth` at 2000, 1440, 1280 and 390 through
 the opening, the menus, Ultra, a slider drag and typing.
+
+## The ink: how an answer streams
+- **Cadence:** tokens arrive as a real stream would (bursts of 1–8 words, 30–170 ms apart, after 120 ms) into a buffer;
+  words leave it at an even 30 a second (36 at Extra and Ultra), ×0.82 when fewer than 6 are buffered and ×1.12 when
+  more than 30, with a 0.09 s breath after `. ! ? :`. Code blocks and tables arrive whole and take the time of 4–8 words.
+- **Each word:** fades in over 220 ms with a 1 px rise and a 2 px → 0 blur, `cubic-bezier(.2,.7,.2,1)`; its light, a
+  `drop-shadow(0 0 6px rgba(214,228,255,.6 → .38 → .14 → 0))`, lasts 300 ms in all, so the newest three or four words
+  glow like wet ink and settle to plain white. The writing star rides the newest word.
+- **No jumps:** the answer's height follows its content on a 240 ms `--out` transition; the reading column follows the
+  newest line (it closes 9 × the overshoot per second) until the reader scrolls away. A paragraph's space opens in
+  120 ms (its top margin from −16 px; a list item's from −6 px); headings rise 3 px and fade in 340 ms; list numbers
+  fade in 300 ms; code and tables fade in whole over 400 ms.
+- **The weight settles:** each word arrives lighter and settles to its weight over 280 ms (`font-variation-settings`
+  "wght", Space Grotesk loaded as its variable 300–700): reading text 320 → 400, bold and headings 150 lighter (bold
+  450 → 600; the 500 heading from 350). Its width is held at the rest weight, measured as it lands, so nothing reflows;
+  code does not morph (it arrives whole).
+- **No reflow:** the answer sets `text-wrap: wrap` (not `pretty`, which re-breaks earlier lines as words arrive); a
+  word's trailing space is laid down just before the next word; text splits at hyphens as it may break there; a new
+  block opens its space before its first word (a 170 ms pause); kerning is off while the words are separate boxes
+  (`.body.inking`), so a settled, unwrapped word sits exactly where its box did; the answer's height stays held from
+  the stream into the dissolve; on a phone the live numbers always take their own line. Measured: no word moves and
+  CLS 0 while streaming at 1440 (0.0001 on a phone, a blockquote's space opening).
+- **Light DOM:** a word settles 420 ms after it appears and is unwrapped to plain text; at most about 16 spans live.
+- **Draft → polish:** the draft and the polish share their structure. Word by word (a longest-common-subsequence per
+  text run) unchanged words stay; changed passages dim to .12 with a 1.5 px blur in 220 ms, then their new words
+  shimmer in (620 ms: opacity 0 → 1 and blur 1.5 px → 0 by 55 %, the same light fading out), 45 ms apart in reading
+  order, at most 480 ms of stagger. The height eases between the two.
+- **Calm:** a plain per-word fade (220 ms), no blur, no light; the dissolve is a plain 400 ms fade. **Reduced motion:**
+  the words appear with no animation, and the polish replaces the draft at once.
+
+## The hour's grade (the footage and the sky as one image)
+The footage is mapped on its luminance into the hour's palette: shadow → middle (at luminance .5) → light,
+smoothstep within each half, the map faded in over luminance 0–.18 so black stays the sky; more than half of the real
+colour is kept so cities and auroras read as real Earth. Trails and bloom take the palette's hue at their own
+brightness (the map at luminance + .35, rescaled), the same share kept. PINNED (per the owner: "more of the NASA one,
+less blue, a little more day colour"):
+
+| Mood | Shadow | Middle | Light | Real colour kept | Footage weight | Gradient thins by |
+|---|---|---|---|---|---|---|
+| night | `#07080e` ink | `#3a3d58` silver, a hint of indigo | `#e6e9f2` silver | 55 % | 1.45 | 10 % |
+| dawn | `#1a1428` | `#c9877a` rose | `#ffe0b0` gold | 52 % | 1.32 | 10 % |
+| day | `#142238` | `#8fb3d9` soft sky | `#fff6e8` warm white | 58 % | 1.28 | 14 % (the lightest overlay) |
+| dusk | `#241a30` | `#d9944a` amber | `#ffd0bc` warm rose | 52 % | 1.32 | 10 % |
+
+The sky's own gradient (top, middle, low; sRGB 0–255), its blue cast halved: night `4,5,9 / 7,10,20 / 18,27,52`;
+dawn (6:30) `12,11,24 / 34,28,52 / 72,52,84`; day (8:00–16:30) `8,15,32 / 20,36,70 / 52,80,128`; dusk (18:30)
+`10,9,20 / 32,24,48 / 84,54,72`; linear between the keys.
+
+- The moods turn at 5:30 (night → dawn), 7:30 (→ day), 17:30 (→ dusk) and 19:30 (→ night) local time, each over 20
+  minutes on a smoothstep; the clock is read every 20 s while the page is open and the shader's palette eases toward it
+  (time constant 2 s), never a step. The sky's own gradient follows the same clock. `?hour=6|12|18|23` pins the clock
+  (for checks).
+- **Blend, not stack:** the graded footage is screen-blended into the sky, its weight falling off with height as before
+  (`foot`, `rise` per clip) and feathered at the sides (8 %) and the foot (12 %) so there is no frame, and the gradient
+  thins where the footage is (the table's last column). Weight by level, times the mood's: Full 1, Balanced .85 (was
+  .75), Calm .6 on a still frame, graded the same way. The flash limiter (the trails' attack)
+  and the highlight knee (above .45, rolling off toward .85) are unchanged; the horizon-free bands are unchanged.
+- Until this build a comment in the sky's uniform upload swallowed the rest of its line, so the exposure, warmth, tint,
+  Ultra sweep, edge tint and the twist's centre were never set: the footage itself (as opposed to its trails) never
+  drew, and the field turned about the top-left corner. All are set now.
+
+## The lanes: Chat · Code · Funnels
+A glass segmented control in the header's centre (the same place and centring as before), three equal segments
+(at least 88 px, 76 on a phone), 32 px tall, radius 6 outside and 4.5 inside (the slider's language). The lit box
+(`linear-gradient(180deg, rgba(255,255,255,.13), .06)`, an inner top light, a 1 px `rgba(150,165,255,.3)` edge and a
+12 px blue glow) slides between segments in 200 ms on `--out`; the labels cross from `--ink3` to `--ink`. Funnels wears a
+9 px four-point star (it twinkles once on hover, never otherwise); selected, its box's edge turns violet → rose
+(`rgba(196,140,240,.42)`, a rose glow). Tabs with arrow keys, Home and End; an inset ember ring for the keyboard. On a
+phone it sits just under the header. Chat returns home; Code shows a sample task (two reads and an approval card for a
+write: Approve or Skip, the preview runs nothing); Funnels shows a sample funnel (three narrowing questions with the
+chosen option lit, then the one pick with its reason and next step), as the app's funnels work.
+
+## Subtract and refine (the latest pass)
+- Removed: the Effects popover's own "Effects" heading (its button already says so); the hairline under the chosen
+  lane (the sliding box replaces it); the landed answer's token, speed and time line (Details already holds them).
+- Kept on purpose: the status dot (Calm and Balanced) and the machine chips (Full) are one indicator shown per level,
+  not a duplicate.
+- Feel: every control in the composer row and the lanes presses in 1 px (and to .985) in 80 ms and lets go with a soft
+  glow (`0 0 0 1px rgba(207,224,255,.32), 0 0 14px rgba(159,192,255,.32)` fading in 450 ms on `--out`). The row's
+  controls are all 36 px tall (32 on a phone); the slider's hit area matches them.
+
+## The sidebar's chats
+Every row is a button. In the preview each of the six opens a short sample conversation at once (history: no writing,
+no star): one question and one polished answer, the byline with the mode, the finished live line and stats, Details
+(the steps that mode takes, the machines) and sources where they fit, and the fine print "Sample chat. This preview
+runs no models." The chosen row is `.on` with `aria-current`; focus moves to the question (the live region stays quiet,
+so a screen reader is not read the whole answer); under 1100 px the sidebar closes. A chat asked in the preview
+reopens the same way. New chat returns home and clears the selection. The rows' keyboard ring sits inside the row
+(the list clips outside it).
 
 ## Modes and effort
 
