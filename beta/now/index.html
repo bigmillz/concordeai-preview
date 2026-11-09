@@ -380,7 +380,7 @@ textarea::placeholder{color:var(--ink2);opacity:1}
    the hit area (a real range input on top): click anywhere to jump, arrows step. Geometry from three variables: --ph
    the pill's height, --ob the orb, --p the position (0 to 1). In a conversation the pill slims to 20 px. Calm and
    reduced motion: the same colours, still. */
-.slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:16px;--ob:14px;--sr:4.5px;--kr:4px;--p:.25;--snap:160ms cubic-bezier(.22,1,.36,1);
+.slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:16px;--ob:14px;--sr:4.5px;--kr:4px;--p:.25;--snap:140ms cubic-bezier(.22,1,.36,1);
   --ks:0 1px 2px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.35);   /* the orb's own shadow, kept under every glow */
   --fill:linear-gradient(90deg,#4f8cff,#9b72ff 55%,#f07aa6);--halo:#4f8cff;--bloom:.32}
 .slider[data-lv="1"]{--halo:#6f80ff;--bloom:.4}
@@ -410,8 +410,14 @@ html:not(.calm) .ultra .slider .sl-fill::after,html:not(.calm) .uout .slider .sl
 html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .sl-bloom::after{animation:fillflow 4s linear infinite}
 @keyframes fillflow{to{background-position:calc(var(--sw,220px) * -2) 0}}
 /* the five notches: dim in the channel, lit under the light */
-.slider .sl-det{position:absolute;top:calc(50% - 1.25px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:2.5px;height:2.5px;margin-left:-1.25px;border-radius:.5px;background:rgba(255,255,255,.22);transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
-.slider .sl-det.on{background:rgba(255,255,255,.85);box-shadow:0 0 4px rgba(255,255,255,.7)}
+.slider .sl-det{position:absolute;top:calc(50% - 1.25px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:2.5px;height:2.5px;margin-left:-1.25px;border-radius:.5px;background:rgba(255,255,255,.18);opacity:0;transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
+.slider .sl-det.on{background:rgba(255,255,255,.5)}
+/* SLIM AND FLUID (per the owner: "very slim and very fluid, not just a bunch of dots"): no notches at rest; faint ones
+   appear only while the slider is hovered, dragged or keyboard-focused. Dragging, the knob and the fill follow the
+   pointer continuously; let go (or step with the keys) and it snaps to the nearest stop in 140 ms. */
+.slider .sl-det{transition:opacity .2s var(--out),background var(--t2) var(--out)}
+.slider:hover .sl-det,.slider.drag .sl-det,.slider.kb .sl-det{opacity:1}
+.slider.drag .sl-thumb,.slider.drag .sl-fill,.slider.drag .sl-bloom{transition:none}
 .slider .sl-thumb{position:absolute;top:calc(50% - var(--ob) / 2);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--p));width:var(--ob);height:var(--ob);margin-left:calc(var(--ob) / -2);transition:left var(--snap);pointer-events:none}
 /* the orb's halo, in the fill's colour where it stands; it rises past the pill while hovered or held, settles on release */
 .slider .sl-thumb::before{content:"";position:absolute;left:50%;top:50%;width:calc(var(--ob) * 1.5);height:calc(var(--ob) * 1.5);margin:calc(var(--ob) * -.75) 0 0 calc(var(--ob) * -.75);border-radius:calc(var(--kr) * 1.6);
@@ -1669,7 +1675,7 @@ function setMode(i){mode=i;modeFx(MODES[i].n);pick.setAttribute("aria-label","Mo
   menu.querySelectorAll(".opt").forEach((x,k)=>x.setAttribute("aria-checked",String(k===i)));Sky&&Sky.level(mode,+eff.value);}
 function paint(){
   const i=+eff.value,pct=i/4;
-  slider.style.setProperty("--p",pct);
+  if(!slider.classList.contains("drag"))slider.style.setProperty("--p",pct);   // while dragging the knob follows the pointer; it snaps on release
   document.querySelectorAll(".sl-det").forEach((d,k)=>d.classList.toggle("on",k<=i));slider.dataset.lv=i;
   const en=$("#eName"),wasUltra=stage.classList.contains("ultra"),isUltra=i===4;
   en.textContent=EFFORT[i];en.classList.toggle("shim",i===3);en.classList.toggle("soft",i===3);en.classList.toggle("lum",isUltra);if(!isUltra)en.classList.remove("go");   // the sweep starts +600 ms into the arrival (ultraOn)
@@ -1750,8 +1756,8 @@ const Burst=(function(){if(reduce)return null;const cv=document.createElement("c
           dur:(drift?3200+Math.random()*1300:2000+Math.random()*2000),s:isHero?9+Math.random()*3:small?2.2+Math.random()*2.6:3+Math.random()*3.4,c:isHero?[1,1,1]:UCOL[Math.floor(Math.random()*UCOL.length)]});}});
       go();},
     glint(cx,cy){parts.push({glint:true,t0:performance.now(),x:cx,y:cy,s:16,dur:400});go();},
-    // a brief star trail along the track as the knob slides to Ultra (its 160 ms snap), and a small stream as it lands
-    trail(x0,x1,y){if(x1-x0<4)return;const t=performance.now();for(let k=0;k<18;k++){const f=k/17;parts.push({t0:t+f*160,x:x0+(x1-x0)*f,y:y+(Math.random()-.5)*4,a:-Math.PI/2+(Math.random()-.5)*2,d:3+Math.random()*7,dr:0,dur:380+Math.random()*120,s:1.8+Math.random()*2.2,c:UCOL[k%UCOL.length]});}go();},
+    // a brief star trail along the track as the knob slides to Ultra (its 140 ms snap), and a small stream as it lands
+    trail(x0,x1,y){if(x1-x0<4)return;const t=performance.now();for(let k=0;k<18;k++){const f=k/17;parts.push({t0:t+f*140,x:x0+(x1-x0)*f,y:y+(Math.random()-.5)*4,a:-Math.PI/2+(Math.random()-.5)*2,d:3+Math.random()*7,dr:0,dur:380+Math.random()*120,s:1.8+Math.random()*2.2,c:UCOL[k%UCOL.length]});}go();},
     stream(cx,cy){const t=performance.now();for(let k=0;k<12;k++)parts.push({t0:t+120+k*28,x:cx,y:cy,a:-Math.PI/2+(Math.random()-.35)*1.3,d:28+Math.random()*34,dr:(Math.random()-.5)*10,dur:640+Math.random()*220,s:2+Math.random()*2.6,c:UCOL[(k*3)%UCOL.length]});go();},
     off(){offAt=performance.now();},count(){return parts.length;}};})();
 function charged(){return stage.classList.contains("ultra")&&!reduce&&FX()!=="calm"&&!!document.body.animate;}
@@ -1792,8 +1798,11 @@ eff.addEventListener("keydown",()=>slider.classList.add("kb"));
 let kbNav=false;addEventListener("keydown",e=>{if(e.key==="Tab")kbNav=true;},true);addEventListener("pointerdown",()=>{kbNav=false;},true);
 eff.addEventListener("focus",()=>{if(kbNav)slider.classList.add("kb");});
 eff.addEventListener("blur",()=>slider.classList.remove("kb"));
-eff.addEventListener("pointerdown",()=>{slider.classList.remove("kb");slider.classList.add("drag");});
-addEventListener("pointerup",()=>slider.classList.remove("drag"));
+eff.addEventListener("pointerdown",e=>{slider.classList.remove("kb");slider.classList.add("drag");glide(e);});
+function glide(e){if(!slider.classList.contains("drag"))return;const r=slider.getBoundingClientRect(),ph=parseFloat(getComputedStyle(slider).getPropertyValue("--ph"))||16;
+  slider.style.setProperty("--p",Math.max(0,Math.min(1,(e.clientX-r.left-ph/2)/(r.width-ph))).toFixed(4));}
+eff.addEventListener("pointermove",glide);
+const letGo=()=>{if(slider.classList.contains("drag")){slider.classList.remove("drag");slider.style.setProperty("--p",+eff.value/4);}};addEventListener("pointerup",letGo);addEventListener("pointercancel",letGo);   // let go: the snap
 document.addEventListener("pointerup",e=>{const c=e.target.closest&&e.target.closest(".cbox .round,.cbox .pick,.cbox .send,.seg button");if(!c||reduce)return;c.classList.remove("rel");void c.offsetWidth;c.classList.add("rel");setTimeout(()=>c.classList.remove("rel"),500);});
 setMode(1);paint();
 

@@ -173,10 +173,11 @@ A slim, squared-off track, a segmented control in Gemini's luminous language (on
 | Channel | `linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.085))`, inset 1 px `rgba(255,255,255,.08)`, inset `0 1px 2px rgba(0,0,0,.25)` |
 | Fill | from the left to round the orb: `linear-gradient(90deg, #4f8cff, #9b72ff 55%, #f07aa6)` fixed to the track (each step has its own colour); 1 px inner top light |
 | Bloom | a copy of the fill beneath it, `blur(8px)`, opacity by step `.32 / .40 / .50 / .62 / .78` |
-| Notches | five 2.5 px squares (radius .5 px) on the centre line: `rgba(255,255,255,.22)`; passed ones `.85` with a 4 px glow |
+| Notches | PINNED (per the owner: "very slim and very fluid, not just a bunch of dots"): none at rest. Only while the slider is hovered, dragged or keyboard-focused, five faint 2.5 px squares (radius .5 px) fade in on the centre line in 200 ms `--out`: `rgba(255,255,255,.18)`, passed ones `.5`, no glow |
 | Knob | a rounded square, `--ob: 14px`, radius `--kr: 4px` (11 and 3.5 in a conversation, 14 and 4 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
 | Halo | the knob's shape: a rounded square 1.5 × the knob (radius 1.6 × `--kr`) in the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), `blur(6px)`, opacity .45 at scale .85 (at Ultra the cool conic gradient, blurred the same); hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
-| Snap | 160 ms `cubic-bezier(.22,1,.36,1)`, no bounce |
+| Drag | the knob and the fill follow the pointer continuously (no transition while held: position = (pointer x − left − track/2) ÷ (width − track), clamped 0–1); the level name and everything tied to the level change as it crosses each stop (the nearest stop) |
+| Snap | on release, and for every key step: 140 ms `cubic-bezier(.22,1,.36,1)` to the stop, no bounce (knob, fill and bloom together) |
 | Level | beside it, Space Grotesk 13/500 `--ink2`, PINNED 12 px off the track (10 on a phone: the row's gap plus 4), so the knob's glow at the track's end has room and never touches the word; updating live: Low · Medium · High · Extra · Ultra. No tooltip and no explanations of the levels anywhere (per the owner: "pretty damn obvious") |
 
 Click anywhere to jump, arrows step. Calm and reduced motion: the same look, no transitions.
@@ -214,7 +215,7 @@ Arriving (about 1.5 s), Balanced and Full:
   drift left to right through the filled track (3.2–5 s each, twinkling, clipped to it). The label keeps its light sweep
   on `#9cc0ff → #c4b0ff → #f7a3c3`. Calm and reduced motion: a still four-point star, no drift.
 - **A star trail and a stream:** as the knob slides to Ultra, 18 tiny stars light along the track behind it (over its
-  160 ms snap, each 380–500 ms); as it lands, 12 stars stream up out of it (28 ms apart, 640–860 ms).
+  140 ms snap, each 380–500 ms); as it lands, 12 stars stream up out of it (28 ms apart, 640–860 ms).
 - **The stars lead.** Three waves of four-point stars burst from where the knob lands (120 in all), drawn on the GPU
   (a canvas above the glass, pooled quads, no DOM): 0 ms, 60 (6 hero stars, 9–12 px half-arms, white; the rest
   3–6.4 px), flying 26–74 px; +200 ms, 36 smaller (2.2–4.8 px), 16–46 px; +400 ms, 24 more of those. White, ice-blue
