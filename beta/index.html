@@ -92,7 +92,7 @@ html:not(.full) #ui{transition:opacity .8s var(--ease)}
 .markout #bigmark .mark{animation:none}
 .tracefx{position:fixed;z-index:8;pointer-events:none;transition:opacity .6s var(--ease)}
 .full #wash.go{animation:bloom 5.2s var(--ease) both}
-@keyframes bloom{0%{opacity:0;transform:scale(1.14) rotate(-4deg)}30%{opacity:.8;transform:scale(1.04) rotate(-1.5deg)}100%{opacity:.1;transform:none}}
+@keyframes bloom{0%{opacity:0;transform:scale(1.14) rotate(-9deg)}30%{opacity:.8;transform:scale(1.04) rotate(-3deg)}100%{opacity:.1;transform:none}}
 
 /* the app */
 #ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;pointer-events:none;transition:opacity 1.2s var(--ease)}
@@ -621,20 +621,27 @@ const Sky=(function(){
     vec3 lit=min(c*hi,p.rgb*decay+vec3(atk));
     gl_FragColor=vec4(max(lit,p.rgb*decay-1.5/255.),max(e,p.a*edecay-2./255.));
   }`;
-  const SHOW=HEAD+`uniform sampler2D vid,trail,bl1,bl2,stk,aur;uniform vec2 px,res,mpos;uniform float time,boost,expo,warm,moon,mrad,dscale,foot,rise,calm,fw,tw;uniform vec3 tint,skyTop,skyMid,skyLow;
+  const SHOW=HEAD+`uniform sampler2D vid,trail,bl1,bl2,stk,aur;uniform vec2 px,res,mpos,ctw;uniform float time,boost,expo,warm,moon,mrad,dscale,foot,rise,calm,fw,tw,twist,arc;uniform vec3 tint,skyTop,skyMid,skyLow;
   float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-  float starLayer(vec2 p,float cell,float keep,float sz){vec2 c=floor(p/cell),f=p-c*cell;float h=hash(c);if(h<keep)return 0.;
-    vec2 o=(vec2(hash(c+1.7),hash(c+3.1))*.8+.1)*cell;float d=length(f-o);
+  float starLayer(vec2 p,float cell,float keep,float sz,vec2 cq){vec2 c=floor(p/cell),f=p-c*cell;float h=hash(c);if(h<keep)return 0.;
+    vec2 o=(vec2(hash(c+1.7),hash(c+3.1))*.8+.1)*cell;vec2 rel=f-o;
+    // at the fastest moment of the opening's twist each star lengthens a little along its arc round the centre, like a
+    // brief long exposure (farther stars sweep farther); back to a point as the turn settles
+    vec2 r=c*cell+o-cq;float rl=max(length(r),1.);vec2 td=vec2(-r.y,r.x)/rl;
+    float along=dot(rel,td),across=dot(rel,vec2(-td.y,td.x)),st=1.+arc*min(1.6,rl*.0016);
+    float d2=across*across+along*along/(st*st);
     float twk=1.-tw*.35*(.5+.5*sin(time*(1.2+2.5*hash(c+5.3))+hash(c+7.9)*6.283));   // a faint, slow twinkle (Balanced)
-    return ((h-keep)/(1.-keep))*exp(-d*d/(sz*sz))*twk;}
+    return ((h-keep)/(1.-keep))*exp(-d2/(sz*sz))*twk/sqrt(st);}
   vec4 moonRamp(float r){vec4 a=vec4(.965,.945,.894,.5),b=vec4(.871,.902,1.,.2),c=vec4(.624,.753,1.,.07);
     if(r<.16)return mix(a,b,r/.16);if(r<.42)return mix(b,c,(r-.16)/.26);if(r<.68)return mix(c,vec4(c.rgb,0.),(r-.42)/.26);return vec4(0.);}
   vec3 screen(vec3 a,vec3 b){return 1.-(1.-a)*(1.-b);}
   void main(){
     vec2 pc=vec2(uv.x,1.-uv.y)*res/dscale; float s=1.-uv.y;
     vec3 sky=s<.56?mix(skyTop,skyMid,smoothstep(0.,.56,s)):mix(skyMid,skyLow,smoothstep(.56,.72,s));
-    vec2 q=pc-vec2(res.x/dscale*.5,-res.y/dscale*.9);float ca=cos(time*.002618),sa=sin(time*.002618);q=mat2(ca,-sa,sa,ca)*q;
-    float st=starLayer(q,46.,.84,.75)+starLayer(q+31.,19.,.93,.55)*.55;
+    // the opening's twist: the field turns about a centre above the wordmark, then hands over to the slow rest turn
+    vec2 pt=pc-ctw;float ct=cos(twist),stw=sin(twist);pt=mat2(ct,-stw,stw,ct)*pt;
+    vec2 pole=vec2(res.x/dscale*.5,-res.y/dscale*.9);vec2 q=pt+ctw-pole;float ca=cos(time*.002618),sa=sin(time*.002618);mat2 R=mat2(ca,-sa,sa,ca);q=R*q;vec2 cq=R*(ctw-pole);
+    float st=starLayer(q,46.,.84,.75,cq)+starLayer(q+31.,19.,.93,.55,cq+31.)*.55;
     float warmStar=step(.985,hash(floor(q/46.)+9.));
     sky+=mix(vec3(.9,.93,1.),vec3(1.,.93,.82),warmStar)*st*smoothstep(.98,.4,s);
     float r=length(pc-mpos)/mrad;vec4 mg=moonRamp(r);float an=atan(pc.y-mpos.y,pc.x-mpos.x);
@@ -702,7 +709,8 @@ const Sky=(function(){
     odd=!odd;if((lowPower||(skyMode==="calm"&&odd))&&nowT-last<32)return; const dt=Math.min(.5,Math.max(.004,(nowT-last)/1000)); last=nowT;
     const k=f=>1-Math.pow(1-f,dt*60);   // a per-frame factor at 60 Hz, made time-based
     calm+=(calmTo-calm)*k(.04);if(Math.abs(calmTo-calm)<.002)calm=calmTo;fw+=(fwTo-fw)*k(.04);tw+=(twTo-tw)*k(.04);
-    if(!ready){ready=true;cv.classList.add("on");}
+    if(!ready){ready=true;cv.classList.add("on");readyAt=nowT;twistDeg=reduce?0:skyMode==="full"?12:skyMode==="bal"?6:0;}
+    [twistNow,arcNow]=twistAt(nowT);
     const t=(nowT-t0)/1000, m=vmap(t);
     boost+=(boostTo-boost)*k(.03);
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,vtex);
@@ -728,16 +736,21 @@ const Sky=(function(){
     gl.uniform4fv(pS.U.vmap,m);gl.uniform2f(pS.U.px,1/W,1/H);gl.uniform2f(pS.U.res,W,H);gl.uniform1f(pS.U.time,t);
     const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo-footMul)*k(.045);gl.uniform1f(pS.U.foot,clip.foot*footMul);gl.uniform1f(pS.U.rise,clip.rise);
     gl.uniform3f(pS.U.skyTop,SK[1],SK[2],SK[3]);gl.uniform3f(pS.U.skyMid,SK[4],SK[5],SK[6]);gl.uniform3f(pS.U.skyLow,SK[7],SK[8],SK[9]);
-    gl.uniform1f(pS.U.boost,boost);gl.uniform1f(pS.U.calm,calm);gl.uniform1f(pS.U.fw,fw);gl.uniform1f(pS.U.tw,tw);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit));gl.uniform1f(pS.U.warm,G[5]);gl.uniform3f(pS.U.tint,G[1],G[2],G[3]);
+    gl.uniform1f(pS.U.boost,boost);gl.uniform1f(pS.U.calm,calm);gl.uniform1f(pS.U.fw,fw);gl.uniform1f(pS.U.tw,tw);gl.uniform1f(pS.U.twist,twistNow);gl.uniform1f(pS.U.arc,arcNow);gl.uniform2f(pS.U.ctw,innerWidth*.5,innerHeight*.12);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit));gl.uniform1f(pS.U.warm,G[5]);gl.uniform3f(pS.U.tint,G[1],G[2],G[3]);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     if(calm<.999){[A,B]=[B,A];[fA,fB]=[fB,fA];}
   }
   requestAnimationFrame(frame);
   let lvl=.25,busyOn=false;const setNeon=()=>{neonTo=skyMode==="full"?lvl+(busyOn?.28:0):skyMode==="bal"?.1:0;};   // Balanced: one soft curtain at about a third of Full
+  // THE TWIST (per the owner: "a little bit more to that twist"): on open the star field turns about a centre just above
+  // the wordmark, 12 degrees in Full and 6 in Balanced, over 4 s on a smootherstep (zero velocity at both ends, so it
+  // hands over to the slow rest turn with no step); the arc amount follows the angular speed, peaking at 2 s
+  let readyAt=0,twistDeg=0,twistNow=0,arcNow=0;const TWIST_S=4;
+  function twistAt(nowT){if(!readyAt||!twistDeg)return [0,0];const u=Math.min(1,(nowT-readyAt)/(TWIST_S*1000)),s5=u*u*u*(u*(u*6-15)+10),v=30*u*u*(1-u)*(1-u)/1.875;return [twistDeg*(1-s5)*Math.PI/180,v];}
   function reset(){[fA,fB].forEach(f=>{gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);});gl.bindFramebuffer(gl.FRAMEBUFFER,null);}
   function mode(m){skyMode=m;if(m==="full"&&calm>.999)reset();calmTo=m==="full"?0:1;fwTo=m==="full"?1:m==="bal"?.75:.6;twTo=m==="bal"?1:0;spd=m==="bal"?.012:.035;one=m==="bal"?1:0;setNeon();}
   mode(FX());
-  return {busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.5,.62][m]+e*.035+(e===4?.12:0);setNeon();},mode,state(){return {mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,spd,one};}};
+  return {busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.5,.62][m]+e*.035+(e===4?.12:0);setNeon();},mode,state(){return {mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,spd,one,twistDeg,twistNowDeg:+(twistNow*180/Math.PI).toFixed(3),arc:+arcNow.toFixed(3),sinceReadyS:readyAt?+((performance.now()-readyAt)/1000).toFixed(2):null};}};
 })();
 function loadClip(c){clip=c;vid.innerHTML='<source src="../night/'+c.n+'.webm" type="video/webm"><source src="../night/'+c.n+'.mp4" type="video/mp4">';vid.load();
   try{vid.play().catch(()=>{});}catch(e){} $("#clipname").textContent=c.t;}
