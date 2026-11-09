@@ -49,9 +49,43 @@ textarea:focus-visible{box-shadow:none}
 .mark .glint svg{flex:none}
 @keyframes glint{0%{-webkit-mask-position:100% 0;mask-position:100% 0}16%,100%{-webkit-mask-position:0 0;mask-position:0 0}}
 
+/* THE OPENING (the night page's, timings kept): the wordmark traced in light; when the trace completes a light streak
+   crosses it, a prism glint sweeps it and a soft prism glow cycles; then it lifts away and the home fades in. The
+   light belongs to the opening only: the big mark is removed once it has gone. */
+#bigmark{position:absolute;left:0;right:0;top:36vh;display:flex;flex-direction:column;align-items:center;gap:22px;z-index:6;opacity:0;pointer-events:none}
+#bigmark.gone{display:none}
+#bigmark .mark{font-size:clamp(26px,3.4vw,44px)}
+#bigmark .mark svg{filter:drop-shadow(0 0 10px rgba(159,192,255,.75)) drop-shadow(0 0 28px rgba(110,150,255,.45))}
+#bigmark .word{opacity:0;transition:opacity .6s var(--ease);text-shadow:0 0 12px rgba(190,212,255,.75),0 0 40px rgba(159,168,255,.5),0 0 80px rgba(255,143,196,.22)}
+#bigmark .word.shown{opacity:1}
+#bigmark line{stroke-dasharray:1 2;stroke-dashoffset:1;opacity:0}
+.markin #bigmark line{animation:draw 1s var(--ease) forwards}
+.markin #bigmark line:nth-child(2){animation-delay:.08s}.markin #bigmark line:nth-child(3){animation-delay:.16s}
+.markin #bigmark line:nth-child(4){animation-delay:.24s}.markin #bigmark line:nth-child(5){animation-delay:.32s}
+@keyframes draw{0%{opacity:0;stroke-dashoffset:1}12%{opacity:1}100%{opacity:1;stroke-dashoffset:0}}
+#bigmark .flare{position:absolute;left:4%;right:4%;top:50%;height:2px;margin-top:-1px;border-radius:2px;opacity:0;transform:scaleX(0);pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(159,168,255,.55) 22%,rgba(220,232,255,.95) 46%,#fff 50%,rgba(255,190,220,.95) 54%,rgba(127,240,214,.5) 78%,transparent);
+  filter:drop-shadow(0 0 6px rgba(159,192,255,.95)) drop-shadow(0 0 22px rgba(255,143,196,.55))}
+.lit-mark #bigmark .flare{animation:aflare 2.8s cubic-bezier(.22,.8,.25,1) forwards}
+@keyframes aflare{0%{opacity:0;transform:scaleX(0)}14%{opacity:1}55%{opacity:.85;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1.12)}}
+#bigmark .glint.big .gm{animation:none}
+#bigmark .glint.big{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px rgba(255,143,196,.9)) drop-shadow(0 0 26px rgba(159,168,255,.85))}
+.lit-mark #bigmark .glint.big .gm{animation:glint1 2.5s cubic-bezier(.45,0,.25,1) .55s both}
+@keyframes glint1{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
+.lit-mark #bigmark .mark{animation:prism 9s ease-in-out infinite}
+@keyframes prism{0%,100%{filter:drop-shadow(0 0 14px rgba(159,168,255,.7)) drop-shadow(0 0 42px rgba(255,143,196,.28))}
+  33%{filter:drop-shadow(0 0 14px rgba(127,240,214,.6)) drop-shadow(0 0 42px rgba(159,168,255,.3))}
+  66%{filter:drop-shadow(0 0 14px rgba(255,197,138,.55)) drop-shadow(0 0 42px rgba(127,240,214,.26))}}
+.markin #bigmark{opacity:1}
+.markout #bigmark{opacity:0;transform:translateY(-24px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
+.markout #bigmark .mark{animation:none}
+.tracefx{position:fixed;z-index:8;pointer-events:none;transition:opacity .6s var(--ease)}
+#wash.go{animation:bloom 5.2s var(--ease) both}
+@keyframes bloom{0%{opacity:0;transform:scale(1.14) rotate(-4deg)}30%{opacity:.8;transform:scale(1.04) rotate(-1.5deg)}100%{opacity:.1;transform:none}}
+
 /* the app */
-#ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;transition:opacity 1.4s var(--ease)}
-.home #ui{opacity:1}
+#ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;pointer-events:none;transition:opacity 1.2s var(--ease)}
+.home #ui{opacity:1;pointer-events:auto}
 header{display:flex;align-items:center;gap:12px;padding-block:14px;position:relative;z-index:3}
 header .mark{font-size:10.5px;gap:6px}
 header .mark .glint{display:none}   /* a calm wordmark: no moving shine, no glow */
@@ -99,14 +133,14 @@ main{--mw:820px;flex:1;display:flex;flex-direction:column;align-items:center;wid
 #hero{flex:1;display:flex;align-items:center;justify-content:center;min-height:160px;text-align:center}
 #hero h1{margin:0;font-weight:600;font-size:clamp(48px,9vw,124px);line-height:.98;letter-spacing:-.055em;text-wrap:balance;position:relative;color:#f8faff;
   text-shadow:0 0 1px rgba(255,255,255,.6),0 0 16px rgba(205,222,255,.5),0 0 46px rgba(140,175,255,.42),0 12px 90px rgba(60,100,230,.5)}
-#hero h1 .fill{position:relative;opacity:0;filter:blur(8px);transition:opacity 1.6s var(--ease) .5s,filter 1.6s var(--ease) .5s}
-.home #hero h1 .fill{opacity:1;filter:none}
-#hero h1 .bloom{position:absolute;inset:0;color:transparent;text-shadow:none;background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6,#9fa8ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;filter:blur(24px) saturate(1.2);opacity:0;z-index:-1;transition:opacity 2s var(--ease) .8s}
-.home #hero h1 .bloom{opacity:.75;animation:breathe 8s ease-in-out 2s infinite,shim 16s linear infinite}
+#hero h1 .fill{position:relative;opacity:0;transition:opacity .55s var(--ease)}
+#hero h1.shown .fill{opacity:1}
+#hero h1 .bloom{position:absolute;inset:0;color:transparent;text-shadow:none;background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6,#9fa8ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;filter:blur(24px) saturate(1.2);opacity:0;z-index:-1;transition:opacity 1.4s var(--ease)}
+#hero h1.shown .bloom{opacity:.75;animation:breathe 8s ease-in-out 1.4s infinite,shim 16s linear infinite}
 #hero h1 .sheen{position:absolute;inset:0;pointer-events:none;color:transparent;text-shadow:none;opacity:0;
   background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.95) 48%,rgba(190,212,255,.9) 52%,transparent 65%);background-size:250% 100%;background-position:120% 0;
   -webkit-background-clip:text;background-clip:text}
-.home #hero h1 .sheen{opacity:1;animation:sheen 9s var(--ease) 3s infinite}
+#hero h1.shown .sheen{opacity:1;animation:sheen 9s var(--ease) 3s infinite}
 @keyframes sheen{0%{background-position:120% 0}30%,100%{background-position:-40% 0}}
 @keyframes breathe{0%,100%{opacity:.42}50%{opacity:.7}}
 
@@ -310,7 +344,7 @@ aside.behind.on{opacity:1}
 /* the aurora, over the GPU sky */
 #aurora{left:50%;top:8vh;width:1800px;height:640px;margin-left:-880px;transform:rotate(-3deg);opacity:0;transition:opacity 2.6s var(--ease);
   -webkit-mask-image:radial-gradient(ellipse 54% 44% at 50% 52%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 54% 44% at 50% 52%,#000 30%,transparent 100%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
-.home #aurora{opacity:.42}
+.markin #aurora,.home #aurora{opacity:.42}
 .busy #aurora{opacity:.85}
 #aurora i{position:absolute;inset:-40px 0;animation:sway 28s ease-in-out infinite alternate}
 #aurora .a1{background:linear-gradient(90deg,rgba(159,192,255,0),rgba(159,192,255,.22) 28%,rgba(176,204,255,.3) 55%,rgba(159,192,255,0));-webkit-mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.4) 50%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.4) 50%,#000 86%,transparent);filter:blur(34px);opacity:.42}
@@ -332,7 +366,7 @@ aside.behind.on{opacity:1}
 @media (max-width:760px){.rig b{display:none}.rig{padding:0 8px}.rig .tip{right:auto;left:50%;transform:translate(-50%,-4px)}.rig:hover .tip,.rig:focus-visible .tip{transform:translate(-50%,0)}.beta{display:none}}
 @media (max-width:600px){nav{display:none}header{gap:12px}#hero h1{font-size:clamp(44px,13vw,64px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round{display:none}#menu{left:0;width:100%}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
   .row{gap:8px}.pick{height:34px;padding:0 8px 0 10px;gap:5px}.pick b{font-size:13.5px}.slider{width:108px}.elevel{min-width:0;font-size:12.5px}.send{width:38px;height:38px}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.body.swapwait,.body.swapout{opacity:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.body.swapwait,.body.swapout{opacity:1}#ui{transition:opacity .5s ease!important}}
 /* the lane tabs sit over the column's centre, sidebar open or not */
 @media (min-width:760px){header nav{position:absolute;left:50%;transform:translateX(-50%);transition:left .6s var(--ease)}}
 @media (min-width:1100px){.side-open header nav{left:calc(282px + (100% - 282px) / 2)}}
@@ -344,6 +378,11 @@ aside.behind.on{opacity:1}
   <canvas class="layer" id="sky" aria-hidden="true"></canvas>
   <div class="layer" id="washwrap"><div id="wash"></div></div>
   <div class="layer" id="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
+
+  <div id="bigmark" aria-hidden="true">
+    <span class="mark"><svg width="66" height="54" viewBox="2 2.3 19.6 16.4"><defs><linearGradient id="g1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#787e89"/><stop offset=".55" stop-color="#b7bcc6"/><stop offset="1" stop-color="#f4f5f8"/></linearGradient></defs><g stroke="url(#g1)" stroke-width="2.4" stroke-linecap="round"><line pathLength="1" x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line pathLength="1" x1="7.5" y1="17.5" x2="20.4" y2="7"/><line pathLength="1" x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line pathLength="1" x1="16.1" y1="17.5" x2="20.4" y2="14"/><line pathLength="1" x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span class="word" id="bigword">Concorde<b>AI</b></span><span class="glint big"><span class="gm"><svg width="66" height="54" viewBox="2 2.3 19.6 16.4"><g stroke-width="2.4" stroke-linecap="round"><line x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line x1="7.5" y1="17.5" x2="20.4" y2="7"/><line x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line x1="16.1" y1="17.5" x2="20.4" y2="14"/><line x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span>Concorde<b>AI</b></span></span></span></span>
+    <span class="flare"></span>
+  </div>
 
   <div id="ui">
     <header>
@@ -595,12 +634,130 @@ vid.addEventListener("playing",()=>{footTo=1;});
 loadClip(clip);
 if(!Sky)vid.style.opacity=1;
 
-/* ---------- the greeting, then the home ---------- */
+/* ---------- TRACED IN LIGHT (the night page's tracer): sparks run round every letter's outline, then light floods in ---------- */
+const tracers=new Set();
+function killTracers(){tracers.forEach(k=>k());tracers.clear();}
+async function traceIn(el,opts){
+  opts=Object.assign({margin:44,speed:640,spread:.85,ink:[.97,.98,1]},opts||{});
+  const fallback=()=>Promise.resolve();
+  if(reduce)return fallback();
+  try{await document.fonts.ready;}catch(e){}
+  const r=el.getBoundingClientRect(); if(!r.width||!r.height)return fallback();
+  const dpr=Math.min(devicePixelRatio||1,2), M=opts.margin;
+  const cw=Math.ceil(r.width+M*2), ch=Math.ceil(r.height+M*2), w=Math.round(cw*dpr), h=Math.round(ch*dpr);
+  // 1) draw the same letters, at the same places, into a mask
+  const off=document.createElement("canvas");off.width=w;off.height=h;const o=off.getContext("2d",{willReadFrequently:true});
+  o.scale(dpr,dpr);o.fillStyle="#fff";o.strokeStyle="#fff";o.lineJoin="round";
+  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),rg=document.createRange();let node;
+  while((node=walker.nextNode())){if(node.parentElement.closest(".glint"))continue;
+    const cs=getComputedStyle(node.parentElement), up=cs.textTransform==="uppercase", sw=parseFloat(cs.webkitTextStrokeWidth)||0;
+    o.font=cs.fontStyle+" "+cs.fontWeight+" "+cs.fontSize+" "+cs.fontFamily; o.lineWidth=sw;
+    const txt=node.textContent;
+    for(let i=0;i<txt.length;i++){const c=up?txt[i].toUpperCase():txt[i];if(!c.trim())continue;
+      rg.setStart(node,i);rg.setEnd(node,i+1);const b=rg.getClientRects()[0];if(!b)continue;
+      const mt=o.measureText(c), asc=mt.fontBoundingBoxAscent||parseFloat(cs.fontSize)*.8;
+      const x=b.left-r.left+M, y=b.top-r.top+M+asc; o.fillText(c,x,y); if(sw)o.strokeText(c,x,y);}
+  }
+  const px=o.getImageData(0,0,w,h).data, N=w*h, ink=new Uint8Array(N);
+  for(let i=0;i<N;i++)ink[i]=px[i*4+3];
+  // 2) the outline, and how far along it each pixel is (sparks leave the top of each shape and run both ways round it)
+  const edge=new Uint8Array(N);
+  for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){const i=y*w+x;if(ink[i]>=128&&(ink[i-1]<128||ink[i+1]<128||ink[i-w]<128||ink[i+w]<128))edge[i]=1;}
+  const T=new Float32Array(N).fill(1e9), q=new Int32Array(N); const sp=opts.speed*dpr;
+  const seen=new Uint8Array(N), comp=[];
+  for(let s=0;s<N;s++){if(!edge[s]||seen[s])continue;
+    let qh=0,qt=0;q[qt++]=s;seen[s]=1;let minx=s%w;const dmap=new Map([[s,0]]);
+    while(qh<qt){const i=q[qh++],d=dmap.get(i),x=i%w;if(x<minx)minx=x;
+      for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const j=i+dy*w+dx;if(j<0||j>=N||!edge[j]||seen[j])continue;seen[j]=1;dmap.set(j,d+1);q[qt++]=j;}}
+    comp.push({dmap,minx});}
+  let tmax=0;
+  const HUE=new Uint8Array(N);let ci=0;
+  for(const c of comp){const t0=.06+(c.minx/w)*opts.spread;ci++;for(const [i,d] of c.dmap){const t=t0+d/sp;T[i]=t;if(t>tmax)tmax=t;HUE[i]=1+Math.round((((d/(380*dpr))+ci*.17)%1)*254);}}
+  // 3) light floods inward from the traced outline
+  let qh=0,qt=0;for(let i=0;i<N;i++)if(edge[i])q[qt++]=i;
+  const fillSp=260*dpr;
+  while(qh<qt){const i=q[qh++],t=T[i]+1/fillSp;for(const j of [i-1,i+1,i-w,i+w]){if(j<0||j>=N||ink[j]===0||T[j]<=t)continue;if(T[j]<1e8)continue;T[j]=t;if(t>tmax)tmax=t;q[qt++]=j;}}
+  const TE=tmax+.001, data=new Uint8Array(N*4);
+  for(let i=0;i<N;i++){if(!ink[i])continue;const v=Math.min(65535,Math.round(Math.min(T[i],TE)/TE*65535));data[i*4]=v>>8;data[i*4+1]=v&255;data[i*4+2]=edge[i]?HUE[i]:0;data[i*4+3]=ink[i];}
+  // 4) draw it on the GPU: a hot spark at the head, an ice trail behind it, bloom all round, then the fill
+  const cv=document.createElement("canvas");cv.className="tracefx";cv.width=w;cv.height=h;
+  Object.assign(cv.style,{left:(r.left-M)+"px",top:(r.top-M)+"px",width:cw+"px",height:ch+"px"});
+  const gl=cv.getContext("webgl",{premultipliedAlpha:true,alpha:true,antialias:false});
+  if(!gl)return fallback();
+  const IFS=`precision highp float;varying vec2 uv;uniform sampler2D map;uniform float t,TE;
+  float tf(vec4 s){return (s.r*65280.+s.g*255.)/65535.*TE;}
+  vec3 pal(float t){vec3 a=vec3(.624,.659,1.),b=vec3(1.,.561,.769),c=vec3(1.,.773,.541),d=vec3(.498,.941,.839);t=fract(t)*4.;
+    if(t<1.)return mix(a,b,smoothstep(0.,1.,t));if(t<2.)return mix(b,c,smoothstep(1.,2.,t));if(t<3.)return mix(c,d,smoothstep(2.,3.,t));return mix(d,a,smoothstep(3.,4.,t));}
+  void main(){vec4 s=texture2D(map,vec2(uv.x,1.-uv.y));float d=t-tf(s);
+    float e=step(.5/255.,s.b),hue=(s.b*255.-1.)/254.;vec3 neon=pal(hue+t*.18),ice=vec3(.62,.77,1.);
+    float head=e*exp(-d*d/.0018),tr=e*step(0.,d)*(.3+.7*exp(-d/.42));
+    gl_FragColor=vec4(neon*head*.5+mix(ice,neon,exp(-max(d,0.)/.32))*tr*.42,s.a*smoothstep(.16,.62,d));}`;
+  const CFS=`precision highp float;varying vec2 uv;uniform sampler2D I,b1,b2;uniform vec3 ink;
+  void main(){vec4 s=texture2D(I,uv),g1=texture2D(b1,uv),g2=texture2D(b2,uv);
+    float hv=max(s.r,max(s.g,s.b))*2.;
+    vec3 col=ink*s.a+s.rgb*2.*(1.-s.a*.8)+vec3(smoothstep(.55,1.,hv))*.85+g1.rgb*4.4+g2.rgb*3.8+vec3(.72,.82,1.)*(g1.a*.22+g2.a*.34);
+    float al=clamp(max(col.r,max(col.g,col.b)),0.,1.);gl_FragColor=vec4(min(col,vec3(al)),al);}`;
+  const pI=glProgram(gl,IFS),pC=glProgram(gl,CFS),pBl=glProgram(gl,BLUR_FS);if(!pI||!pC||!pBl)return fallback();
+  const quad=glQuad(gl), tex=glTex(gl,gl.NEAREST);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,data);
+  const RI=glTarget(gl,w,h),w2=Math.max(2,w>>1),h2=Math.max(2,h>>1),w4=Math.max(2,w>>2),h4=Math.max(2,h>>2);
+  const X1=glTarget(gl,w2,h2),Y1=glTarget(gl,w2,h2),X2=glTarget(gl,w4,h4),Y2=glTarget(gl,w4,h4);
+  document.body.appendChild(cv);
+  let alive=true,raf=0;
+  const kill=()=>{if(!alive)return;alive=false;cancelAnimationFrame(raf);cv.style.opacity=0;setTimeout(()=>{cv.remove();const x=gl.getExtension("WEBGL_lose_context");x&&x.loseContext();},700);};
+  tracers.add(kill);
+  return new Promise(res=>{
+    const start=performance.now(), total=TE+.65; let told=false;
+    // a hidden tab never paints a frame: the promise still settles when the trace would have ended
+    const guard=setTimeout(()=>{if(!told){told=true;res();}},(total+.3)*1000);
+    function f(n){if(!alive){clearTimeout(guard);return res();}const t=(n-start)/1000;
+      gl.useProgram(pI);quad(pI);gl.bindFramebuffer(gl.FRAMEBUFFER,RI.f);gl.viewport(0,0,w,h);
+      gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(pI.U.map,0);gl.uniform1f(pI.U.t,t);gl.uniform1f(pI.U.TE,TE);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+      glBlur(gl,pBl,quad,RI.t,w,h,X1,2.2*dpr,0);glBlur(gl,pBl,quad,X1.t,w2,h2,Y1,0,1.1*dpr);
+      glBlur(gl,pBl,quad,Y1.t,w2,h2,X2,2.6*dpr,0);glBlur(gl,pBl,quad,X2.t,w4,h4,Y2,0,1.6*dpr);
+      gl.useProgram(pC);quad(pC);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,RI.t);gl.uniform1i(pC.U.I,0);
+      gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,Y1.t);gl.uniform1i(pC.U.b1,1);
+      gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,Y2.t);gl.uniform1i(pC.U.b2,2);gl.uniform3fv(pC.U.ink,opts.ink);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+      if(!told&&t>total-.35){told=true;clearTimeout(guard);res();}
+      if(t>total+.2){kill();tracers.delete(kill);return;}
+      raf=requestAnimationFrame(f);}
+    raf=requestAnimationFrame(f);
+  });
+}
+
+/* ---------- the greeting ---------- */
 (function(){const h1=$("#h1");h1.setAttribute("aria-label",greet);
   ["bloom","fill","sheen"].forEach(c=>{const s=document.createElement("span");s.className=c;s.setAttribute("aria-hidden","true");s.textContent=greet;h1.appendChild(s);});})();
-setTimeout(()=>{stage.classList.add("home");
-  document.querySelectorAll(".rig").forEach((r,i)=>setTimeout(()=>r.classList.add("on"),900+i*170));
-  if(innerWidth>=1100)setTimeout(()=>setSide(true),1200);},reduce?0:350);
+async function playHeadline(){const h1=$("#h1");await traceIn(h1.querySelector(".fill"),{margin:56,speed:620,spread:.9});h1.classList.add("shown");}
+
+/* ---------- THE OPENING (the night page's timeline): the wordmark traced at 0.3 s; the colour wash blooms at 1.5 s;
+   the mark lifts away at 6.2 s; the home fades in at 6.8 s with the greeting traced; the sidebar at 7.1 s; the machines
+   light from 7.5 s. It plays on every visit. A click or a key skips straight to the home; reduced motion gets a
+   short fade-in instead. ---------- */
+let timers=[],introOn=false;
+function at(ms,fn){timers.push(setTimeout(fn,ms));}
+function home(){stage.classList.add("home");if(innerWidth>=1100)setSide(true);}
+function landed(){introOn=false;removeEventListener("pointerdown",skipIntro,true);removeEventListener("keydown",skipIntro,true);
+  at(1400,()=>$("#bigmark").classList.add("gone"));}
+function skipIntro(e){if(!introOn)return;if(e&&e.type==="keydown"&&(e.key==="Tab"||e.metaKey||e.ctrlKey||e.altKey))return;
+  timers.forEach(clearTimeout);timers=[];killTracers();
+  stage.classList.add("markout");$("#bigword").classList.remove("shown");$("#wash").classList.remove("go");
+  home();$("#h1").classList.add("shown");document.querySelectorAll(".rig").forEach(r=>r.classList.add("on"));landed();}
+function run(){
+  introOn=true;
+  if(reduce){at(0,()=>{home();$("#h1").classList.add("shown");document.querySelectorAll(".rig").forEach(r=>r.classList.add("on"));$("#bigmark").classList.add("gone");introOn=false;});return;}
+  addEventListener("pointerdown",skipIntro,true);addEventListener("keydown",skipIntro,true);
+  at(300,()=>{stage.classList.add("markin");traceIn($("#bigword"),{margin:40,speed:520,spread:.7}).then(()=>{if(!introOn)return;$("#bigword").classList.add("shown");stage.classList.add("lit-mark");});});
+  at(1500,()=>{void $("#wash").offsetWidth;$("#wash").classList.add("go");});
+  at(6200,()=>stage.classList.add("markout"));
+  at(6800,()=>{stage.classList.add("home");playHeadline();});
+  at(7100,()=>{if(innerWidth>=1100)setSide(true);landed();});
+  document.querySelectorAll(".rig").forEach((r,i)=>at(7500+i*170,()=>r.classList.add("on")));
+}
+run();
 
 /* ---------- the mode (who works) and the effort (how long each one thinks) ---------- */
 const MACH={mlx:{ac:"#c9ccd2",ag:"#e4e7ee",name:"This Mac"},nvidia:{ac:"#76b900",ag:"#93dc1a",name:"Your server"},cloud:{ac:"#9fc0ff",ag:"#cfe0ff",name:"Cloud"}};
