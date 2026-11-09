@@ -564,6 +564,7 @@ html:not(.full) #aurora{display:none}
 #foot a{color:var(--ink2);text-decoration-color:var(--hair2);text-underline-offset:3px;transition:color var(--t1) var(--out),text-decoration-color var(--t1) var(--out)}
 #foot a:hover{color:var(--ink);text-decoration-color:var(--line)}
 #foot .own{color:var(--ink2)}
+#foot .maclink{color:var(--ink2);white-space:nowrap}   /* the native preview (Apple silicon and Intel), offline */
 #stage.chat~#foot{display:none}
 
 @media (max-width:760px){.rig b{display:none}.rig{padding:0 8px}.rig .tip{right:auto;left:50%;transform:translate(-50%,-4px)}.rig:hover .tip,.rig:focus-visible .tip{transform:translate(-50%,0)}.beta{display:none}}
@@ -668,6 +669,7 @@ html:not(.full) #aurora{display:none}
 <i class="star" id="star" aria-hidden="true"></i>
 <footer id="foot">
   <span>Backdrop: <span id="clipname"></span>. <a href="https://eol.jsc.nasa.gov/BeyondThePhotography/CrewEarthObservationsVideos/" target="_blank" rel="noopener">Video courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center</a>.</span>
+  <a class="maclink" id="maclink" href="https://github.com/bigmillz/concordeai-preview/releases/tag/preview-1" target="_blank" rel="noopener">Download the Mac preview</a>
 </footer>
 
 <script>
