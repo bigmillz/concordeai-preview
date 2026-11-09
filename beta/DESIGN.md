@@ -6,6 +6,11 @@ below is design, not effect: it applies in every level.
 
 ## Type
 
+The wordmark (Michroma, which has one weight) is set lighter: `letter-spacing: .2em` (was .15), 10 px in the
+header (was 10.5) and `clamp(24px, 3.1vw, 40px)` in the opening (was 26–44); "AI" keeps a fake bold of
+`-webkit-text-stroke: .055em` (was .12), so it stays a little bolder than CONCORDE; the wing's lines are 1.1 (was 1.5).
+
+
 Three families, no others: **Space Grotesk** (UI and reading), **IBM Plex Mono** (digits
 and labels), **Michroma** (the wordmark, with the wing).
 
@@ -147,16 +152,16 @@ lengthen briefly along their arcs at the fastest moment (2 s in).
 - Calm and reduced motion: the plain greeting, no trace, no afterglow.
 
 ### The effort slider
-A 26 px pill, a segmented control in Gemini's luminous language (one `<input type=range>` on top for the hit area).
+A 20 px pill, a segmented control in Gemini's luminous language (one `<input type=range>` on top for the hit area).
 
 | Part | Value |
 |---|---|
-| Size | PINNED ("thick, like ChatGPT's"): 220 × 36 (hit), pill `--ph: 26px`; in a conversation 200 wide, `--ph: 20px`; under 600 px 88 wide, `--ph: 24px`. Never thinner |
+| Size | PINNED ("slightly slimmer", superseding the earlier 26 px): 220 × 36 (hit), pill `--ph: 20px`; in a conversation 200 wide, `--ph: 16px`; under 600 px 88 × 32, `--ph: 20px`. The level sits beside it |
 | Channel | `linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.085))`, inset 1 px `rgba(255,255,255,.08)`, inset `0 1px 2px rgba(0,0,0,.25)` |
 | Fill | from the left to round the orb: `linear-gradient(90deg, #4f8cff, #9b72ff 55%, #f07aa6)` fixed to the track (each step has its own colour); 1 px inner top light |
 | Bloom | a copy of the fill beneath it, `blur(8px)`, opacity by step `.32 / .40 / .50 / .62 / .78` |
-| Notches | five 4 px dots on the centre line: `rgba(255,255,255,.22)`; passed ones `.85` with a 4 px glow |
-| Orb | `--ob: 20px` (15 in a conversation, 18 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
+| Notches | five 3 px dots on the centre line: `rgba(255,255,255,.22)`; passed ones `.85` with a 4 px glow |
+| Orb | `--ob: 16px` (12 in a conversation, 16 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
 | Halo | 2 × the orb, the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), opacity .45 at scale .85; hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
 | Snap | 160 ms `cubic-bezier(.22,1,.36,1)`, no bounce |
 | Tip | glass above the orb while hovered, held or stepped with keys (1.4 s): the step in `--ink` 500, then one honest line in `--ink3` 12 px; a 1 px blue → violet → rose edge at .55 and `0 0 18px -4px rgba(155,114,255,.35)` |

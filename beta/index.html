@@ -71,8 +71,10 @@ html.calm #horizon{opacity:.3}
 @keyframes drift{from{transform:translate(-3%,-1%)}to{transform:translate(3%,1.5%)}}
 
 /* the wordmark, static; the glint belongs to Full's opening only */
-.mark{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);text-transform:uppercase;letter-spacing:.15em;color:#fff;white-space:nowrap;line-height:1}
-.mark b{font-weight:400;-webkit-text-stroke:.12em currentColor;font-size:.865em;vertical-align:.06em}
+/* the wordmark, slimmer (per the owner): Michroma has one weight, so it is set a touch smaller with more air (.2em); the
+   fake bold on "AI" is halved to .055em (still a little bolder than CONCORDE); the wing's lines thinned from 1.5 to 1.1 */
+.mark{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);text-transform:uppercase;letter-spacing:.2em;color:#fff;white-space:nowrap;line-height:1}
+.mark b{font-weight:400;-webkit-text-stroke:.055em currentColor;font-size:.865em;vertical-align:.06em}
 .mark svg{overflow:visible}
 .mark .glint{position:absolute;inset:0;display:inline-flex;align-items:center;gap:inherit;pointer-events:none;
   filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 9px rgba(255,143,196,.85)) drop-shadow(0 0 16px rgba(159,168,255,.75))}
@@ -95,7 +97,8 @@ html.bal #bigmark .word{text-shadow:0 0 12px rgba(190,212,255,.55),0 0 36px rgba
 html:not(.full) #bigmark .flare,html:not(.full) #bigmark .glint{display:none}
 html:not(.full) .markout #bigmark{transition:opacity .6s var(--out),transform .6s var(--out)}
 html:not(.full) #ui{transition:opacity .8s var(--out)}
-#bigmark .mark{font-size:clamp(26px,3.4vw,44px)}
+#bigmark .mark{font-size:clamp(24px,3.1vw,40px)}
+.mark svg g{stroke-width:1.1}
 #bigmark .mark svg{filter:drop-shadow(0 0 10px rgba(159,192,255,.75)) drop-shadow(0 0 28px rgba(110,150,255,.45))}
 #bigmark .word{opacity:0;transition:opacity .6s var(--out);text-shadow:0 0 12px rgba(190,212,255,.75),0 0 40px rgba(159,168,255,.5),0 0 80px rgba(255,143,196,.22)}
 #bigmark .word.shown{opacity:1}
@@ -128,7 +131,7 @@ html:not(.full) #ui{transition:opacity .8s var(--out)}
 #ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;pointer-events:none;transition:opacity 1.2s var(--out)}
 .home #ui{opacity:1;pointer-events:auto}
 header{display:flex;align-items:center;gap:12px;height:64px;position:relative;z-index:3}   /* 36 px controls, 64 on the grid */
-header .mark{font-size:10.5px;gap:6px}
+header .mark{font-size:10px;gap:6px}
 header .mark .glint{display:none}   /* a calm wordmark: no moving shine, no glow */
 header .mark .glint .gm{animation:none}
 .spacer{flex:1}
@@ -348,14 +351,14 @@ textarea::placeholder{color:var(--ink2);opacity:1}
    the hit area (a real range input on top): click anywhere to jump, arrows step. Geometry from three variables: --ph
    the pill's height, --ob the orb, --p the position (0 to 1). In a conversation the pill slims to 20 px. Calm and
    reduced motion: the same colours, still. */
-.slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:26px;--ob:20px;--p:.25;--snap:160ms cubic-bezier(.22,1,.36,1);
+.slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:20px;--ob:16px;--p:.25;--snap:160ms cubic-bezier(.22,1,.36,1);
   --ks:0 1px 2px rgba(4,8,30,.45),0 2px 6px rgba(4,8,30,.35);   /* the orb's own shadow, kept under every glow */
   --fill:linear-gradient(90deg,#4f8cff,#9b72ff 55%,#f07aa6);--halo:#4f8cff;--bloom:.32}
 .slider[data-lv="1"]{--halo:#6f80ff;--bloom:.4}
 .slider[data-lv="2"]{--halo:#9b72ff;--bloom:.5}
 .slider[data-lv="3"]{--halo:#c776d2;--bloom:.62}
 .slider[data-lv="4"]{--halo:#f07aa6;--bloom:.78}
-.chat .slider{width:200px;--sw:200px;--ph:20px;--ob:15px}   /* the slimmer variant, in a conversation. PINNED (per the owner, "thick, like ChatGPT's"): 26 px on the home, 20 in a conversation, 24 on a phone; never thinner */
+.chat .slider{width:200px;--sw:200px;--ph:16px;--ob:12px}   /* PINNED (per the owner, "slightly slimmer"): a 20 px pill on the home, 16 in a conversation, 20 on a phone; the hit area stays 36 (32 on a phone) */
 .elevel{font-size:var(--t-small);font-weight:500;color:var(--ink2);min-width:52px;margin-left:4px;letter-spacing:.005em;white-space:nowrap}
 .slider .sl-glow{display:none}
 .slider .sl-track,.slider .sl-fill,.slider .sl-bloom{position:absolute;left:0;top:calc(50% - var(--ph) / 2);height:var(--ph);border-radius:calc(var(--ph) / 2)}
@@ -374,7 +377,7 @@ html:not(.calm) .ultra .slider .sl-fill::after,html:not(.calm) .uout .slider .sl
 html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .sl-bloom::after{animation:fillflow 4s linear infinite}
 @keyframes fillflow{to{background-position:calc(var(--sw,220px) * -2) 0}}
 /* the five notches: dim in the channel, lit under the light */
-.slider .sl-det{position:absolute;top:calc(50% - 2px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:4px;height:4px;margin-left:-2px;border-radius:50%;background:rgba(255,255,255,.22);transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
+.slider .sl-det{position:absolute;top:calc(50% - 1.5px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:rgba(255,255,255,.22);transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
 .slider .sl-det.on{background:rgba(255,255,255,.85);box-shadow:0 0 4px rgba(255,255,255,.7)}
 .slider .sl-thumb{position:absolute;top:calc(50% - var(--ob) / 2);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--p));width:var(--ob);height:var(--ob);margin-left:calc(var(--ob) / -2);transition:left var(--snap);pointer-events:none}
 /* the orb's halo, in the fill's colour where it stands; it rises past the pill while hovered or held, settles on release */
@@ -730,7 +733,7 @@ html.calm #motes,html.calm #sparks{display:none}
 
 @media (max-width:760px){.rig b{display:none}.rig{padding:0 8px}.rig .tip{right:auto;left:50%;transform:translate(-50%,-4px)}.rig:hover .tip,.rig:focus-visible .tip{transform:translate(-50%,0)}.beta{display:none}}
 @media (max-width:600px){nav{display:none}header{gap:12px}#hero h1{font-size:clamp(40px,11.5vw,56px)}.suggs{flex-direction:column;gap:6px}.sugg{flex:none;height:32px;text-align:left}.cbox{padding:16px 12px 12px 16px}.round:not(.mic){display:none}#menu{left:0;width:100%}#side{width:min(300px,calc(100vw - 32px))}.msg.ai{margin-bottom:28px}
-  .pick{height:32px;padding:0 8px 0 10px;gap:6px}.slider,.chat .slider{width:88px;height:32px;--ph:24px;--ob:18px;--sw:88px}.elevel{min-width:0;font-size:12px}.send,.round{width:32px;height:32px}.mic.on{width:80px}.listening .elevel{display:none}
+  .pick{height:32px;padding:0 8px 0 10px;gap:6px}.slider,.chat .slider{width:88px;height:32px;--ph:20px;--ob:16px;--sw:88px}.elevel{min-width:0;font-size:12px}.send,.round{width:32px;height:32px}.mic.on{width:80px}.listening .elevel{display:none}
   .body table{font-size:var(--t-ui)}.body pre{padding:12px;margin-inline:-4px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}#hero h1::before,.uline,.cbox .itint,.cbox .rimbloom,.sl-rays,#motes,#sparks{display:none}.body.swapwait,.body.swapout{opacity:1}#ui{transition:opacity .5s ease!important}}
 /* the lane tabs sit over the column's centre, sidebar open or not */
