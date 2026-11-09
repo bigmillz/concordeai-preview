@@ -165,11 +165,8 @@ A 20 px pill, a segmented control in Gemini's luminous language (one `<input typ
 | Orb | `--ob: 16px` (12 in a conversation, 16 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
 | Halo | 2 × the orb, the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), opacity .45 at scale .85; hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
 | Snap | 160 ms `cubic-bezier(.22,1,.36,1)`, no bounce |
-| Tip | glass above the orb while hovered, held or stepped with keys (1.4 s): the step in `--ink` 500, then one honest line in `--ink3` 12 px; a 1 px blue → violet → rose edge at .55 and `0 0 18px -4px rgba(155,114,255,.35)` |
-| Level | beside it, Space Grotesk 13/500 `--ink2`, 4 px off the pill: Low · Medium · High · Extra · Ultra |
+| Level | beside it, Space Grotesk 13/500 `--ink2`, 4 px off the pill, updating live: Low · Medium · High · Extra · Ultra. No tooltip and no explanations of the levels anywhere (per the owner: "pretty damn obvious") |
 
-The tip's lines (the app's NOTES 6b534): Low "one pass, no second look"; Medium "the usual second pass"; High "always a
-second pass, drafts double-checked"; Extra "the models review each other"; Ultra "all of that, with deeper reasoning".
 Click anywhere to jump, arrows step. Calm and reduced motion: the same look, no transitions.
 
 ### Ultra's light (the cool palette)

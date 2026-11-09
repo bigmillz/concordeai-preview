@@ -348,7 +348,7 @@ textarea::placeholder{color:var(--ink2);opacity:1}
    near-white core with a 40 px halo in the fill's colour where it stands, which rises past the pill's edge while
    hovered or held and settles on release (driven by the hand, never a loop). It snaps between steps in 160 ms on a
    fluid ease, no bounce. At Ultra the fill flows (ember and gold join the light), in step with the ULTRA label, and
-   the halo turns spectral. A glass tip above the orb names the step and what it really does. The whole 36 px height is
+   the halo turns spectral. The level's name sits beside it and updates live; no tooltip, no explanations. The whole 36 px height is
    the hit area (a real range input on top): click anywhere to jump, arrows step. Geometry from three variables: --ph
    the pill's height, --ob the orb, --p the position (0 to 1). In a conversation the pill slims to 20 px. Calm and
    reduced motion: the same colours, still. */
@@ -395,15 +395,6 @@ html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .s
 .slider:hover .sl-thumb::after{transform:scale(1.05)}
 .slider.drag .sl-thumb::after{transform:scale(1.1)}
 .slider input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
-/* the tip: frosted glass with a faint gradient edge, above the orb while hovering or dragging (or stepping with the keys) */
-.sl-tip{position:absolute;bottom:calc(100% + 2px);left:0;z-index:25;padding:7px 10px;border-radius:var(--r-ctl);white-space:nowrap;pointer-events:none;
-  background:var(--glass-dense);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-  box-shadow:inset 0 1px 0 var(--spec),0 0 18px -4px rgba(155,114,255,.35),var(--shadow-float);
-  font-size:var(--t-label);color:var(--ink3);line-height:16px;opacity:0;transform:translateY(4px);transition:opacity var(--t2) var(--out),transform var(--t2) var(--out),left var(--snap)}
-.sl-tip::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:.55;
-  background:linear-gradient(90deg,#4f8cff,#9b72ff,#f07aa6);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-.sl-tip b{font-weight:500;color:var(--ink);margin-right:6px}
-.slider.tipon .sl-tip{opacity:1;transform:none}
 html.calm .slider *,html.calm .slider *::before,html.calm .slider *::after{transition:none}
 
 /* Full: Extra shimmers softly (a still gradient, no loop) */
@@ -814,7 +805,7 @@ html.calm #motes,html.calm #sparks{display:none}
             <div class="slider" id="slider">
               <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"></span>
               <span class="sl-det" style="--k:0"></span><span class="sl-det" style="--k:.25"></span><span class="sl-det" style="--k:.5"></span><span class="sl-det" style="--k:.75"></span><span class="sl-det" style="--k:1"></span>
-              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i></span><span class="sl-spark" id="spark"></span><span class="sl-tip" id="sltip" aria-hidden="true"><b></b><span></span></span>
+              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i></span><span class="sl-spark" id="spark"></span>
               <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="4" step="1" value="1"></label>
             </div>
             <span class="elevel" id="eName">Medium</span>
@@ -1282,13 +1273,6 @@ const MACH={mlx:{ac:"#c9ccd2",ag:"#e4e7ee",name:"This Mac"},nvidia:{ac:"#76b900"
    every machine), Deep (keeps going until you stop it). Effort: Low, Medium, High, Extra, Ultra */
 const MODES=[{n:"Fast",d:"Fast answers"},{n:"Thinking",d:"Thinks it through"},{n:"Pro",d:"Every model on your machines"},{n:"Max",d:"Every model, every machine"},{n:"Deep",d:"Keeps going until you stop it"}];
 const EFFORT=["Low","Medium","High","Extra","Ultra"];
-/* what each step really does (the app's NOTES 6b534): Low skips the second pass; High always does it and a council's
-   drafts are double-checked; Extra adds the council's peer review; Ultra adds high reasoning where a model takes it */
-const EFFORT_HINT=["one pass, no second look","the usual second pass","always a second pass, drafts double-checked","the models review each other","all of that, with deeper reasoning"];
-function tipFill(i){const t=document.getElementById("sltip");if(!t)return;t.firstChild.textContent=EFFORT[i];t.lastChild.textContent=EFFORT_HINT[i];
-  // centred over the knob, kept inside the composer
-  const sw=t.parentElement.offsetWidth,ph=parseFloat(getComputedStyle(t.parentElement).getPropertyValue("--ph"))||26,x=ph/2+(sw-ph)*i/4,w=t.offsetWidth,cb=t.closest(".cbox"),sr=t.parentElement.getBoundingClientRect(),cr=cb?cb.getBoundingClientRect():sr;
-  const lo=cr.left-sr.left+8,hi=cr.right-sr.left-8-w;t.style.left=Math.round(Math.max(lo,Math.min(hi,x-w/2)))+"px";}
 const MODELS=[
   {n:"Qwen 3.6 35B",v:"mlx",from:0},
   {n:"Gemma 4 26B",v:"nvidia",from:1},
@@ -1383,7 +1367,7 @@ function setMode(i){mode=i;modeFx(MODES[i].n);pick.setAttribute("aria-label","Mo
 function paint(){
   const i=+eff.value,pct=i/4;
   slider.style.setProperty("--p",pct);
-  document.querySelectorAll(".sl-det").forEach((d,k)=>d.classList.toggle("on",k<=i));slider.dataset.lv=i;tipFill(i);
+  document.querySelectorAll(".sl-det").forEach((d,k)=>d.classList.toggle("on",k<=i));slider.dataset.lv=i;
   const en=$("#eName"),wasUltra=stage.classList.contains("ultra"),isUltra=i===4;
   en.textContent=EFFORT[i];en.classList.toggle("shim",i===3);en.classList.toggle("soft",i===3);en.classList.toggle("lum",isUltra);if(!isUltra)en.classList.remove("go");   // the sweep starts +600 ms into the arrival (ultraOn)
   stage.classList.toggle("ultra",isUltra);stage.classList.toggle("maxe",i===3);
@@ -1456,16 +1440,11 @@ function motesOn(on){clearInterval(moteI);clearTimeout(moteOutT);
   if(on){motes.classList.remove("out");if(reduce)return;moteI=setInterval(moteSpawn,170);setTimeout(moteSpawn,500);}
   else{motes.classList.add("out");moteOutT=setTimeout(()=>{motes.textContent="";motes.classList.remove("out");},950);}}
 eff.addEventListener("input",paint);
-/* the tip: shown while the pointer is over the slider, while dragging, and for a moment after a key step */
-let tipOver=false,tipKeyT=0;
-function tipShow(){setTimeout(tipShowNow,0);}   // a tick later: layout work inside pointerdown stops the native jump-to-click
-function tipShowNow(){const on=tipOver||slider.classList.contains("drag")||!!tipKeyT;if(on&&!slider.classList.contains("tipon"))tipFill(+eff.value);slider.classList.toggle("tipon",on);}   // not "tip": that class is the header tooltips'
-eff.addEventListener("keydown",e=>{slider.classList.add("kb");if(/Arrow|Home|End|Page/.test(e.key)){clearTimeout(tipKeyT);tipKeyT=setTimeout(()=>{tipKeyT=0;tipShow();},1400);tipShow();}});
-eff.addEventListener("blur",()=>{slider.classList.remove("kb");clearTimeout(tipKeyT);tipKeyT=0;tipShow();});
-eff.addEventListener("pointerdown",()=>{slider.classList.remove("kb");slider.classList.add("drag");tipShow();});
-slider.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse"){tipOver=true;tipShow();}});
-slider.addEventListener("pointerleave",()=>{tipOver=false;tipShow();});
-addEventListener("pointerup",()=>{if(!slider.classList.contains("drag"))return;slider.classList.remove("drag");setTimeout(tipShow,500);});
+/* no tooltip and no explanations (per the owner: "pretty damn obvious"): the level's name beside the slider updates live */
+eff.addEventListener("keydown",()=>slider.classList.add("kb"));
+eff.addEventListener("blur",()=>slider.classList.remove("kb"));
+eff.addEventListener("pointerdown",()=>{slider.classList.remove("kb");slider.classList.add("drag");});
+addEventListener("pointerup",()=>slider.classList.remove("drag"));
 setMode(1);paint();
 
 /* ---------- the sidebar: a new question arcs out of the composer into the top of your chats ---------- */
