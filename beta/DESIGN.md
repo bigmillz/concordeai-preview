@@ -48,24 +48,24 @@ rim, the horizon, the ember at decisions.
 
 | Token | Value | Contrast on `--night` | Role |
 |---|---|---|---|
-| `--night` | `#070b1c` | | the ground |
-| `--indigo` | `#0d1434` | | the stage gradient's middle |
-| `--ink` | `#f4f5fa` | 18.0 | primary type |
-| `--read` | `#e8ebf5` | 16.1 | answer prose |
-| `--ink2` | `#c6cde0` | 12.3 | secondary type, placeholders |
-| `--ink3` | `#9aa6c6` | 8.1 | tertiary type, labels (6.7 on the lightest glass) |
-| `--ember` | `#e8415a` | 5.0 (navy on ember 5.0) | the one accent: send strike, send key with text, keyboard focus ring, errors |
+| `--night` | `#030305` | | the ground: black (per the owner, "over black instead of blue"); near-black so it never bands |
+| `--indigo` | `#0a0a0c` | | the stage gradient's middle (a neutral near-black; the name is kept for the app) |
+| `--ink` | `#f4f5fa` | 18.9 | primary type |
+| `--read` | `#e8ebf5` | 17.3 | answer prose |
+| `--ink2` | `#c6cde0` | 13.0 | secondary type, placeholders |
+| `--ink3` | `#9aa6c6` | 8.5 | tertiary type, labels (6.7 on the lightest glass) |
+| `--ember` | `#e8415a` | 5.2 (black on ember 5.2) | the one accent: send strike, send key with text, keyboard focus ring, errors |
 | `--ice` | `#9fc0ff` | | light only (the die for Cloud, the writing star's warmth) |
 | `--rose` | `#f2a6b4` | | light only (horizon, Ultra rim) |
 | `--champagne` | `#f1dcb2` | | light only (horizon, focused composer's top light) |
 
 Small labels straight over the sky (the sidebar's day labels, the footer's credit and links) wear a tight halo in the
-night navy, `--halo-navy: ±1px 0 1px and 0 ±1px 1px at rgba(7,11,28,.7), 1px 1px 2px and −1px −1px 2px at .5,
+near-black, `--halo-dark: ±1px 0 1px and 0 ±1px 1px at rgba(3,3,5,.7), 1px 1px 2px and −1px −1px 2px at .5,
 0 0 4px at .75, 0 0 9px at .45` (a blur alone barely reaches past a 1 px stroke; the offsets give it body), so a bright
-star or the noon sky behind cannot take them under 4.5:1 within 2 px of the ink. Invisible on the night; `--ink3`
+star or the noon sky behind cannot take them under 4.5:1 within 2 px of the ink. Invisible on the black; `--ink3`
 itself and the sky are unchanged. Two places also get a soft local backing, since the noon sky and the brightest
-footage sit right behind them: the suggestion pills (`rgba(7,11,28,.22)` fill plus the halo) and the footer's credit
-(a `rgba(7,11,28,.34)` block, `blur(10px)`, 8 px above and below and 14 px either side of the text, under the credit only).
+footage sit right behind them: the suggestion pills (`rgba(3,3,5,.22)` fill plus the halo) and the footer's credit
+(a `rgba(3,3,5,.34)` block, `blur(10px)`, 8 px above and below and 14 px either side of the text, under the credit only).
 
 Hairlines are champagne silver, never pure white:
 
@@ -77,7 +77,7 @@ Hairlines are champagne silver, never pure white:
 | `--spec` | `rgba(255,250,240,.12)` | the 1 px specular along the top of every glass |
 
 The horizon: a flat band low in the sky, `linear-gradient(180deg, transparent 52%,
-rose .11 at 86%, champagne .17 at 100%)`, screen-blended, opacity .62 on the home, .3 in a
+rose .11 at 86%, champagne .17 at 100%)`, screen-blended, opacity .24 on the home (was .62: over black it read as a coloured base), .12 in a
 chat and in Calm. Flat on purpose: no dome, no arc, no limb anywhere (the NASA clips are
 cropped to their horizon-free band; the moonlight is an edgeless corner glow).
 
@@ -87,7 +87,7 @@ One material everywhere (composer, sidebar, menus, popovers, tooltips):
 
 ```
 background: linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.03))   /* --glass */
-            (menus and popovers add rgba(10,14,32,.78) beneath: --glass-dense)
+            (menus and popovers add rgba(8,8,10,.78) beneath: --glass-dense; every dark tint is neutral black, never navy)
 backdrop-filter: blur(24px) saturate(140%)                                           /* --blur */
 border: 1px solid var(--hair2)
 box-shadow: inset 0 1px 0 var(--spec), var(--shadow)
@@ -190,15 +190,15 @@ rare glint (one sparkle in twelve). No green, orange or red. Text tints that pas
   20 % of a 250 % background) that glides across once every 2.5 s (across in about 1.1 s on
   `cubic-bezier(.45,0,.25,1)`, then rest), `drop-shadow(0 0 6px rgba(155,114,255,.4))`. The byline reads
   "Concorde Thinking · Ultra"; its sweep stops when the answer lands (a still gradient).
-  Under the composer's label, a feathered navy pill holds it at AA at the sky's brightest (Full at 1280 and on a phone
+  Under the composer's label, a feathered black pill holds it at AA at the sky's brightest (Full at 1280 and on a phone
   dipped to 3.5:1, and 2.9:1 under the noon sky): the slider's first layer, 80 × 34 centred on the word (its left edge
-  at the track's end + the label gap − 24 px), `radial-gradient(closest-side, rgba(7,11,28,.62), .56 35%, .30 62%,
+  at the track's end + the label gap − 24 px), `radial-gradient(closest-side, rgba(3,3,5,.62), .56 35%, .30 62%,
   .10 82%, transparent)`, in with Ultra (600 ms), out with it (900 ms) and while dictating. It sits under the
   slider's fill, bloom and knob and under the word, so nothing of the show is dimmed; feathered wide so it reads as
   shade, not a shape.
 - **The typed words:** a mirror over the textarea carries the same light in near-white tints (`#dbe6ff`, `#e4dcff`,
   `#f8dde9`), a subtler sweep every 3.6 s; "Ask anything" at .85 (AA in Full). Leaving Ultra crossfades back to white in 600 ms.
-- **The send key** (with text): `#6f9bff → #9b72ff → #f07aa6 → #fff → #9b72ff`, flowing one 108 px period per 4 s; navy arrow.
+- **The send key** (with text): `#6f9bff → #9b72ff → #f07aa6 → #fff → #9b72ff`, flowing one 108 px period per 4 s; a black arrow.
 - **The writing star:** a 20 px tail behind it, rose → violet → blue → `#e6efff` at the star.
 - **The sparkles:** four-point stars, a white core (2 px; 3 px for the big ones) with two crossed 1 px rays tinted
   white, ice `#cfe0ff`, `#86b0ff`, `#b9a2ff`, `#9b72ff` (gold one in twelve).
@@ -339,22 +339,24 @@ less blue, a little more day colour"):
 
 | Mood | Shadow | Middle | Light | Real colour kept | Footage weight | Gradient thins by |
 |---|---|---|---|---|---|---|
-| night | `#07080e` ink | `#3a3d58` silver, a hint of indigo | `#e6e9f2` silver | 55 % | 1.45 | 10 % |
-| dawn | `#1a1428` | `#c9877a` rose | `#ffe0b0` gold | 52 % | 1.32 | 10 % |
-| day | `#142238` | `#8fb3d9` soft sky | `#fff6e8` warm white | 58 % | 1.28 | 14 % (the lightest overlay) |
-| dusk | `#241a30` | `#d9944a` amber | `#ffd0bc` warm rose | 52 % | 1.32 | 10 % |
+| night | `#060608` | `#3e3f4e` silver | `#e8eaf0` silver | 64 % | 1.45 | 0 |
+| dawn | `#0a0809` | `#c98c80` rose | `#ffe2b8` gold | 62 % | 1.32 | 0 |
+| day | `#090a0c` | `#96b2ce` soft sky | `#fff7ec` warm white | 66 % | 1.28 | 0 |
+| dusk | `#0a0809` | `#d69654` amber | `#ffd4c2` warm rose | 62 % | 1.32 | 0 |
 
-The sky's own gradient (top, middle, low; sRGB 0–255), its blue cast halved: night `4,5,9 / 7,10,20 / 18,27,52`;
-dawn (6:30) `12,11,24 / 34,28,52 / 72,52,84`; day (8:00–16:30) `8,15,32 / 20,36,70 / 52,80,128`; dusk (18:30)
-`10,9,20 / 32,24,48 / 84,54,72`; linear between the keys.
+PINNED (per the owner, "composite the background over black instead of blue"): the footage sits on black at every
+hour. The sky's own gradient is near-black and the same all day (top, middle, low, sRGB 0–255: `3,3,5 / 4,4,6 /
+7,7,10`, the small lift keeps it from banding); the shadows of every mood are neutral near-black; the hour lives only
+in the footage's grade (its middle and light). No coloured wash over the black: the warm foot glow at dawn and dusk is
+off, the moonlight is neutral (warm white to `rgb(214,217,222)`, peak .22), the opening's colour wash keeps only its
+rose and amber (its blue and teal are gone), and the horizon band is a trace (.24).
 
 - The moods turn at 5:30 (night → dawn), 7:30 (→ day), 17:30 (→ dusk) and 19:30 (→ night) local time, each over 20
   minutes on a smoothstep; the clock is read every 20 s while the page is open and the shader's palette eases toward it
-  (time constant 2 s), never a step. The sky's own gradient follows the same clock. `?hour=6|12|18|23` pins the clock
+  (time constant 2 s), never a step. `?hour=6|12|18|23` pins the clock
   (for checks).
 - **Blend, not stack:** the graded footage is screen-blended into the sky, its weight falling off with height as before
-  (`foot`, `rise` per clip) and feathered at the sides (8 %) and the foot (12 %) so there is no frame, and the gradient
-  thins where the footage is (the table's last column). Weight by level, times the mood's: Full 1, Balanced .85 (was
+  (`foot`, `rise` per clip) and feathered at the sides (8 %) and the foot (12 %) so there is no frame. Weight by level, times the mood's: Full 1, Balanced .85 (was
   .75), Calm .6 on a still frame, graded the same way. The flash limiter (the trails' attack)
   and the highlight knee (above .45, rolling off toward .85) are unchanged; the horizon-free bands are unchanged.
 - Until this build a comment in the sky's uniform upload swallowed the rest of its line, so the exposure, warmth, tint,

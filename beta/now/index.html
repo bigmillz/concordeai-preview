@@ -16,14 +16,14 @@
    (beta/DESIGN.md) and port to the app as they are. */
 :root{
   /* colour: the night, ink to deep indigo; type white or near-white; colour only in light */
-  --halo-navy:1px 0 1px rgba(7,11,28,.7),-1px 0 1px rgba(7,11,28,.7),0 1px 1px rgba(7,11,28,.7),0 -1px 1px rgba(7,11,28,.7),1px 1px 2px rgba(7,11,28,.5),-1px -1px 2px rgba(7,11,28,.5),0 0 4px rgba(7,11,28,.75),0 0 9px rgba(7,11,28,.45);   /* small labels over the sky: invisible on the night, holds AA at its brightest */
-  --night:#070b1c; --indigo:#0d1434; --ink:#f4f5fa; --ink2:#c6cde0; --ink3:#9aa6c6; --read:#e8ebf5; --ice:#9fc0ff; --ember:#e8415a;
+  --halo-dark:1px 0 1px rgba(3,3,5,.7),-1px 0 1px rgba(3,3,5,.7),0 1px 1px rgba(3,3,5,.7),0 -1px 1px rgba(3,3,5,.7),1px 1px 2px rgba(3,3,5,.5),-1px -1px 2px rgba(3,3,5,.5),0 0 4px rgba(3,3,5,.75),0 0 9px rgba(3,3,5,.45);   /* small labels over the sky: a dark halo, invisible on the black, holds AA at the footage's brightest */
+  --night:#030305; --indigo:#0a0a0c; --ink:#f4f5fa; --ink2:#c6cde0; --ink3:#9aa6c6; --read:#e8ebf5; --ice:#9fc0ff; --ember:#e8415a;
   --rose:#f2a6b4; --champagne:#f1dcb2;                                          /* the warm horizon, light only */
   /* hairlines in champagne silver */
   --hair:rgba(241,230,206,.09); --hair2:rgba(241,230,206,.15); --line:rgba(243,235,216,.32); --spec:rgba(255,250,240,.12);
   /* glass: layered frost, one material everywhere */
   --glass:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));
-  --glass-dense:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03)),rgba(10,14,32,.78);
+  --glass-dense:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03)),rgba(8,8,10,.78);
   --blur:blur(24px) saturate(140%);
   --shadow:0 1px 2px rgba(0,0,0,.18),0 12px 32px -8px rgba(0,0,0,.34),0 40px 96px -32px rgba(0,0,0,.55);
   --shadow-float:0 1px 2px rgba(0,0,0,.22),0 16px 40px -8px rgba(0,0,0,.42),0 48px 120px -32px rgba(0,0,0,.6);
@@ -45,7 +45,7 @@ button{-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:0;box-shadow:0 0 0 1px var(--ember)}   /* the one accent: a 1 px ember hairline, keyboard only */
 textarea:focus-visible{box-shadow:none}
 ::selection{background:rgba(159,192,255,.28)}
-#stage{position:fixed;inset:0;overflow:hidden;overflow:clip;background:radial-gradient(120% 90% at 72% 0%,#121b44 0%,var(--indigo) 50%,var(--night) 100%)}
+#stage{position:fixed;inset:0;overflow:hidden;overflow:clip;background:radial-gradient(120% 90% at 72% 0%,#0c0c0f 0%,var(--indigo) 50%,var(--night) 100%)}   /* the ground is black (per the owner): no navy base */
 .layer{position:absolute;pointer-events:none}
 /* THE SIDEWAYS LOCK (per the owner's screenshot at 2000 px: the page slid left, the sidebar cut off, a bar at the right):
    the colour wash (12 % past each side) and the aurora band (1800 px) overflowed the stage, and overflow:hidden still
@@ -60,14 +60,14 @@ textarea:focus-visible{box-shadow:none}
 /* the horizon: a faint warmth of Venus rose and champagne low in the sky, in the light only, never in the type */
 #horizon{inset:0;mix-blend-mode:screen;opacity:0;transition:opacity 3s var(--out);
   background:linear-gradient(180deg,rgba(242,166,180,0) 52%,rgba(242,166,180,.11) 86%,rgba(241,220,178,.17) 100%)}   /* flat: no dome, no arc */
-.home #horizon,.markin #horizon{opacity:.62}
-html.calm #horizon{opacity:.3}
-.chat #horizon{opacity:.3}
+.home #horizon,.markin #horizon{opacity:.24}   /* over black it reads as a coloured base, so only a trace remains (was .62) */
+html.calm #horizon{opacity:.12}
+.chat #horizon{opacity:.12}
 
 /* the colour wash under everything */
 #washwrap{inset:-12%;animation:drift 22s ease-in-out infinite alternate}
 #wash{position:absolute;inset:0;opacity:.1;filter:blur(46px);mix-blend-mode:screen;
-  background:radial-gradient(42% 36% at 24% 40%,rgba(98,96,255,.6),transparent 72%),radial-gradient(38% 32% at 72% 30%,rgba(255,118,178,.4),transparent 72%),radial-gradient(40% 30% at 50% 64%,rgba(255,182,108,.44),transparent 72%),radial-gradient(34% 30% at 88% 58%,rgba(58,214,198,.34),transparent 72%)}
+  background:radial-gradient(38% 32% at 72% 30%,rgba(255,118,178,.4),transparent 72%),radial-gradient(40% 30% at 50% 64%,rgba(255,182,108,.44),transparent 72%)}
 .full .busy #wash{opacity:.3;transition:opacity 2s var(--out)}
 @keyframes drift{from{transform:translate(-3%,-1%)}to{transform:translate(3%,1.5%)}}
 
@@ -293,7 +293,7 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 /* the send key: a silver outline until there is text, then ember; navy arrow on ember reads 5:1 */
 .send{width:36px;height:36px;border-radius:var(--r-ctl);border:1px solid var(--line);background:transparent;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background var(--t2) var(--out),border-color var(--t2) var(--out),color var(--t2) var(--out),transform var(--t1) var(--out)}
 .send svg{transform:translateY(-.5px)}   /* the arrow's optical centre */
-.send.ready{background:var(--ember);border-color:var(--ember);color:#070b1c}
+.send.ready{background:var(--ember);border-color:var(--ember);color:var(--night)}
 .send.ready:focus-visible{box-shadow:0 0 0 2px var(--night),0 0 0 3px var(--ember)}   /* the hairline stands off the filled key */
 .send:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.04)}
 .send.ready:hover{background:#ed5169;border-color:#ed5169}
@@ -344,7 +344,7 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 .opt .ms{grid-column:1/3;display:flex;flex-wrap:wrap;gap:6px;max-height:0;overflow:hidden;transition:max-height .45s var(--out),margin .45s var(--out)}
 .opt.open .ms{max-height:140px;margin-top:10px}
 .mdl{display:flex;align-items:center;gap:8px;height:26px;padding:0 10px 0 9px;border-radius:var(--r-chip);white-space:nowrap;overflow:hidden;
-  background:rgba(10,14,30,.5);border:1px solid var(--hair2);box-shadow:inset 0 1px 0 rgba(255,250,240,.06);
+  background:rgba(6,6,8,.5);border:1px solid var(--hair2);box-shadow:inset 0 1px 0 rgba(255,250,240,.06);
   max-width:0;padding-inline:0;border-width:0;margin-right:-6px;opacity:0;transform:translateX(-10px);filter:blur(3px);
   transition:max-width .5s var(--out),padding .5s var(--out),margin .5s var(--out),opacity .35s var(--out),transform .55s var(--out),filter .4s var(--out)}
 .mdl.in{max-width:260px;padding-inline:9px 10px;border-width:1px;margin-right:0;opacity:1;transform:none;filter:none}
@@ -381,14 +381,14 @@ textarea::placeholder{color:var(--ink2);opacity:1}
    the pill's height, --ob the orb, --p the position (0 to 1). In a conversation the pill slims to 20 px. Calm and
    reduced motion: the same colours, still. */
 .slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:16px;--ob:14px;--sr:4.5px;--kr:4px;--p:.25;--snap:160ms cubic-bezier(.22,1,.36,1);
-  --ks:0 1px 2px rgba(4,8,30,.45),0 2px 6px rgba(4,8,30,.35);   /* the orb's own shadow, kept under every glow */
+  --ks:0 1px 2px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.35);   /* the orb's own shadow, kept under every glow */
   --fill:linear-gradient(90deg,#4f8cff,#9b72ff 55%,#f07aa6);--halo:#4f8cff;--bloom:.32}
 .slider[data-lv="1"]{--halo:#6f80ff;--bloom:.4}
 .slider[data-lv="2"]{--halo:#9b72ff;--bloom:.5}
 .slider[data-lv="3"]{--halo:#c776d2;--bloom:.62}
 .slider[data-lv="4"]{--halo:#f07aa6;--bloom:.78}
 .slider::before{content:"";position:absolute;top:50%;left:calc(100% + var(--lgap,12px) - 24px);width:80px;height:34px;margin-top:-17px;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(7,11,28,.62),rgba(7,11,28,.56) 35%,rgba(7,11,28,.3) 62%,rgba(7,11,28,.1) 82%,rgba(7,11,28,0));opacity:0;transition:opacity .9s var(--inout)}
+  background:radial-gradient(closest-side,rgba(3,3,5,.62),rgba(3,3,5,.56) 35%,rgba(3,3,5,.3) 62%,rgba(3,3,5,.1) 82%,rgba(3,3,5,0));opacity:0;transition:opacity .9s var(--inout)}
 .ultra .slider::before{opacity:1;transition:opacity .6s var(--out)}   /* "Ultra" holds AA over Full's lifted sky; the show itself is untouched */
 .listening .slider::before{opacity:0}
 .chat .slider{width:200px;--sw:200px;--ph:12px;--ob:11px;--sr:4px;--kr:3.5px}   /* PINNED (per the owner, "a little slimmer and more squared off"): a 16 px track on the home, 12 in a conversation, 16 on a phone, radius 4.5 (4); the hit area stays 36 (32 on a phone), invisibly */
@@ -451,7 +451,7 @@ html:not(.calm) .ultra :focus-visible:not(textarea){box-shadow:0 0 0 1px #9b72ff
 html:not(.calm) .ultra .slider.kb:has(input:focus) .sl-track{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 2px var(--night),0 0 0 3px #9b72ff}
 html:not(.calm) .ultra .opt[aria-checked="true"]>b::after{background:linear-gradient(135deg,#86b0ff,#b9a2ff)}
 .ubadge{position:absolute;top:-8px;right:-8px;padding:2px 5px 3px;border-radius:var(--r-tag);font:600 9px/1 var(--ui);letter-spacing:.06em;pointer-events:none;
-  background:rgba(10,14,32,.88);border:1px solid rgba(155,114,255,.5);box-shadow:0 0 8px -2px rgba(155,114,255,.55);opacity:0;transform:scale(.8);transition:opacity .8s var(--inout),transform .8s var(--inout)}
+  background:rgba(8,8,10,.88);border:1px solid rgba(155,114,255,.5);box-shadow:0 0 8px -2px rgba(155,114,255,.55);opacity:0;transform:scale(.8);transition:opacity .8s var(--inout),transform .8s var(--inout)}
 html:not(.calm) .ultra .ubadge{opacity:1;transform:none;transition:opacity .3s var(--out) .6s,transform .3s var(--out) .6s}
 html:not(.calm) .ultra .send{border-color:rgba(155,114,255,.6)}
 .send::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .8s var(--inout);
@@ -552,7 +552,7 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .suggs{display:flex;gap:8px;width:100%;margin-top:8px;opacity:0;transform:translateY(8px);transition:opacity 1s var(--out) 1.4s,transform 1s var(--out) 1.4s}
 .home .suggs{opacity:1;transform:none}
 .chat .suggs{display:none}
-.sugg{flex:1 1 0;min-width:0;height:32px;padding:0 10px;border-radius:var(--r-ctl);border:1px solid var(--hair);background:rgba(7,11,28,.22);color:var(--ink2);text-shadow:var(--halo-navy);font-size:var(--t-small);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
+.sugg{flex:1 1 0;min-width:0;height:32px;padding:0 10px;border-radius:var(--r-ctl);border:1px solid var(--hair);background:rgba(3,3,5,.22);color:var(--ink2);text-shadow:var(--halo-dark);font-size:var(--t-small);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background var(--t1) var(--out),border-color var(--t1) var(--out),color var(--t1) var(--out)}
 .sugg:hover{background:rgba(255,255,255,.06);border-color:var(--hair2);color:var(--ink)}
 .under{height:var(--under,clamp(110px,22vh,260px));flex:none}   /* set so the composer's centre sits at the golden point of the free height */
 .chat .under{height:max(16px,env(safe-area-inset-bottom,0px))}
@@ -562,12 +562,12 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
   background:var(--glass);border:1px solid var(--hair2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
   box-shadow:inset 0 1px 0 var(--spec),var(--shadow);transform:translateX(calc(-100% - 28px));opacity:0;pointer-events:none;visibility:hidden;transition:transform .6s var(--out),opacity .45s var(--out),visibility 0s linear .6s}
 .side-open #side{transform:none;opacity:1;pointer-events:auto;visibility:visible;transition:transform .6s var(--out),opacity .45s var(--out)}
-@media (max-width:1099px){#side{background:var(--glass),rgba(8,11,24,.9)}}
+@media (max-width:1099px){#side{background:var(--glass),rgba(6,6,8,.9)}}
 .newchat{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:var(--r-ctl);border:1px solid var(--hair2);background:transparent;color:var(--ink);font-size:var(--t-ui);cursor:pointer;flex:none;transition:background var(--t1) var(--out),border-color var(--t1) var(--out)}
 .newchat:hover{background:rgba(255,255,255,.06);border-color:var(--line)}
 .newchat svg{color:var(--ink2)}
 .hist{flex:1;overflow:auto;scrollbar-width:none;margin-top:8px;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 24px),transparent)}
-.day{margin:16px 8px 6px;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);line-height:16px;text-shadow:var(--halo-navy)}
+.day{margin:16px 8px 6px;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);line-height:16px;text-shadow:var(--halo-dark)}
 .hist>.day:first-child{margin-top:8px}
 .hrow{display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:var(--r-ctl);font-size:var(--t-ui);color:var(--ink2);cursor:pointer;overflow:hidden;transform-origin:0 50%;transition:background var(--t1) var(--out),color var(--t1) var(--out)}
 button.hrow{width:100%;margin:0;border:0;background:transparent;font-family:inherit;font-weight:400;text-align:left;-webkit-appearance:none;appearance:none}
@@ -613,7 +613,7 @@ html:not(.calm) .ultra .hrow:focus-visible{box-shadow:inset 0 0 0 1px #9b72ff}
 .runs{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:14px}
 .runs li{display:grid;grid-template-columns:auto 1fr;column-gap:10px;row-gap:6px;align-items:baseline}
 .runs code,.approve code{font-family:var(--mono);font-size:var(--t-small);color:var(--ink);overflow-wrap:anywhere}
-.runs pre{grid-column:2;margin:0;padding:10px 12px;border-radius:var(--r-ctl);background:rgba(4,7,18,.55);border:1px solid var(--hair);font:400 12px/1.6 var(--mono);color:var(--ink2);overflow:auto;scrollbar-width:thin}
+.runs pre{grid-column:2;margin:0;padding:10px 12px;border-radius:var(--r-ctl);background:rgba(0,0,0,.5);border:1px solid var(--hair);font:400 12px/1.6 var(--mono);color:var(--ink2);overflow:auto;scrollbar-width:thin}
 .runs .note2{grid-column:2;margin:0;font-size:var(--t-small);color:var(--ink2)}
 .risk{font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:4px;padding:2px 5px 1px;line-height:1.3}
 .risk.w{color:#f3c9d3;border-color:rgba(232,65,90,.45)}
@@ -697,7 +697,7 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .body blockquote{margin:0 0 16px;padding:2px 0 2px 20px;border-left:1px solid var(--line);color:var(--ink2)}
 .body blockquote p:last-child{margin-bottom:0}
 .body code{font-family:var(--mono);font-size:.88em;font-weight:400;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--hair);border-radius:var(--r-tag);padding:1px 5px}
-.body pre{margin:0 0 16px;padding:14px 16px;border-radius:var(--r-ctl);background:rgba(4,7,18,.55);border:1px solid var(--hair2);box-shadow:inset 0 1px 0 rgba(255,250,240,.05);overflow:auto;scrollbar-width:thin;font-family:var(--mono);font-size:var(--t-small);line-height:1.6;color:var(--ink2);tab-size:2}
+.body pre{margin:0 0 16px;padding:14px 16px;border-radius:var(--r-ctl);background:rgba(0,0,0,.5);border:1px solid var(--hair2);box-shadow:inset 0 1px 0 rgba(255,250,240,.05);overflow:auto;scrollbar-width:thin;font-family:var(--mono);font-size:var(--t-small);line-height:1.6;color:var(--ink2);tab-size:2}
 .body pre code{font:inherit;color:inherit;background:none;border:0;padding:0}
 .body pre .c{color:var(--ink3)}.body pre .k{color:var(--ink);font-weight:500}.body pre .s{color:#dfe6f5}
 .body hr{border:0;height:1px;background:var(--hair2);margin:24px 0}
@@ -835,13 +835,13 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
 /* the footer */
 #foot{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;align-items:baseline;justify-content:space-between;gap:6px 18px;flex-wrap:wrap;line-height:20px;
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  font-size:var(--t-label);color:var(--ink3);opacity:0;transition:opacity 1.6s var(--out) 1.6s;pointer-events:none;text-shadow:var(--halo-navy)}
+  font-size:var(--t-label);color:var(--ink3);opacity:0;transition:opacity 1.6s var(--out) 1.6s;pointer-events:none;text-shadow:var(--halo-dark)}
 #stage.home~#foot{opacity:1;pointer-events:auto}
 #foot a{padding:8px 0;color:var(--ink2);text-decoration-color:var(--hair2);text-underline-offset:3px;transition:color var(--t1) var(--out),text-decoration-color var(--t1) var(--out)}
 #foot a:hover{color:var(--ink);text-decoration-color:var(--line)}
 #foot .own{color:var(--ink2)}
 #foot>span{position:relative}
-#foot>span::before{content:"";position:absolute;inset:-8px -14px;z-index:-1;pointer-events:none;border-radius:14px;background:rgba(7,11,28,.34);filter:blur(10px)}   /* a feathered backing under the credit only: AA over the noon sky and the brightest footage */
+#foot>span::before{content:"";position:absolute;inset:-8px -14px;z-index:-1;pointer-events:none;border-radius:14px;background:rgba(3,3,5,.34);filter:blur(10px)}   /* a feathered backing under the credit only: AA over the noon sky and the brightest footage */
 #foot .maclink{padding:6px 0;margin:-6px 0;color:var(--ink2);white-space:nowrap}   /* the native preview (Apple silicon and Intel), offline */
 #stage.chat~#foot{display:none}
 
@@ -1019,7 +1019,7 @@ const moonLit=(1-Math.cos(2*Math.PI*age/29.530588853))/2;
 const KEYS=[[0,.68,.80,1.06,.92,0],[5,.68,.80,1.06,.92,0],[6.5,.86,.82,1.0,1.0,.85],[8,.80,.89,1.06,1.1,.1],[16.5,.80,.89,1.06,1.1,.1],[18.5,.88,.80,.98,1.0,.9],[20.5,.68,.80,1.06,.92,.05],[24,.68,.80,1.06,.92,0]];
 function grade(h){for(let i=0;i<KEYS.length-1;i++){const a=KEYS[i],b=KEYS[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>v+(b[k]-v)*t);}}return KEYS[0];}
 let G=grade(hour);
-const SKY=[[0,4,5,9,7,10,20,18,27,52],[5,4,5,9,7,10,20,18,27,52],[6.5,12,11,24,34,28,52,72,52,84],[8,8,15,32,20,36,70,52,80,128],[16.5,8,15,32,20,36,70,52,80,128],[18.5,10,9,20,32,24,48,84,54,72],[20.5,4,5,9,7,10,20,18,27,52],[24,4,5,9,7,10,20,18,27,52]];   // the blue cast halved (per the owner: "less blue"), day and its edges a touch warmer
+const SKY=[[0,3,3,5,4,4,6,7,7,10],[24,3,3,5,4,4,6,7,7,10]];   // per the owner: the footage sits on black at every hour (a 3/255 lift keeps the gradient from banding); the hour lives only in the footage's grade
 function skyAt(h){return (function(h){for(let i=0;i<SKY.length-1;i++){const a=SKY[i],b=SKY[i+1];if(h>=a[0]&&h<=b[0]){const t=(h-a[0])/(b[0]-a[0]||1);return a.map((v,k)=>(v+(b[k]-v)*t)/255);}}return SKY[0].map(v=>v/255);})(h);}
 let SK=skyAt(hour);
 /* THE HOUR'S GRADE (per the owner: "make this beautiful"): the footage is mapped on its luminance into the hour's palette,
@@ -1027,8 +1027,8 @@ let SK=skyAt(hour);
    of the real colour stays so cities and auroras still read as real. The moods change at 5:30, 7:30, 17:30 and 19:30,
    each over 20 minutes on a smoothstep, following the visitor's clock while the page is open (never a snap). */
 const P255=a=>a.map(v=>v*255);   // the fourth row: [kept real colour, footage weight, how much the sky's gradient thins over the footage]
-const MOODS={night:[[7,8,14],[58,61,88],[230,233,242],P255([.55,1.45,.1])],dawn:[[26,20,40],[201,135,122],[255,224,176],P255([.52,1.32,.1])],
-  day:[[20,34,56],[143,179,217],[255,246,232],P255([.58,1.28,.14])],dusk:[[36,26,48],[217,148,74],[255,208,188],P255([.52,1.32,.1])]};   // per the owner: more NASA, less blue, a little more day colour
+const MOODS={night:[[6,6,8],[62,63,78],[232,234,240],P255([.64,1.45,0])],dawn:[[10,8,9],[201,140,128],[255,226,184],P255([.62,1.32,0])],
+  day:[[9,10,12],[150,178,206],[255,247,236],P255([.66,1.28,0])],dusk:[[10,8,9],[214,150,84],[255,212,194],P255([.62,1.32,0])]};   // shadows near-black and neutral at every hour: the tint is a light grade on the footage, never a base   // per the owner: more NASA, less blue, a little more day colour
 const MOOD_AT=[[5.5,"night","dawn"],[7.5,"dawn","day"],[17.5,"day","dusk"],[19.5,"dusk","night"]],MOOD_W=1/3;
 function moodAt(h){for(const [b,a,c] of MOOD_AT)if(Math.abs(h-b)<=MOOD_W/2){const u=(h-b)/MOOD_W+.5,t=u*u*(3-2*u);return MOODS[a].map((x,i)=>x.map((v,k)=>(v+(MOODS[c][i][k]-v)*t)/255));}
   return MOODS[h<5.5||h>=19.5?"night":h<7.5?"dawn":h<17.5?"day":"dusk"].map(x=>x.map(v=>v/255));}
@@ -1121,7 +1121,7 @@ const Sky=(function(){
     float gb=glint*smoothstep(.955,.99,h)*(.55+.45*sin(time*(.9+1.3*hash(c+2.2))+hash(c+4.4)*6.283));
     float gx=exp(-abs(across)*1.7)*exp(-abs(along)/3.2), gy=exp(-abs(along)*1.7)*exp(-abs(across)/3.2);
     return core+gb*(gx+gy)*.55;}
-  vec4 moonRamp(float r){return vec4(mix(vec3(.965,.945,.894),vec3(.624,.753,1.),smoothstep(0.,.9,r)),.26*exp(-r*r*5.5));}   // smooth falloff, no ring
+  vec4 moonRamp(float r){return vec4(mix(vec3(.965,.95,.92),vec3(.84,.85,.87),smoothstep(0.,.9,r)),.22*exp(-r*r*5.5));}   // neutral moonlight: no blue cast   // smooth falloff, no ring
   vec3 screen(vec3 a,vec3 b){return 1.-(1.-a)*(1.-b);}
   vec3 gmap(float l){return l<.5?mix(gS,gM,smoothstep(0.,.5,l)):mix(gM,gH,smoothstep(.5,1.,l));}
   vec3 gradeF(vec3 c){float l=L(c);return mix(gmap(l)*smoothstep(0.,.18,l),c,gx.x);}   // the footage: black stays the sky, dim ground the hour's deep colour, lights its light
@@ -1140,7 +1140,7 @@ const Sky=(function(){
     sky+=mix(vec3(.9,.93,1.),vec3(1.,.93,.82),warmStar)*st*smoothstep(.98,.4,s)*starB*(1.+2.5*(wr+wq));   // starB: brighter at Ultra; the wave makes them bloom as it passes
     float r=length(pc-mpos)/mrad;vec4 mg=moonRamp(r);float an=atan(pc.y-mpos.y,pc.x-mpos.x);
     float shafts=(.55+.45*sin(an*17.+time*.013)*sin(an*29.-time*.009))*exp(-r*1.7)*.08;
-    vec3 moonL=(mg.rgb*mg.a+vec3(.8,.86,1.)*shafts*(1.-calm))*moon*mix(1.,.75,calm);
+    vec3 moonL=(mg.rgb*mg.a+vec3(.86,.86,.88)*shafts*(1.-calm))*moon*mix(1.,.75,calm);
     vec3 base=gradeF(pow(texture2D(vid,V(uv)).rgb,vec3(1.12))*expo)*gx.y;
     vec4 tc=texture2D(trail,uv); vec3 g1=vec3(texture2D(bl1,uv+vec2(px.x*5.,0.)).r,texture2D(bl1,uv).g,texture2D(bl1,uv-vec2(px.x*5.,0.)).b), g2=texture2D(bl2,uv).rgb; float sk=L(texture2D(stk,uv).rgb);
     float wf=foot*(1.-smoothstep(0.,rise,uv.y)), wl=min(1.,foot*2.4)*(1.-smoothstep(0.,rise*1.07,uv.y));
@@ -1359,11 +1359,12 @@ const Sky=(function(){
     const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo-footMul)*k(.045);gl.uniform1f(pS.U.foot,clip.foot*footMul);gl.uniform1f(pS.U.rise,clip.rise);
     gl.uniform3f(pS.U.skyTop,SK[1],SK[2],SK[3]);gl.uniform3f(pS.U.skyMid,SK[4],SK[5],SK[6]);gl.uniform3f(pS.U.skyLow,SK[7],SK[8],SK[9]);
     gl.uniform1f(pS.U.boost,boost);gl.uniform1f(pS.U.calm,calm);gl.uniform1f(pS.U.fw,fw);gl.uniform1f(pS.U.tw,tw);gl.uniform1f(pS.U.twist,twistNow);gl.uniform1f(pS.U.arc,arcNow);gl.uniform1f(pS.U.starB,starB);gl.uniform1f(pS.U.glint,ultraE*(1+1.6*flareNow));   // the brightest stars flash a glint as Ultra arrives, then settle to their twinkle
-    gl.uniform3f(pS.U.wv,waveX,waveR,0);gl.uniform1f(pS.U.wa,waveA);gl.uniform1f(pS.U.ww,7);gl.uniform1f(pS.U.vg,vg);gl.uniform2f(pS.U.ctw,innerWidth*.5,innerHeight*.12);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit)*(1+.08*ultraE));gl.uniform1f(pS.U.warm,G[5]);
+    gl.uniform3f(pS.U.wv,waveX,waveR,0);gl.uniform1f(pS.U.wa,waveA);gl.uniform1f(pS.U.ww,7);gl.uniform1f(pS.U.vg,vg);gl.uniform2f(pS.U.ctw,innerWidth*.5,innerHeight*.12);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit)*(1+.08*ultraE));gl.uniform1f(pS.U.warm,0);   /* no warm wash over the black (the hour is in the footage's grade) */
     {const e=1-Math.exp(-dt/2);for(let i=0;i<4;i++)for(let j=0;j<3;j++)gp[i][j]+=(GP[i][j]-gp[i][j])*e;}   // the grade eases toward the hour's palette, never a step
     gl.uniform3fv(pS.U.gS,gp[0]);gl.uniform3fv(pS.U.gM,gp[1]);gl.uniform3fv(pS.U.gH,gp[2]);gl.uniform3fv(pS.U.gx,gp[3]);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     skyFx(nowT,t,dt);
+    if(warm&&pfx){pfx.clear();pfx.star(-60,-60,1,[0,0,0],.01,0);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}   // the stars' program draws once on the first frame, so the first Ultra never stalls
     if(calm<.999){[A,B]=[B,A];[fA,fB]=[fB,fA];}else if(warm)reset();
   }
   requestAnimationFrame(frame);
@@ -1722,6 +1723,7 @@ const Burst=(function(){if(reduce)return null;const cv=document.createElement("c
   let parts=[],raf=0,tm=0,cw=0,ch=0,offAt=0;
   function size(){const d=Math.min(2,devicePixelRatio||1);cw=innerWidth;ch=innerHeight;cv.width=Math.max(2,Math.round(cw*d));cv.height=Math.max(2,Math.round(ch*d));}
   size();addEventListener("resize",size);
+  P.clear();P.star(-60,-60,1,[0,0,0],.01,0);gl.viewport(0,0,cv.width,cv.height);P.draw(cw,ch,false);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);   // warm the program once
   const OK=[0,.15,.35,.55,.78,1],OA=[0,1,.45,.95,.35,0],OS=[.4,1,.8,1,.7,.3];
   const key=(u,V)=>{for(let i=1;i<OK.length;i++)if(u<=OK[i]){const f=(u-OK[i-1])/(OK[i]-OK[i-1]);return V[i-1]+(V[i]-V[i-1])*f;}return V[V.length-1];};
   function loop(now){cancelAnimationFrame(raf);clearTimeout(tm);P.clear();const hangs=Sky&&Sky.hangs?Sky.hangs():[];const leave=stage.classList.contains("ultra")?1:Math.max(0,1-(now-offAt)/300);
