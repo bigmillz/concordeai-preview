@@ -83,7 +83,7 @@ html:not(.full) #ui{transition:opacity .8s var(--ease)}
 #bigmark .glint.big{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px rgba(255,143,196,.9)) drop-shadow(0 0 26px rgba(159,168,255,.85))}
 .lit-mark #bigmark .glint.big .gm{animation:glint1 2.5s cubic-bezier(.45,0,.25,1) .55s both}
 @keyframes glint1{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
-.lit-mark #bigmark .mark{animation:prism 9s ease-in-out infinite}
+.lit-mark #bigmark .mark{animation:prism 9s ease-in-out 1}   /* one slow cycle through the opening, not a loop */
 @keyframes prism{0%,100%{filter:drop-shadow(0 0 14px rgba(159,168,255,.7)) drop-shadow(0 0 42px rgba(255,143,196,.28))}
   33%{filter:drop-shadow(0 0 14px rgba(127,240,214,.6)) drop-shadow(0 0 42px rgba(159,168,255,.3))}
   66%{filter:drop-shadow(0 0 14px rgba(255,197,138,.55)) drop-shadow(0 0 42px rgba(127,240,214,.26))}}
@@ -100,6 +100,7 @@ html:not(.full) #ui{transition:opacity .8s var(--ease)}
 header{display:flex;align-items:center;gap:12px;padding-block:14px;position:relative;z-index:3}   /* 36 px controls + 14 + 14 = 64 */
 header .mark{font-size:10.5px;gap:6px}
 header .mark .glint{display:none}   /* a calm wordmark: no moving shine, no glow */
+header .mark .glint .gm{animation:none}
 .spacer{flex:1}
 nav{display:flex;gap:24px}
 nav span{font-size:14px;color:var(--ink3);line-height:40px}
@@ -138,7 +139,7 @@ html:not(.full) .rigs{display:none}
 .rig.working{color:var(--ink)}
 .rig.working::after{transform:scaleX(1)}
 .rig.working .die{animation:diepulse 1.2s ease-in-out infinite}
-.rig.working b{background:linear-gradient(90deg,var(--ink2) 30%,#fff 50%,var(--ink2) 70%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lbl 1.8s linear infinite}
+.rig.working b{color:var(--ink)}
 .rig.in-use{color:var(--ink)}
 .rig.in-use .die{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 0 16px 2px var(--ag)}
 @keyframes diepulse{0%,100%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),0 0 8px 0 var(--ag)}50%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 0 18px 3px var(--ag)}}
@@ -172,11 +173,11 @@ html:not(.full) #hero h1.shown{opacity:1}
 html.bal #hero h1.shown{animation:greetGlow 1.5s var(--ease) both}
 @keyframes greetGlow{0%{text-shadow:0 0 22px rgba(205,222,255,.85),0 0 60px rgba(140,175,255,.5)}100%{text-shadow:0 0 0 rgba(205,222,255,0),0 0 0 rgba(140,175,255,0)}}
 #hero h1 .bloom{position:relative;z-index:-1;color:transparent;text-shadow:none;background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6,#9fa8ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;filter:blur(24px) saturate(1.2);opacity:0;z-index:-1;transition:opacity 1.4s var(--ease)}
-#hero h1.shown .bloom{opacity:.75;animation:breathe 8s ease-in-out 1.4s infinite,shim 16s linear infinite}
+#hero h1.shown .bloom{opacity:.6}   /* a still glow: nothing loops on text */
 #hero h1 .sheen{position:relative;pointer-events:none;color:transparent;text-shadow:none;opacity:0;
   background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.95) 48%,rgba(190,212,255,.9) 52%,transparent 65%);background-size:250% 100%;background-position:120% 0;
   -webkit-background-clip:text;background-clip:text}
-#hero h1.shown .sheen{opacity:1;animation:sheen 9s var(--ease) 3s infinite}
+#hero h1 .sheen{display:none}
 @keyframes sheen{0%{background-position:120% 0}30%,100%{background-position:-40% 0}}
 @keyframes breathe{0%,100%{opacity:.42}50%{opacity:.7}}
 
@@ -283,8 +284,8 @@ textarea::placeholder{color:var(--ink2)}
 
 /* Max shimmers softly, Ultra in full colour with a light running round the composer */
 @property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
-.full .shim{background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6,#9fa8ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:shim 3.2s linear infinite}
-.full .shim.soft{background-image:linear-gradient(90deg,#cfe0ff,#b9a8ff,#cfe0ff);animation-duration:5s}
+.full .shim{background:linear-gradient(90deg,#9fa8ff,#ff8fc4,#ffc58a,#7ff0d6);-webkit-background-clip:text;background-clip:text;color:transparent!important}   /* a still gradient, no loop */
+.full .shim.soft{background-image:linear-gradient(90deg,#cfe0ff,#b9a8ff,#cfe0ff)}
 @keyframes shim{to{background-position:300% 0}}
 .cbox::before{content:"";position:absolute;inset:-1px;border-radius:15px;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .8s var(--ease);
   background:conic-gradient(from var(--ang),rgba(159,168,255,0) 0deg,#9fa8ff 40deg,#ff8fc4 90deg,#ffc58a 140deg,rgba(127,240,214,0) 200deg,rgba(159,168,255,0) 360deg);
@@ -332,7 +333,6 @@ html:not(.full) .cbox::before,html:not(.full) .cbox::after{display:none}   /* ca
 .hrow .ldie{flex:none;opacity:0;transform:scale(.4);transition:opacity .3s,transform .4s var(--spring)}
 .hrow.live .ldie{opacity:1;transform:none}
 .full .hrow.live .ldie{animation:diepulse 1.2s ease-in-out infinite}
-.full .hrow.live .t{background:linear-gradient(90deg,var(--ink) 30%,#fff 50%,var(--ink) 70%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lbl 2s linear infinite}
 .ghost{position:fixed;z-index:30;pointer-events:none;font-size:17px;color:#fff;white-space:nowrap;transform-origin:0 50%;text-shadow:0 0 18px rgba(159,192,255,.95),0 0 40px rgba(159,168,255,.5)}
 .ibtn{width:36px;height:36px;border-radius:8px;border:0;background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
 .ibtn:hover{background:rgba(255,255,255,.08);color:var(--ink)}
@@ -372,7 +372,6 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .liveline .die{opacity:1;transform:none}
 .full .live .liveline .die{animation:diepulse 1.2s ease-in-out infinite}
 .liveline em{font-style:normal}
-.full .live .liveline em{background:linear-gradient(90deg,var(--ink2) 30%,#fff 50%,var(--ink2) 70%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lbl 2s linear infinite}
 .liveline.done .lstep{color:var(--ink3)}
 .liveline .lstats{margin-left:auto;display:flex;gap:16px;font-family:var(--mono);font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
 .body{font-size:17px;line-height:1.65;letter-spacing:.002em;color:var(--read);min-width:0;transition:color .9s ease,text-shadow .9s ease}
@@ -483,7 +482,7 @@ html:not(.full) #aurora{display:none}
         <div class="rig nvidia" role="listitem" tabindex="0"><i class="die"></i><b>NVIDIA</b><span class="tip"><strong>Your server</strong><span>NVIDIA graphics</span><span class="st">Ready</span></span></div>
       </div>
       <div id="fxbtn"><button class="ibtn" id="fxtog" type="button" aria-label="Effects" aria-expanded="false" aria-controls="fxpop"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="15.5" cy="7" r="2.2"/><circle cx="9.5" cy="17" r="2.2"/></svg></button>
-        <div id="fxpop" role="group" aria-label="Effects"><span>Effects</span><button type="button" data-fx="calm" aria-pressed="false">Calm</button><button type="button" data-fx="bal" aria-pressed="true">Balanced</button><button type="button" data-fx="full" aria-pressed="false">Full</button></div></div>
+        <div id="fxpop" role="group" aria-label="Effects"><span>Effects</span><button type="button" data-fx="calm" aria-pressed="false">Calm</button><button type="button" data-fx="bal" aria-pressed="false">Balanced</button><button type="button" data-fx="full" aria-pressed="true">Full</button></div></div>
     </header>
     <aside id="side" aria-label="Chats">
       <button class="newchat" id="newchat" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New chat</button>
@@ -551,9 +550,9 @@ html:not(.full) #aurora{display:none}
 (function(){
 const $=s=>document.querySelector(s), stage=$("#stage"), vid=$("#vid");
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-/* Effects: Balanced unless the visitor chose Calm or Full (remembered). Classes on <html>: calm | bal | full */
+/* Effects: Full unless the visitor chose Balanced or Calm (remembered). Classes on <html>: calm | bal | full */
 const FXMODES=["calm","bal","full"];
-let fxPref="bal";try{const v=localStorage.getItem("concorde.beta.fx");if(v==="balanced")fxPref="bal";else if(FXMODES.includes(v))fxPref=v;}catch(e){}
+let fxPref="full";try{const v=localStorage.getItem("concorde.beta.fx");if(v==="balanced")fxPref="bal";else if(FXMODES.includes(v))fxPref=v;}catch(e){}   // fresh visitors get Full; a saved choice is kept
 const fxQ=new URLSearchParams(location.search).get("fx");if(fxQ==="balanced")fxPref="bal";else if(FXMODES.includes(fxQ))fxPref=fxQ;   // ?fx= pins it (for checks)
 function fxClass(m){const r=document.documentElement.classList;FXMODES.forEach(x=>r.remove(x));r.add(m);}
 fxClass(fxPref);
@@ -644,7 +643,7 @@ const Sky=(function(){
     vec3 base=texture2D(vid,V(uv)).rgb;base=pow(base,vec3(1.12))*expo;float l=L(base);base=mix(vec3(l),base,.82)*tint;
     vec4 tc=texture2D(trail,uv); vec3 g1=vec3(texture2D(bl1,uv+vec2(px.x*5.,0.)).r,texture2D(bl1,uv).g,texture2D(bl1,uv-vec2(px.x*5.,0.)).b), g2=texture2D(bl2,uv).rgb; float sk=L(texture2D(stk,uv).rgb);
     float wf=foot*(1.-smoothstep(0.,rise,uv.y)), wl=min(1.,foot*2.4)*(1.-smoothstep(0.,rise*1.07,uv.y));
-    vec3 earth=base*wf*fw+((tc.rgb*.42+g1*1.15+g2*1.4+vec3(.55,.7,1.)*sk*.55)*boost*wl+vec3(.62,.76,1.)*tc.a*.1*wl)*(1.-calm);
+    vec3 earth=base*wf*fw+((tc.rgb*.42+g1*.9+g2*1.1+vec3(.55,.7,1.)*sk*.45)*boost*wl+vec3(.62,.76,1.)*tc.a*.1*wl)*(1.-calm);
     // the knee: above .45 the bloom rolls off toward .85, so a bright city glows and never burns to a white blob
     earth=mix(earth,.45+(earth-.45)/(1.+(earth-.45)*2.5),step(.45,earth));
     vec3 col=screen(screen(screen(sky,earth),moonL),texture2D(aur,uv).rgb);
@@ -694,30 +693,31 @@ const Sky=(function(){
   function vmap(t){
     const va=(vid.videoWidth||16)/(vid.videoHeight||9), sa=W/H; let sx=1,sy=1; if(sa>va)sy=va/sa;else sx=sa/va;
     const z=1.05+.035*Math.sin(t*2*Math.PI/80); sx/=z;sy/=z;
-    par[0]+=(parTo[0]-par[0])*.04;par[1]+=(parTo[1]-par[1])*.04;
+    par[0]+=(parTo[0]-par[0])*.04;par[1]+=(parTo[1]-par[1])*.04;   // pointer parallax: per frame is fine, it only follows the hand
     const ox=par[0]*.018+.01*Math.sin(t*.05), oy=-par[1]*.014;
     return [sx,sy,.5-.5*sx+ox,.5-.5*sy+oy];}
   function frame(nowT){
     requestAnimationFrame(frame);
     if(document.hidden||vid.readyState<2)return;
     odd=!odd;if((lowPower||(skyMode==="calm"&&odd))&&nowT-last<32)return; const dt=Math.min(.5,Math.max(.004,(nowT-last)/1000)); last=nowT;
-    calm+=(calmTo-calm)*.04;if(Math.abs(calmTo-calm)<.002)calm=calmTo;fw+=(fwTo-fw)*.04;tw+=(twTo-tw)*.04;
+    const k=f=>1-Math.pow(1-f,dt*60);   // a per-frame factor at 60 Hz, made time-based
+    calm+=(calmTo-calm)*k(.04);if(Math.abs(calmTo-calm)<.002)calm=calmTo;fw+=(fwTo-fw)*k(.04);tw+=(twTo-tw)*k(.04);
     if(!ready){ready=true;cv.classList.add("on");}
     const t=(nowT-t0)/1000, m=vmap(t);
-    boost+=(boostTo-boost)*.03;
+    boost+=(boostTo-boost)*k(.03);
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,vtex);
     try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,vid);}catch(e){stage.classList.add("novfx");return;}
     if(calm<.999){   // the trails, their bloom, the streaks and the aurora exist only when the show is on
     gl.useProgram(pF);quad(pF);gl.bindFramebuffer(gl.FRAMEBUFFER,fB);gl.viewport(0,0,W,H);
     gl.uniform1i(pF.U.vid,0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,A);gl.uniform1i(pF.U.prev,1);
     gl.uniform4fv(pF.U.vmap,m);gl.uniform2f(pF.U.vpx,1.2/vid.videoWidth,1.2/vid.videoHeight);gl.uniform2f(pF.U.tpx,1/W,1/H);
-    gl.uniform1f(pF.U.hiT,clip.hi);gl.uniform1f(pF.U.decay,.955);gl.uniform1f(pF.U.edecay,.86);gl.uniform1f(pF.U.atk,Math.min(.2,dt*1.8));
+    gl.uniform1f(pF.U.hiT,clip.hi);gl.uniform1f(pF.U.decay,Math.pow(.955,dt*60));gl.uniform1f(pF.U.edecay,Math.pow(.86,dt*60));gl.uniform1f(pF.U.atk,Math.min(.2,dt*1.8));
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     glBlur(gl,pB,quad,B,W,H,h1,2.4,0);glBlur(gl,pB,quad,h1.t,h1.w,h1.h,v1,0,1.2);
     glBlur(gl,pB,quad,v1.t,v1.w,v1.h,h2,2.4,0);glBlur(gl,pB,quad,h2.t,h2.w,h2.h,v2,0,1.6);
     glBlur(gl,pB,quad,v2.t,v2.w,v2.h,sk,7,0);
     }
-    neon+=(neonTo-neon)*.025;
+    neon+=(neonTo-neon)*k(.025);
     if(neon>.002||lastAur>.002){gl.useProgram(pA);quad(pA);gl.bindFramebuffer(gl.FRAMEBUFFER,au.f);gl.viewport(0,0,au.w,au.h);gl.uniform1f(pA.U.time,t);gl.uniform1f(pA.U.asp,W/H);gl.uniform1f(pA.U.neon,neon);gl.uniform1f(pA.U.spd,spd);gl.uniform1f(pA.U.one,one);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
     lastAur=neon;
     gl.useProgram(pS);quad(pS);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);
@@ -726,7 +726,7 @@ const Sky=(function(){
     gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,v1.t);gl.uniform1i(pS.U.bl1,2);gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,v2.t);gl.uniform1i(pS.U.bl2,3);
     gl.activeTexture(gl.TEXTURE4);gl.bindTexture(gl.TEXTURE_2D,sk.t);gl.uniform1i(pS.U.stk,4);gl.activeTexture(gl.TEXTURE5);gl.bindTexture(gl.TEXTURE_2D,au.t);gl.uniform1i(pS.U.aur,5);
     gl.uniform4fv(pS.U.vmap,m);gl.uniform2f(pS.U.px,1/W,1/H);gl.uniform2f(pS.U.res,W,H);gl.uniform1f(pS.U.time,t);
-    const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo-footMul)*.045;gl.uniform1f(pS.U.foot,clip.foot*footMul);gl.uniform1f(pS.U.rise,clip.rise);
+    const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo-footMul)*k(.045);gl.uniform1f(pS.U.foot,clip.foot*footMul);gl.uniform1f(pS.U.rise,clip.rise);
     gl.uniform3f(pS.U.skyTop,SK[1],SK[2],SK[3]);gl.uniform3f(pS.U.skyMid,SK[4],SK[5],SK[6]);gl.uniform3f(pS.U.skyLow,SK[7],SK[8],SK[9]);
     gl.uniform1f(pS.U.boost,boost);gl.uniform1f(pS.U.calm,calm);gl.uniform1f(pS.U.fw,fw);gl.uniform1f(pS.U.tw,tw);gl.uniform1f(pS.U.expo,G[4]*(.92+.16*moonLit));gl.uniform1f(pS.U.warm,G[5]);gl.uniform3f(pS.U.tint,G[1],G[2],G[3]);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
@@ -741,9 +741,10 @@ const Sky=(function(){
 })();
 function loadClip(c){clip=c;vid.innerHTML='<source src="../night/'+c.n+'.webm" type="video/webm"><source src="../night/'+c.n+'.mp4" type="video/mp4">';vid.load();
   try{vid.play().catch(()=>{});}catch(e){} $("#clipname").textContent=c.t;}
-function clipRate(){try{vid.playbackRate=FULL()?clip.rate:BAL()?.25:.1;}catch(e){}}   // calm: the footage barely moves; balanced: a slow drift
+function clipRate(){try{if(FX()==="calm"){vid.pause();}else{vid.playbackRate=1;vid.play().catch(()=>{});}}catch(e){}}   // normal speed, smooth; calm holds a still frame with only the camera drift
 vid.addEventListener("loadedmetadata",clipRate);
 vid.addEventListener("playing",()=>{footTo=1;});
+vid.addEventListener("loadeddata",()=>{footTo=1;clipRate();});
 loadClip(clip);
 if(!Sky)vid.style.opacity=1;
 
