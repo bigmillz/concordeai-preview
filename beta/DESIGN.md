@@ -6,9 +6,10 @@ below is design, not effect: it applies in every level.
 
 ## Type
 
-The wordmark (Michroma, which has one weight) is set lighter: `letter-spacing: .2em` (was .15), 10 px in the
-header (was 10.5) and `clamp(24px, 3.1vw, 40px)` in the opening (was 26–44); "AI" keeps a fake bold of
-`-webkit-text-stroke: .055em` (was .12), so it stays a little bolder than CONCORDE; the wing's lines are 1.1 (was 1.5).
+The wordmark (Michroma, which has one weight), PINNED: CONCORDE with a hairline of fake bold
+`-webkit-text-stroke: .02em currentColor` and `letter-spacing: .18em`; "AI" at `.865em` with
+`-webkit-text-stroke: .14em currentColor` (clearly bolder than CONCORDE); the wing's lines `stroke-width: 1.3`.
+10.25 px in the header, `clamp(25px, 3.25vw, 42px)` in the opening.
 
 
 Three families, no others: **Space Grotesk** (UI and reading), **IBM Plex Mono** (digits

@@ -71,10 +71,11 @@ html.calm #horizon{opacity:.3}
 @keyframes drift{from{transform:translate(-3%,-1%)}to{transform:translate(3%,1.5%)}}
 
 /* the wordmark, static; the glint belongs to Full's opening only */
-/* the wordmark, slimmer (per the owner): Michroma has one weight, so it is set a touch smaller with more air (.2em); the
-   fake bold on "AI" is halved to .055em (still a little bolder than CONCORDE); the wing's lines thinned from 1.5 to 1.1 */
-.mark{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);text-transform:uppercase;letter-spacing:.2em;color:#fff;white-space:nowrap;line-height:1}
-.mark b{font-weight:400;-webkit-text-stroke:.055em currentColor;font-size:.865em;vertical-align:.06em}
+/* the wordmark (per the owner, after the slim pass: "a little thicker, especially the AI"): Michroma has one weight, so
+   CONCORDE carries a hairline of fake bold (.02em, halfway back toward the old weight) with the tracking still open
+   (.18em); "AI" is clearly bolder (.14em, a bit more than the original .12em); the wing's lines match CONCORDE (1.3) */
+.mark{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);text-transform:uppercase;letter-spacing:.18em;-webkit-text-stroke:.02em currentColor;color:#fff;white-space:nowrap;line-height:1}
+.mark b{font-weight:400;-webkit-text-stroke:.14em currentColor;font-size:.865em;vertical-align:.06em}
 .mark svg{overflow:visible}
 .mark .glint{position:absolute;inset:0;display:inline-flex;align-items:center;gap:inherit;pointer-events:none;
   filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 9px rgba(255,143,196,.85)) drop-shadow(0 0 16px rgba(159,168,255,.75))}
@@ -97,8 +98,8 @@ html.bal #bigmark .word{text-shadow:0 0 12px rgba(190,212,255,.55),0 0 36px rgba
 html:not(.full) #bigmark .flare,html:not(.full) #bigmark .glint{display:none}
 html:not(.full) .markout #bigmark{transition:opacity .6s var(--out),transform .6s var(--out)}
 html:not(.full) #ui{transition:opacity .8s var(--out)}
-#bigmark .mark{font-size:clamp(24px,3.1vw,40px)}
-.mark svg g{stroke-width:1.1}
+#bigmark .mark{font-size:clamp(25px,3.25vw,42px)}
+.mark svg g{stroke-width:1.3}
 #bigmark .mark svg{filter:drop-shadow(0 0 10px rgba(159,192,255,.75)) drop-shadow(0 0 28px rgba(110,150,255,.45))}
 #bigmark .word{opacity:0;transition:opacity .6s var(--out);text-shadow:0 0 12px rgba(190,212,255,.75),0 0 40px rgba(159,168,255,.5),0 0 80px rgba(255,143,196,.22)}
 #bigmark .word.shown{opacity:1}
@@ -131,7 +132,7 @@ html:not(.full) #ui{transition:opacity .8s var(--out)}
 #ui{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;pointer-events:none;transition:opacity 1.2s var(--out)}
 .home #ui{opacity:1;pointer-events:auto}
 header{display:flex;align-items:center;gap:12px;height:64px;position:relative;z-index:3}   /* 36 px controls, 64 on the grid */
-header .mark{font-size:10px;gap:6px}
+header .mark{font-size:10.25px;gap:6px}
 header .mark .glint{display:none}   /* a calm wordmark: no moving shine, no glow */
 header .mark .glint .gm{animation:none}
 .spacer{flex:1}
