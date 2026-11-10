@@ -479,6 +479,44 @@ html:not(.calm) .ultra .send::after{opacity:1;animation:sheenSweep 3s cubic-bezi
    rounded-square near-white knob as every level, with a soft, still ice halo of about 5 px; no shape change, no motion */
 .ultra .slider .sl-thumb::after{box-shadow:var(--ks),0 0 5px 1px rgba(143,183,255,.42)}
 .ultra .slider .sl-thumb::before{filter:blur(4px);opacity:.35;transform:scale(.85)}
+/* THE SMASH (per the owner: "a little more smash effect when somebody slides to Ultra", like Astra or Ultra Code): once
+   per arrival, about 700 ms, ice, violet and white only, no circles. 1) a light rush races along the fill from the knob
+   back to the start (0-180 ms); 2) the composer's top edge ignites at the knob's x and races left and right as an
+   ice-white line with a soft bloom (80-500 ms), then the 1 px ice rim takes over; 3) the stars above the box launch up
+   from that edge (100-700 ms, in the sky layer); 4) Full: a kick, scale 1 -> 1.012 -> 1 in 220 ms; 5) one fast bright
+   sweep on "Ultra", then the slow silver one. Balanced: the rush, a dimmer bloom, half the stars, no kick. Calm and
+   reduced motion: none. It never retriggers within 1.5 s, and only arriving from a lower level. */
+.slider .rush{position:absolute;top:0;bottom:0;left:0;width:56px;opacity:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.95) 72%,rgba(255,255,255,0))}
+.slider.smash .rush{animation:rush .18s cubic-bezier(.4,0,.2,1) both}
+@keyframes rush{0%{transform:translateX(var(--sw));opacity:0}18%{opacity:1}100%{transform:translateX(-56px);opacity:0}}
+.cbox .ebloom{position:absolute;left:10px;right:10px;top:-1px;height:1px;border-radius:1px;pointer-events:none;opacity:0;background:rgba(240,245,255,.98);
+  box-shadow:0 0 6px 1px rgba(205,222,255,.85),0 0 14px 2px rgba(143,183,255,.45)}
+.bal .cbox .ebloom{box-shadow:0 0 5px 1px rgba(205,222,255,.55),0 0 10px 1px rgba(143,183,255,.25)}
+.cbox.smash .ebloom{animation:ebloom .42s cubic-bezier(.2,.7,.2,1) .08s both}
+@keyframes ebloom{0%{opacity:1;clip-path:inset(-16px calc(100% - var(--kx,50%)) -16px var(--kx,50%))}55%{opacity:1;clip-path:inset(-16px 0 -16px 0)}100%{opacity:0;clip-path:inset(-16px 0 -16px 0)}}
+html:not(.calm) .lum.flash{animation:lumsweep .45s cubic-bezier(.3,0,.2,1) 1 both}
+@media (prefers-reduced-motion:reduce){.slider .rush,.cbox .ebloom{display:none}}
+/* ULTRA AT REST (per the owner: "give Ultra a little more effect"): ice, violet and white, lines and strips only. Full:
+   a soft comet along the composer's top edge every 8 s (900 ms); a faint strip of ice light spilling up out of the box
+   (8 % breathing to 6 % over 10 s); a glint travelling along the fill every 5 s; the field above the box drifting up,
+   with a shooting star in its band every 12-18 s. Balanced: half the light, no comet, the band's shooting star every
+   25-35 s. Calm and reduced motion: none. All of it pauses while the page is hidden or not in front. */
+.cbox .ucomet{position:absolute;left:14px;right:14px;top:-2px;height:4px;overflow:hidden;pointer-events:none}
+.cbox .ucomet i{position:absolute;left:0;top:1.5px;width:120px;height:1px;opacity:0;border-radius:1px;
+  background:linear-gradient(90deg,rgba(143,183,255,0),rgba(190,212,255,.55) 60%,#fff);box-shadow:0 0 4px rgba(205,222,255,.7)}
+.composer .uspill{position:absolute;left:5%;right:5%;top:-52px;height:52px;pointer-events:none;opacity:0;transition:opacity .9s var(--inout);
+  background:linear-gradient(0deg,rgba(200,218,255,.08),rgba(200,218,255,.03) 45%,rgba(200,218,255,0));
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent)}
+html.full .ultra .composer .uspill{opacity:1;animation:spill 10s ease-in-out infinite}
+html.bal .ultra .composer .uspill{opacity:.5;animation:spill 10s ease-in-out infinite}
+@keyframes spill{0%,100%{filter:opacity(1)}50%{filter:opacity(.75)}}
+.slider .fglint{position:absolute;top:0;bottom:0;left:0;width:40px;opacity:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.75) 60%,rgba(255,255,255,0))}
+html.full .ultra .slider .fglint{animation:fglint 5s cubic-bezier(.45,0,.25,1) 1.2s infinite;--gl:.7}
+html.bal .ultra .slider .fglint{animation:fglint 5s cubic-bezier(.45,0,.25,1) 1.2s infinite;--gl:.35}
+@keyframes fglint{0%{transform:translateX(-40px);opacity:0}4%{opacity:var(--gl)}26%{transform:translateX(var(--sw));opacity:0}100%{transform:translateX(var(--sw));opacity:0}}
+.fxpause .composer .uspill,.fxpause .slider .fglint,.fxpause .slider .tst,.fxpause .lum.go{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.composer .uspill,.slider .fglint,.cbox .ucomet{display:none}}
+html.calm .composer .uspill,html.calm .slider .fglint{display:none}
 /* tiny four-point stars drift through the filled track at Ultra, twinkling, clipped to it (two, faint) */
 .slider .tst{position:absolute;left:0;top:var(--y);width:7px;height:7px;margin:-3.5px 0 0 -3.5px;opacity:0;pointer-events:none;
   background:radial-gradient(circle,#fff 0 1px,rgba(255,255,255,0) 1.6px),linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent) center/100% 1px no-repeat,linear-gradient(0deg,transparent,rgba(255,255,255,.95),transparent) center/1px 100% no-repeat}
@@ -945,16 +983,16 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
         </article>
       </section>
       <form class="composer" id="form" autocomplete="off">
-        <div class="halo" aria-hidden="true"></div><i class="uline" aria-hidden="true"></i>
+        <div class="halo" aria-hidden="true"></div><i class="uline" aria-hidden="true"></i><i class="uspill" aria-hidden="true"></i>
         <div class="cbox">
-          <i class="itint" aria-hidden="true"></i><span class="clip" aria-hidden="true"><i class="sweep" id="sweep" hidden></i><i class="strike" id="strike"></i></span><i class="edge" aria-hidden="true"></i><span class="rimclip" id="rimclip" aria-hidden="true"><i class="rimbloom"><i></i></i><i class="rim"></i><i class="rimhead"></i></span>
+          <i class="itint" aria-hidden="true"></i><i class="ebloom" aria-hidden="true"></i><span class="ucomet" aria-hidden="true"><i></i></span><span class="clip" aria-hidden="true"><i class="sweep" id="sweep" hidden></i><i class="strike" id="strike"></i></span><i class="edge" aria-hidden="true"></i><span class="rimclip" id="rimclip" aria-hidden="true"><i class="rimbloom"><i></i></i><i class="rim"></i><i class="rimhead"></i></span>
           <label for="ask" style="position:absolute;left:-9999px">Ask anything</label>
           <div class="tawrap"><textarea id="ask" rows="2" placeholder="Ask anything"></textarea><div class="mirror lum go" id="mirror" aria-hidden="true"></div></div>
           <div class="row">
             <button type="button" class="round" aria-label="Attach a file"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
             <button type="button" class="pick" id="pick" aria-haspopup="menu" aria-expanded="false" aria-controls="menu"><b id="mName"></b><i class="ubadge" aria-hidden="true"><span class="lum go">Ultra</span></i><i class="under" id="under" aria-hidden="true"></i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
             <div class="slider" id="slider">
-              <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"><i class="tst" style="--y:40%;--dl:0s;--du:4.6s"></i><i class="tst" style="--y:60%;--dl:-2.4s;--du:5.4s"></i></span>
+              <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"><i class="rush" aria-hidden="true"></i><i class="fglint" aria-hidden="true"></i><i class="tst" style="--y:40%;--dl:0s;--du:4.6s"></i><i class="tst" style="--y:60%;--dl:-2.4s;--du:5.4s"></i></span>
               <span class="sl-det" style="--k:0"></span><span class="sl-det" style="--k:.25"></span><span class="sl-det" style="--k:.5"></span><span class="sl-det" style="--k:.75"></span><span class="sl-det" style="--k:1"></span>
               <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i></span><span class="sl-spark" id="spark"></span>
               <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="4" step="1" value="1"></label>
@@ -1287,21 +1325,29 @@ const Sky=(function(){
      conversation, a subtler strip just above the composer (half as many, dimmer). Behind everything; never over the
      greeting's letters; none in Calm or reduced motion. */
   let field=null,fieldChk=0;
-  function buildField(){const R=e=>e?e.getBoundingClientRect():null,cb=R($(".cbox"));if(!cb||!cb.width)return null;const chat=stage.classList.contains("chat"),h1=R($("#h1"));
+  function buildField(launch){const R=e=>e?e.getBoundingClientRect():null,cb=R($(".cbox"));if(!cb||!cb.width)return null;const chat=stage.classList.contains("chat"),h1=R($("#h1"));
     const y0=chat?cb.top-34:Math.max((h1&&h1.height?h1.bottom:cb.top-200)+14,cb.top-230),y1=cb.top-8;if(y1-y0<20)return null;
     const x0=Math.max(12,cb.left-30),x1=Math.min(innerWidth-12,cb.right+30),n=Math.round((skyMode==="full"?26:13)*(chat?.5:1)),P=[];
-    const spawn=(p,nowT)=>{p.x=x0+Math.random()*(x1-x0);p.y=y0+Math.random()*(y1-y0);p.s=1.5+Math.random()*1.7+(Math.random()<.12?1.4:0);p.a=(.38+Math.random()*.4)*(chat?.7:1);p.w=2*Math.PI/(3+Math.random()*3);p.ph=Math.random()*6.28;
+    const spawn=(p,nowT)=>{p.x=x0+Math.random()*(x1-x0);p.y=y0+Math.random()*(y1-y0);p.s=1.5+Math.random()*1.7+(Math.random()<.12?1.4:0);p.a=(.38+Math.random()*.4)*(chat?.7:1);p.w=2*Math.PI/(2+Math.random()*5);p.ph=Math.random()*6.28;p.amp=.2+Math.random()*.35;p.sh=Math.random()<.3;
       p.col=UCOL[Math.floor(Math.random()*UCOL.length)];p.born=nowT;p.up=0;return p;};
-    const now=performance.now();for(let i=0;i<n;i++)P.push(spawn({},now));return {P,spawn,t0:now,key:(chat?"c":"h")+Math.round(cb.top/8),nextUp:now+3000+Math.random()*3000};}
-  function drawField(nowT,t,on){if(!field)return;const ue=ultraE;if(ue<.002&&!on){field=null;return;}
+    const now=performance.now();for(let i=0;i<n;i++)P.push(spawn({},now));
+    if(launch&&!chat){const far=new Set();while(far.size<Math.min(3,Math.max(2,Math.round(n/9))))far.add(Math.floor(Math.random()*n));
+      P.forEach((p,i)=>{p.l0=cb.top-3;p.lt=now+100+Math.random()*300;p.lu=420+Math.random()*180;p.born=now-600;if(far.has(i)){p.far=p.y-60-Math.random()*50;}});}
+    return {P,spawn,y0,y1,x0,x1,clock:0,t0:launch&&!chat?now-600:now,key:(chat?"c":"h")+Math.round(cb.top/8),nextUp:now+3000+Math.random()*3000};}
+  const fxLive=()=>!document.hidden&&document.hasFocus();   // the resting show pauses while the page is hidden or not in front
+  function drawField(nowT,t,on,dt){if(!field)return;const ue=ultraE;if(ue<.002&&!on){field=null;return;}
+    const live=fxLive();if(live)field.clock+=dt;const ft=field.clock,H=field.y1-field.y0,drift=ft*4;   // the field drifts up 4 px/s, wrapping seamlessly
     if(++fieldChk%30===0){const cb=$(".cbox").getBoundingClientRect(),key=(stage.classList.contains("chat")?"c":"h")+Math.round(cb.top/8);if(key!==field.key){field=buildField();if(!field)return;}}   // the composer moved: re-seat the field
     const fin=Math.min(1,(nowT-field.t0)/600);
-    if(nowT>field.nextUp){field.nextUp=nowT+4000+Math.random()*4000;const p=field.P[Math.floor(Math.random()*field.P.length)];if(!p.up)p.up=nowT;}
-    for(const p of field.P){let y=p.y,a=p.a*(.62+.38*Math.sin(t*p.w+p.ph));const born=Math.min(1,(nowT-p.born)/600);
+    if(live&&nowT>field.nextUp){field.nextUp=nowT+4000+Math.random()*4000;const p=field.P[Math.floor(Math.random()*field.P.length)];if(!p.up)p.up=nowT;}
+    for(const p of field.P){const sw=Math.sin(ft*p.w+p.ph),tw=p.sh?Math.pow(.5+.5*sw,4):.5+.5*sw;   // twinkles of many kinds: slow, quick, a few sharp sparkles
+      const yw=field.y0+(((p.y-field.y0-drift)%H)+H)%H;let y=yw,edge=Math.max(0,Math.min(1,(yw-field.y0)/14,(field.y1-yw)/14)),a=p.a*(1-p.amp+p.amp*tw);const born=Math.min(1,(nowT-p.born)/600);
+      if(p.lt){const u=(nowT-p.lt)/p.lu;if(u<0)continue;const e=1-Math.pow(1-Math.min(1,u),3),to=p.far!=null?p.far:yw;y=p.l0+(to-p.l0)*e;a*=Math.min(1,u*4);edge=1;   // launched from the box's edge, easing out
+        if(p.far!=null){a*=Math.max(0,1-u);if(u>=1){p.lt=0;p.far=null;field.spawn(p,nowT);continue;}}else if(u>=1)p.lt=0;}
       if(p.up){const u=(nowT-p.up)/3000;if(u>=1){field.spawn(p,nowT);continue;}y-=28*u*(2-u)*.5*2;a*=1-u;}
-      pfx.star(p.x,y,p.s*2.2,p.col,a*fin*born*ue,0);}}
+      pfx.star(p.x,y,p.s*2.2,p.col,a*edge*fin*born*ue,0);}}
   function skyFx(nowT,t,dt){if(!pfx)return;pfx.clear();const ue=ultraE;
-    drawChand(nowT,t);drawField(nowT,t,ultraWant&&lift());
+    drawChand(nowT,t);drawField(nowT,t,ultraWant&&lift(),dt);
     if(ue<.002&&!ultraWant){cons=null;shoot=null;rain.length=0;if(pfx.count()){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}return;}
     const on=ultraWant&&lift();
     // the constellation: each line draws in over 260 ms (all within about 600), holds, then fades over 1.2 s
@@ -1318,6 +1364,11 @@ const Sky=(function(){
       if(regs.length){const r=regs[Math.floor(Math.random()*regs.length)],len=Math.min(260,r[1]-r[0]-10),ang=(18+Math.random()*14)*Math.PI/180,dir=Math.random()<.5?1:-1;
         const L=len,dx=Math.cos(ang)*L*dir,dy=Math.sin(ang)*L,x0=dir>0?r[0]+Math.random()*(r[1]-r[0]-Math.abs(dx)):r[1]-Math.random()*(r[1]-r[0]-Math.abs(dx)),y0=72+Math.random()*(innerHeight*.26-72);
         if(!ex.some(q=>inR(x0,y0,q,4)||inR(x0+dx,y0+dy,q,4)))shoot={x0,y0,dx,dy,t0:nowT};}}
+    if(on&&field&&ue>.9&&fxLive()&&!stage.classList.contains("chat")){if(!field.nextBand)field.nextBand=nowT+(skyMode==="full"?5000:12000);
+      if(nowT>field.nextBand&&!field.band){const f=field,dir=Math.random()<.5?1:-1,L=90+Math.random()*60,x=f.x0+20+Math.random()*Math.max(1,f.x1-f.x0-40-L),y=f.y0+12+Math.random()*Math.max(1,f.y1-f.y0-40);
+        f.band={x0:dir>0?x:x+L,y0:y,dx:dir*L,dy:10+Math.random()*16,t0:nowT};f.nextBand=nowT+(skyMode==="full"?12000+Math.random()*6000:25000+Math.random()*10000);}}
+    if(field&&field.band){const b=field.band,u=(nowT-b.t0)/450;if(u>=1)field.band=null;else{const e=1-Math.pow(1-u,2),a=Math.min(1,u/.15)*Math.min(1,(1-u)/.35)*ue*.85,hx=b.x0+b.dx*e,hy=b.y0+b.dy*e,tl=Math.min(e,.45);
+      pfx.line(b.x0+b.dx*(e-tl),b.y0+b.dy*(e-tl),hx,hy,1,[.88,.92,1],0,.85*a);pfx.star(hx,hy,3.6,WHITE,a,0);}}   // the band's own shooting star, just above the box
     if(shoot){const u=(nowT-shoot.t0)/500;if(u>=1)shoot=null;else{const e=1-Math.pow(1-u,2),a=Math.min(1,u/.15)*Math.min(1,(1-u)/.3)*ue,hx=shoot.x0+shoot.dx*e,hy=shoot.y0+shoot.dy*e,tl=Math.min(e,.42),tx=shoot.x0+shoot.dx*(e-tl),ty=shoot.y0+shoot.dy*(e-tl);
       pfx.line(tx,ty,hx,hy,1.1,[.86,.91,1],0,.9*a);pfx.star(hx,hy,4.5,WHITE,a,0);}}
     // the star rain: a sparse, slow fall of tiny stars at the far left and right edges, out of the reading area
@@ -1403,12 +1454,13 @@ const Sky=(function(){
   function mode(m){skyMode=m;one=m==="bal"?1:0;apply();}
   mode(FX());c2E=c2To;spd=spdTo;   // the first level is not eased in
   return {hangs(){return chand&&chand.now&&!chandOff?chand.now.map((p,i)=>[p[0],p[1],chand.P[i].x]):[];},
-    ultra(on,x,y){ultraWant=on;
+    ultra(on,x,y,smash){ultraWant=on;
       if(on){if(!chand||chandOff){chandOff=0;chand=null;requestAnimationFrame(()=>{if(ultraWant&&!chand)chand=buildChand();});}}else if(chand&&!chandOff)chandOff=performance.now();   // built a frame later: the arrival's own frame stays light
       {const n=performance.now();if(!on&&uTwAt){uTwFrom=uTwDeg(n);uTwTo=0;uTwAt=n;}}
-      if(on&&lift()){const n=performance.now();surgeAt=n;uTwFrom=uTwDeg(n);uTwTo=UTW_DEG;uTwAt=n;
-        nextShoot=n+4000+Math.random()*3000;nextRain=n+300;cons=null;field=null;
-        requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!ultraWant)return;cons=buildCons((performance.now()-t0)/1000);requestAnimationFrame(()=>{if(ultraWant)field=buildField();});}));   // spread over the next frames
+      if(on&&lift()&&smash===false){if(!field)requestAnimationFrame(()=>{if(ultraWant&&!field)field=buildField(false);});}   // back within 1.5 s: no second show, the field simply returns
+      else if(on&&lift()){const n=performance.now();surgeAt=n;uTwFrom=uTwDeg(n);uTwTo=UTW_DEG;uTwAt=n;
+        nextShoot=n+4000+Math.random()*3000;nextRain=n+300;cons=null;field=buildField(true);   // the field launches up from the box's edge at once
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!ultraWant)return;cons=buildCons((performance.now()-t0)/1000);}));   // spread over the next frames
         if(x!=null){waveX=x;waveY=y;waveR=y;waveAt=n;}}
       apply();},
     twistLeft(){return readyAt&&twistDeg?Math.max(0,readyAt+TWIST_S*1000-performance.now()):0;},
@@ -1697,11 +1749,13 @@ function paint(){
 }
 /* the Ultra moment, once per arrival; the still rim and the label in every mode */
 let ultraT=0;
+let lastSmash=-9e9;
 function ultraOn(){const cb=$(".cbox"),clip=$("#rimclip"),en=$("#eName"),th=$("#thumb"),sp=$("#spark");
+  const nowS=performance.now(),smash=!reduce&&FX()!=="calm"&&nowS-lastSmash>1500;if(smash)lastSmash=nowS;   // once per arrival: never again within 1.5 s
   // the light leaves the beam at its start: that point's angle from the composer's centre is where the rim begins
   const c=cb.getBoundingClientRect(),tr=slider.querySelector(".sl-track").getBoundingClientRect();
   const dx=tr.left-(c.left+c.width/2),dy=tr.top-(c.top+c.height/2);clip.style.setProperty("--a0",((Math.atan2(dx,-dy)*180/Math.PI+360)%360).toFixed(1)+"deg");
-  if(!reduce&&FX()!=="calm"){
+  if(smash){
     slider.classList.remove("ignite");void slider.offsetWidth;slider.classList.add("ignite");
     en.classList.remove("lit");void en.offsetWidth;en.classList.add("lit");
     if(sp.animate){const ob=th.offsetWidth,x1=th.offsetLeft+ob/2-22,x0=th.offsetLeft+ob/2-22-(slider.offsetWidth-parseFloat(getComputedStyle(slider).getPropertyValue("--ph")||26));const a=sp.animate([{transform:"translateX("+x1+"px)",opacity:1},{transform:"translateX("+x0+"px)",opacity:1,offset:.85},{transform:"translateX("+x0+"px)",opacity:0}],{duration:160,easing:"cubic-bezier(.3,0,.2,1)",fill:"forwards"});
@@ -1709,12 +1763,22 @@ function ultraOn(){const cb=$(".cbox"),clip=$("#rimclip"),en=$("#eName"),th=$("#
     cb.classList.add("igniting");clearTimeout(ultraT);ultraT=setTimeout(()=>cb.classList.remove("igniting"),1100);}
   stage.classList.remove("uout");clearTimeout(uoutT);
   // the sky: the wave leaves the diamond, the field turns, the aurora erupts (Calm and reduced motion: a brighter, still sky)
-  const tb=th.getBoundingClientRect();Sky&&Sky.ultra(true,tb.left+tb.width/2,c.top);   // the sweep leaves from the composer's top edge
-  motesOn(true);mirrorSync(true);clearTimeout(lblT);lblT=setTimeout(()=>{if(stage.classList.contains("ultra"))en.classList.add("go");},reduce||FX()==="calm"?0:600);
-  if(!reduce&&FX()!=="calm"){sparkle(th);liftComposer(cb);if(th.animate)th.animate([{transform:"scale(1)"},{transform:"scale(1.12)",offset:.45},{transform:"scale(1)"}],{duration:220,easing:"cubic-bezier(.2,.8,.2,1)"});}   // the knob clicks into place
+  const tb=th.getBoundingClientRect();Sky&&Sky.ultra(true,tb.left+tb.width/2,c.top,smash);   // the sweep leaves from the composer's top edge
+  if(smash){   // the rush along the fill, the edge bloom from the knob's x, the label's fast sweep
+    const kx=Math.max(0,Math.min(c.width,tr.right-c.left));cb.style.setProperty("--kx",kx.toFixed(1)+"px");
+    slider.classList.remove("smash");cb.classList.remove("smash");void cb.offsetWidth;slider.classList.add("smash");cb.classList.add("smash");
+    clearTimeout(smashT);smashT=setTimeout(()=>{slider.classList.remove("smash");cb.classList.remove("smash");},800);
+    en.classList.remove("go");en.classList.add("flash");}
+  motesOn(true);mirrorSync(true);clearTimeout(lblT);lblT=setTimeout(()=>{en.classList.remove("flash");if(stage.classList.contains("ultra"))en.classList.add("go");},reduce||FX()==="calm"?0:600);
+  if(smash){sparkle(th);if(FULL()&&cb.animate)cb.animate([{transform:"scale(1)"},{transform:"scale(1.012)",offset:.4},{transform:"scale(1)"}],{duration:220,easing:"cubic-bezier(.2,.8,.2,1)"});/* the kick (Full) */if(th.animate)th.animate([{transform:"scale(1)"},{transform:"scale(1.12)",offset:.45},{transform:"scale(1)"}],{duration:220,easing:"cubic-bezier(.2,.8,.2,1)"});}   // the knob clicks into place
   cb.classList.add("ultra-on");}
-let uoutT=0,lblT=0;
-function ultraOff(){const cb=$(".cbox");cb.classList.remove("ultra-on","igniting");clearTimeout(ultraT);slider.classList.remove("ignite");$("#eName").classList.remove("lit");
+let uoutT=0,lblT=0,smashT=0;
+const pauseSync=()=>document.documentElement.classList.toggle("fxpause",document.hidden||!document.hasFocus());
+["visibilitychange","blur","focus"].forEach(ev=>(ev==="visibilitychange"?document:window).addEventListener(ev,pauseSync));pauseSync();
+setInterval(()=>{   // the comet: Full, at Ultra, the page in front
+  if(!stage.classList.contains("ultra")||!FULL()||reduce||document.hidden||!document.hasFocus())return;const c=$(".cbox .ucomet i"),w=$(".cbox .ucomet").offsetWidth;if(!c.animate||!w)return;
+  window.__comet=performance.now();c.animate([{transform:"translateX(-120px)",opacity:0},{opacity:1,offset:.15},{opacity:1,offset:.8},{transform:"translateX("+w+"px)",opacity:0}],{duration:900,easing:"cubic-bezier(.45,0,.25,1)"});},8000);
+function ultraOff(){const cb=$(".cbox");$("#eName").classList.remove("flash");cb.classList.remove("ultra-on","igniting");clearTimeout(ultraT);slider.classList.remove("ignite");$("#eName").classList.remove("lit");
   stage.classList.add("uout");clearTimeout(uoutT);uoutT=setTimeout(()=>stage.classList.remove("uout"),1000);   // everything eases back over 900 ms
   Sky&&Sky.ultra(false);motesOn(false);Burst&&Burst.off();}
 /* the arrival's sparkles: twelve fine points fly out of the orb and fade in about 600 ms (compositor only); the composer
@@ -1754,10 +1818,10 @@ const Burst=(function(){if(reduce)return null;const cv=document.createElement("c
   return {burst(cx,cy){const t=performance.now();let hero=0;
       // where drifters may go: chandelier stars on the knob's side, outside the greeting's width (so none crosses text); home only
       const h1=$("#h1").getBoundingClientRect(),H=(Sky&&Sky.hangs?Sky.hangs():[]).map((h,i)=>[h,i]).filter(([h])=>!stage.classList.contains("chat")&&(h[2]>h1.right+24||h[2]<h1.left-24)&&(h[2]>innerWidth/2)===(cx>innerWidth/2)).map(([,i])=>i);
-      const chatV=stage.classList.contains("chat");
+      const chatV=stage.classList.contains("chat"),above=Math.max(0,cy-$(".cbox").getBoundingClientRect().top);
       [[60,0],[36,200],[24,400]].forEach(([n,dl],w)=>{for(let k=0;k<n;k++){const isHero=w===0&&k%10===0&&hero<6;if(isHero)hero++;const small=w>0,drift=H.length&&Math.random()<.4;
         // into the open sky only, never down over the suggestions: the upper half on the home; in a conversation low and to the sides, clear of the answer
-        const f=(k+Math.random()*.7)/n,a=chatV?(f<.5?-Math.PI*(1-.2*f*2):-Math.PI*.2*(f-.5)*2):-Math.PI*(.04+.92*f),d=small?18+Math.random()*30:28+Math.random()*50;
+        const f=(k+Math.random()*.7)/n,a=chatV?(f<.5?-Math.PI*(1-.2*f*2):-Math.PI*.2*(f-.5)*2):-Math.PI/2+(f-.5)*1.7,d=chatV?(small?18+Math.random()*30:28+Math.random()*50):(above/Math.max(.35,Math.cos(Math.abs(a+Math.PI/2))))+6+Math.random()*(small?40:80);   /* on the home they clear the glass and hang above it */
         parts.push({hang:true,t0:t+dl,x:cx,y:cy,a,d,dr:0,k:4.5+Math.random()*2.5,p1:Math.random()*6.28,p2:Math.random()*6.28,rise:2+Math.random()*4,
           tg:drift?H[Math.floor(Math.random()*H.length)]:null,j:[(Math.random()-.5)*36,8+Math.random()*26],
           dur:(drift?3200+Math.random()*1300:2000+Math.random()*2000),s:isHero?9+Math.random()*3:small?2.2+Math.random()*2.6:3+Math.random()*3.4,c:isHero?[1,1,1]:UCOL[Math.floor(Math.random()*UCOL.length)]});}});

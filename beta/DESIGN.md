@@ -229,8 +229,9 @@ Arriving (about 1.5 s), Balanced and Full:
   with drag: out fast and slowing (1 − e^(−kt), k 4.5–7 /s), then floating like dust in light (a 2–3 px bob, a slow
   rise), dissolving at 2–4 s, staggered; on the home 40 % drift to the chandelier on the knob's side (x over .45 s, y
   over 1.1 s) and settle near a hanging star (3.2–4.5 s). Nothing leaves the screen.
-  They fly only into open sky, never over text: the upper half on the home (not down over the suggestions), and low
-  to the sides in a conversation (not up over the answer).
+  They fly only into open sky, never over text: on the home up through the composer's top edge into the space above
+  the box (a ±49° cone; each flies the distance to that edge plus 6–86 px, so they hang above the glass, not in it);
+  in a conversation low and to the sides (not up over the answer).
 - **The chandelier (per the owner: "hang them like something"):** 8–22 hairline threads lower from the top edge as Ultra
   arrives, only where no text or control sits under the thread (each ends 22 px above the nearest), in the top third:
   each a 0.5 px `#cfe0ff` line (.05 at the top to .16 at the star) ending in a four-point star (three heroes, white,
@@ -286,6 +287,31 @@ While at Ultra:
 - The slider's fill flows slowly in the pair (`#8fb7ff → #a58bff → #b8ccff → #a58bff → #8fb7ff`, one 2 × width period
   per 7 s) with its bloom; the knob's halo turns to the pair; the knob's glow breathes ice ↔ violet (3.5 s).
 
+- **The smash (per the owner: "a little more smash effect when somebody slides to Ultra", like Astra or Ultra Code):**
+  once per arrival, about 700 ms, ice, violet and white only; no circles, rings or ovals.
+  1. *Light rush* (0–180 ms): a 56 px white highlight (`.95` at 72 %) races along the fill from the knob back to the start.
+  2. *Edge bloom* (80–500 ms): the composer's top edge ignites at the knob's x and races left and right as a 1 px
+     `rgba(240,245,255,.98)` line with `0 0 6px 1px rgba(205,222,255,.85), 0 0 14px 2px rgba(143,183,255,.45)` (within
+     16 px), revealed by `clip-path` from the knob outward by 55 % of 420 ms, then fading as the 1 px ice rim takes over.
+  3. *Star burst* (100–700 ms): the field above the box launches up from the composer's top edge, each star after
+     100–400 ms, rising over 420–600 ms (ease-out cubic) to its place; two or three go 60–110 px further and fade.
+  4. *Kick* (0–220 ms, Full): the composer scales 1 → 1.012 → 1 on `cubic-bezier(.2,.8,.2,1)`, no wobble.
+  5. *Label*: one fast bright sweep on "Ultra" (450 ms), then the slow silver sweep (every 3 s).
+  Balanced: the rush, a dimmer bloom (`0 0 5px 1px … .55, 0 0 10px 1px … .25`), half the stars, no kick. Calm and
+  reduced motion: none. It never retriggers within 1.5 s and only fires arriving from a lower level; coming back within
+  that window the Ultra state returns quietly (no surge, wave or launch). The constellation and the chandelier are built
+  a frame or two later, so the arrival's own frame stays light.
+- **Ultra at rest (per the owner: "give Ultra a little more effect"):** Full:
+  - every 8 s a soft ice-white comet travels once along the composer's top edge (a 120 px, 1 px line, ice to a white
+    head, `0 0 4px` glow, 900 ms on `cubic-bezier(.45,0,.25,1)`, clipped 14 px in from each corner);
+  - the field above the box drifts up 4 px/s and wraps seamlessly (14 px soft edges), with more twinkle variety
+    (periods 2–7 s, depth .2–.55, three in ten sharp sparkles); a shooting star crosses its band every 12–18 s (the
+    first 5 s in): 90–150 px, 450 ms, a 1 px ice tail and a white head;
+  - a faint wide strip of ice light spills up out of the box: 52 px tall, 5 % in from each side, `rgba(200,218,255,.08)`
+    at the edge to nothing, horizontal fade at the ends, breathing to .75 of that over 10 s (a strip, never an oval);
+  - a glint travels along the fill every 5 s (a 40 px white highlight at .7, across in 1.3 s).
+  Balanced: half the light (the strip .5, the glint .35), no comet, the band's shooting star every 25–35 s. Calm and
+  reduced motion: none. All of it pauses while the page is hidden or not in front.
 - **Stars above the box (per the owner: "more stars above the box versus in the box"):** at Ultra a gentle field of
   small white-ice stars (1.5–3.2 px, one in eight 1.4 px larger; the star palette) fills the space between the greeting
   and the composer, across the composer's width plus 30 px each side: 26 in Full, 13 in Balanced. It fades in over
