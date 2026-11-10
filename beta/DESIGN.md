@@ -353,6 +353,31 @@ While at Ultra:
   .012) and softly luminous (`exp(−55|d|)`). Every 2–4 min it splits in two (the lobes ±.17 apart) for about 20 s: 6 s to
   split, 8 s held, 6 s to merge. Balanced: 1.6 × slower and half the amplitude. Calm and reduced motion: still and
   centred. Paused while the page is hidden or not in front. ?aur=0.5 pins its centre (for checks).
+- **The aurora's lower edge undulates (per the owner: "a slow, soft, wavy line, not a ruler"):** the base (60 % up,
+  the second curtain 70 %) carries two long waves along the folded x, `wam × (.07 sin(4.2x + 1.2ℓ + 1.7k) + .03 sin(7.3x −
+  .35ℓ + k))`: about ±10 % of the height, one crest every quarter to half a screen, drifting about one cycle per 100 s
+  and carried by the folds (they ride the displaced x). The waves are symmetric, so the edge stays level overall.
+  `wam` is 1 in Full and .5 in Balanced and in Calm (still there). Each ray ends at its own depth: the body fades in
+  over `.014 + .085 × rays` below the base, so the brightest rays reach up to 10 % lower and fade out gradually;
+  the crisp luminous edge (`exp(−55|d|)`) follows the wavy line. The reach breathes: legs of 30–60 s on the same
+  smootherstep, 45 % of them reaching (a depth of .35–1 of the full reach), the rest retreating to 0; where it
+  reaches (a broad noise along x, `smoothstep(.45, .95, noise(1.6x, .18ℓ))`) the base drops up to 8 % more. The
+  base keeps a smooth floor (a smooth max, width .08) one ray-tail (.1) above the line 36 px over the composer's top
+  (`flo`, read once a second), so near the floor the edge rounds off instead of flattening, and below that line the
+  light fades out over 4 % of the height: nothing reaches the composer. Under the greeting (across its width, feathered over 10 % of the
+  width) the first curtain's crests round off 2.5 % below the greeting's bottom (a smooth min, width .06), so the
+  bright edge never crosses the text; the dips are free. Balanced: half the reach
+  and the 1.6 × slower clock; Calm and reduced motion: no reach, the edge holds still; paused while the page is
+  hidden or not in front. ?aurlow=1 holds the full reach (for checks).
+- **The aurora at resting Ultra (per the owner: stronger, leaning violet):** the curtain's colour is mixed `.7 × cool`
+  of the way (`cool` is 1 at rest in Ultra, up to 1.3 in a surge, 0 outside Ultra) towards a blue-violet,
+  `(.56,.72,1)` at the lower edge to `(.65,.55,1)` at the tips (25 % further to violet in Ultra), then rescaled so its
+  relative luminance (`.2126 R + .7152 G + .0722 B`) is exactly `1 + .2 × min(cool, 1)` times the curtain's own: 20 %
+  stronger, never more, never white. Behind the greeting (its box, read once a second, feathered over 7 % of the width
+  and 10 % of the height) it stays 25 % under its resting strength instead, so the greeting keeps AA at Ultra.
+  In the same zone, always (at rest, at Ultra and through the arrival's surge), the curtain's light rolls off with a
+  soft knee: luminance `ℓ` (after the level) becomes `ℓ / (1 + ℓ / .06)`, so a bright fold never sits on the text. (This line had been lost to a stray comment
+  until 7.0 beta; it is now drawn.)
 - **Shooting stars:** every 6–10 s in Full, 10–16 s in Balanced (the first 4–7 s after arriving), one thin streak (1.1 px, white, a tail fading to
   nothing over the last 42 % of its run, a 4.5 px glint at its head) crosses 120–260 px of the upper sky (72 px to
   26 % down) at 18–32° in 500 ms, only in the sky beside the text column (never over it, the sidebar or the header).
