@@ -43,8 +43,13 @@ and labels), **Michroma** (the wordmark, with the wing).
 
 ## Colour
 
-Type is white or near-white. Colour appears only in light: the sky, the dies, the Ultra
-rim, the horizon, the ember at decisions.
+PINNED: **Silver and one hue** (per the owner: "get the rainbow effect right ... we have too much rainbow"; ChatGPT
+and Claude stay monochrome and think in a grey-to-white sweep, Gemini keeps its blue-violet for its signature moment).
+The interface is silver and white. Colour appears in exactly two places: Ultra, in one cool pair, ice `#8fb7ff` →
+soft violet `#a58bff` (white highlights, the faintest violet at most in its stars); and the ember `#e8415a` at
+decisions only (the send strike and the send key with text, the keyboard focus ring, errors). No rose, pink, red, gold,
+green or rainbow gradient anywhere in the interface or its effects. The footage's hour grade (below) is the one
+exception: a light tint on real footage. The machine dies keep their makers' colours.
 
 | Token | Value | Contrast on `--night` | Role |
 |---|---|---|---|
@@ -56,8 +61,8 @@ rim, the horizon, the ember at decisions.
 | `--ink3` | `#9aa6c6` | 8.5 | tertiary type, labels (6.7 on the lightest glass) |
 | `--ember` | `#e8415a` | 5.2 (black on ember 5.2) | the one accent: send strike, send key with text, keyboard focus ring, errors |
 | `--ice` | `#9fc0ff` | | light only (the die for Cloud, the writing star's warmth) |
-| `--rose` | `#f2a6b4` | | light only (horizon, Ultra rim) |
-| `--champagne` | `#f1dcb2` | | light only (horizon, focused composer's top light) |
+| `--rose` | `#dfe6f2` | | retired as a hue: now a silver (the name is kept for the app) |
+| `--champagne` | `#e6e8ee` | | silver (the name is kept for the app); hairlines keep their faint warm grey |
 
 Small labels straight over the sky (the sidebar's day labels, the footer's credit and links) wear a tight halo in the
 near-black, `--halo-dark: ±1px 0 1px and 0 ±1px 1px at rgba(3,3,5,.7), 1px 1px 2px and −1px −1px 2px at .5,
@@ -77,7 +82,7 @@ Hairlines are champagne silver, never pure white:
 | `--spec` | `rgba(255,250,240,.12)` | the 1 px specular along the top of every glass |
 
 The horizon: a flat band low in the sky, `linear-gradient(180deg, transparent 52%,
-rose .11 at 86%, champagne .17 at 100%)`, screen-blended, opacity .24 on the home (was .62: over black it read as a coloured base), .12 in a
+silver `rgba(220,224,234,.1)` at 86%, `rgba(232,234,240,.15)` at 100%)` (was rose and champagne), screen-blended, opacity .24 on the home (was .62: over black it read as a coloured base), .12 in a
 chat and in Calm. Flat on purpose: no dome, no arc, no limb anywhere (the NASA clips are
 cropped to their horizon-free band; the moonlight is an edgeless corner glow).
 
@@ -171,38 +176,36 @@ A slim, squared-off track, a segmented control in Gemini's luminous language (on
 |---|---|
 | Size | PINNED ("a little slimmer and more squared off", superseding the 20 px pill): 220 × 36 (hit), track `--ph: 16px`, radius `--sr: 4.5px`; in a conversation 200 wide, `--ph: 12px`, `--sr: 4px`; under 600 px 88 × 32, `--ph: 16px`, `--sr: 4.5px`; the hit area stays 36 (32 on a phone) whatever the track, the composer's row on one line with the phone's 6 px gaps (the pill may give up to 8 px rather than wrap). The level sits beside it |
 | Channel | `linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.085))`, inset 1 px `rgba(255,255,255,.08)`, inset `0 1px 2px rgba(0,0,0,.25)` |
-| Fill | from the left to round the orb: `linear-gradient(90deg, #4f8cff, #9b72ff 55%, #f07aa6)` fixed to the track (each step has its own colour); 1 px inner top light |
-| Bloom | a copy of the fill beneath it, `blur(8px)`, opacity by step `.32 / .40 / .50 / .62 / .78` |
+| Fill | PINNED silver from the left to round the knob: `linear-gradient(180deg, rgba(255,255,255,top), rgba(255,255,255,bottom))`, top / bottom .86 / .58 at Low, .88 / .60, .90 / .61, .92 / .62 at Extra (the steps differ only in length and that slight brightening); at Ultra `linear-gradient(90deg, #8fb7ff, #a58bff)`, flowing (below); 1 px inner top light |
+| Bloom | a copy of the fill beneath it, `blur(8px)`: a faint white bloom, opacity `.18 / .21 / .24 / .27`, and `.42` in the pair at Ultra |
 | Notches | PINNED (per the owner: "very slim and very fluid, not just a bunch of dots"): none at rest. Only while the slider is hovered, dragged or keyboard-focused, five faint 2.5 px squares (radius .5 px) fade in on the centre line in 200 ms `--out`: `rgba(255,255,255,.18)`, passed ones `.5`, no glow |
 | Knob | a rounded square, `--ob: 14px`, radius `--kr: 4px` (11 and 3.5 in a conversation, 14 and 4 on a phone), near-white `radial-gradient(110% 90% at 50% 25%, #fff, #f4f7ff 45%, #dde5fa)`, 1 px `rgba(255,255,255,.95)` edge, shadow `0 1px 2px rgba(4,8,30,.45), 0 2px 6px rgba(4,8,30,.35)`; hover 1.05, held 1.10 |
-| Halo | the knob's shape: a rounded square 1.5 × the knob (radius 1.6 × `--kr`) in the fill's colour where it stands (`#4f8cff`, `#6f80ff`, `#9b72ff`, `#c776d2`, `#f07aa6`), `blur(6px)`, opacity .45 at scale .85 (at Ultra the cool conic gradient, blurred the same); hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; never a loop |
+| Halo | the knob's shape: a rounded square 1.5 × the knob (radius 1.6 × `--kr`), `#e9edf5` (silver at every step), `blur(6px)`, opacity .45 at scale .85; hover .70 / 1.05; held .85 / 1.22; 300 ms `--out`; at Ultra a slow conic of `#8fb7ff`, `#a58bff`, `#dce8ff`, blurred the same |
 | Drag | the knob and the fill follow the pointer continuously (no transition while held: position = (pointer x − left − track/2) ÷ (width − track), clamped 0–1); the level name and everything tied to the level change as it crosses each stop (the nearest stop) |
 | Snap | on release, and for every key step: 140 ms `cubic-bezier(.22,1,.36,1)` to the stop, no bounce (knob, fill and bloom together) |
 | Level | beside it, Space Grotesk 13/500 `--ink2`, PINNED 12 px off the track (10 on a phone: the row's gap plus 4), so the knob's glow at the track's end has room and never touches the word; updating live: Low · Medium · High · Extra · Ultra. No tooltip and no explanations of the levels anywhere (per the owner: "pretty damn obvious") |
 
 Click anywhere to jump, arrows step. Calm and reduced motion: the same look, no transitions.
 
-### Ultra's light (the cool palette)
-Electric blue `#4f8cff` → violet `#9b72ff` → soft rose `#f07aa6`, with white highlights; warm gold `#f3d27a` only as a
-rare glint (one sparkle in twelve). No green, orange or red. Text tints that pass AA on the glass, even over Full's lifted Ultra sky: `#9cc0ff`,
-`#c4b0ff`, `#f7a3c3`.
+### Ultra's light: one cool pair
+Ice `#8fb7ff` → soft violet `#a58bff`, with white highlights. Nothing warmer, ever.
 
-- **The label and the byline:** "Ultra" in the text tints with a white-blue highlight band (`rgba(240,246,255,.95)`,
-  20 % of a 250 % background) that glides across once every 2.5 s (across in about 1.1 s on
-  `cubic-bezier(.45,0,.25,1)`, then rest), `drop-shadow(0 0 6px rgba(155,114,255,.4))`. The byline reads
-  "Concorde Thinking · Ultra"; its sweep stops when the answer lands (a still gradient).
+- **The label and the byline:** "Ultra" is silver text (`#c6cad4`), not gradient text, with the "thinking" shimmer: a
+  white highlight band (`rgba(255,255,255,.98)`, 20 % of a 250 % background) passes over it every 3 s (across in about
+  1.3 s on `cubic-bezier(.45,0,.25,1)`, then rest); no glow. The chip's badge wears the same. The byline reads
+  "Concorde Thinking · Ultra"; its sweep stops when the answer lands (still silver).
   Under the composer's label, a feathered black pill holds it at AA at the sky's brightest (Full at 1280 and on a phone
   dipped to 3.5:1, and 2.9:1 under the noon sky): the slider's first layer, 80 × 34 centred on the word (its left edge
   at the track's end + the label gap − 24 px), `radial-gradient(closest-side, rgba(3,3,5,.62), .56 35%, .30 62%,
   .10 82%, transparent)`, in with Ultra (600 ms), out with it (900 ms) and while dictating. It sits under the
   slider's fill, bloom and knob and under the word, so nothing of the show is dimmed; feathered wide so it reads as
   shade, not a shape.
-- **The typed words:** a mirror over the textarea carries the same light in near-white tints (`#dbe6ff`, `#e4dcff`,
-  `#f8dde9`), a subtler sweep every 3.6 s; "Ask anything" at .85 (AA in Full). Leaving Ultra crossfades back to white in 600 ms.
-- **The send key** (with text): `#6f9bff → #9b72ff → #f07aa6 → #fff → #9b72ff`, flowing one 108 px period per 4 s; a black arrow.
-- **The writing star:** a 20 px tail behind it, rose → violet → blue → `#e6efff` at the star.
-- **The sparkles:** four-point stars, a white core (2 px; 3 px for the big ones) with two crossed 1 px rays tinted
-  white, ice `#cfe0ff`, `#86b0ff`, `#b9a2ff`, `#9b72ff` (gold one in twelve).
+- **The typed words:** a mirror over the textarea carries the same shimmer on near-white silver (`#eceef3`), a subtler
+  sweep every 3.6 s; "Ask anything" at .85 (AA in Full). Leaving Ultra crossfades back to white in 600 ms.
+- **The send key** (with text): `#8fb7ff → #a58bff → #dfe8ff → #a58bff → #8fb7ff`, flowing one 108 px period per 4 s; a black arrow.
+- **The writing star:** a 20 px tail behind it, soft violet (fading) → ice → `#eef3ff` at the star.
+- **The stars (every burst, the chandelier, the motes, the constellation, shooting stars, rain):** white and ice, the
+  faintest violet at most: `#ffffff`, `#eef3ff`, `#dce8ff`, `#c6d8ff`, `#e6efff`, `#d9d4ff`. No gold.
 
 ### The Ultra moment
 Arriving (about 1.5 s), Balanced and Full:
@@ -210,16 +213,20 @@ Arriving (about 1.5 s), Balanced and Full:
   the sweep leave; +200 ms the second star wave and the sky's glint flash; +400 ms the lit glass edge comes up (the
   line of light runs round in 600 ms); +600 ms the ULTRA label's light sweep starts and the chip's badge appears.
 - **The slider becomes the star (per the owner: "like ultracode"):** the knob folds into a living star, crisp vector,
-  white at its core (`#fff → #e6efff → #a99bff`) with blue → violet light, stepping through four, six, eight and six
-  points, one form every 140 ms; leaving, it folds back into the rounded square in 200 ms. Seven tiny four-point stars
-  drift left to right through the filled track (3.2–5 s each, twinkling, clipped to it). The label keeps its light sweep
-  on `#9cc0ff → #c4b0ff → #f7a3c3`. Calm and reduced motion: a still four-point star, no drift.
+  white at its core (`#fff → #f4f8ff → #d4e2ff`) with a tight ice light (below), stepping through four, six, eight and six
+  points, one form every 140 ms; leaving, it folds back into the rounded square in 200 ms. PINNED, anchored (per the
+  owner: "the star that doesn't stick"): at Ultra the fill ends at the star's centre, so the star caps the fill with no
+  gap, held or dragged; the star is at most 1.25 × the track (19 px on the 16 px track, 14 on the 12), its points
+  under 2 px past the track's edge, its light within about 5 px (`drop-shadow(0 0 1.5px rgba(240,245,255,.95))
+  drop-shadow(0 0 4px rgba(143,183,255,.5))`); the knob's square halo shrinks under it (.3, scale .7). Two faint
+  four-point stars (peak .5) drift through the filled track (4.6 and 5.4 s); the rest of the stars live above the box. The label keeps its light sweep
+  as the silver shimmer. Calm and reduced motion: a still four-point star, no drift.
 - **A star trail and a stream:** as the knob slides to Ultra, 18 tiny stars light along the track behind it (over its
   140 ms snap, each 380–500 ms); as it lands, 12 stars stream up out of it (28 ms apart, 640–860 ms).
 - **The stars lead.** Three waves of four-point stars burst from where the knob lands (120 in all), drawn on the GPU
   (a canvas above the glass, pooled quads, no DOM): 0 ms, 60 (6 hero stars, 9–12 px half-arms, white; the rest
   3–6.4 px), flying 26–74 px; +200 ms, 36 smaller (2.2–4.8 px), 16–46 px; +400 ms, 24 more of those. White, ice-blue
-  and violet (`#fff`, `#dce8ff`, `#cfe0ff`, `#86b0ff`, `#b9a2ff`, `#9b72ff`). Each twinkles twice as it flies and fades
+  (white and ice, the faintest violet: the list above). Each twinkles twice as it flies and fades
   (opacity 0 → 1 → .45 → .95 → .35 → 0 at 0 / 15 / 35 / 55 / 78 / 100 %, scale .4 → 1 → .8 → 1 → .7 → .3, ease
   with drag: out fast and slowing (1 − e^(−kt), k 4.5–7 /s), then floating like dust in light (a 2–3 px bob, a slow
   rise), dissolving at 2–4 s, staggered; on the home 40 % drift to the chandelier on the knob's side (x over .45 s, y
@@ -250,8 +257,8 @@ Arriving (about 1.5 s), Balanced and Full:
   fading as it goes; the stars brighten as it passes. Lines, never circles.
 - **The sky:** the field turns 5.5° (1.6 s smootherstep, the opening's direction) and springs back to its rest drift the
   same way on leaving; the aurora erupts to
-  1.6 × Full's level for the mode at 1 s (x² e^(2(1−x))), both curtains, briefly faster, richer, leaning blue and
-  violet (`mix(col, mix(#4f8cff, #9b72ff, height) × luminance, .7)`), and rests at 1.3 ×; the stars flare once
+  1.6 × Full's level for the mode at 1 s (x² e^(2(1−x))), both curtains, briefly faster, richer, leaning to the pair
+  (`mix(col, mix(ice (.56,.72,1), violet (.65,.55,1), height) × luminance, .7)`), and rests at 1.3 ×; the stars flare once
   (+.9, x e^(1−x), peak .35 s) and rest 30 % brighter; a faint rectangular tint along the screen's edges
   (`smoothstep(.78, 1, max(|x|,|y|))`, .24 at the peak, .04 at rest). In Balanced the sky is lifted to Full while at Ultra.
 - The composer lifts once: scale 1.01 at 30 % of 1.5 s, then settles.
@@ -259,28 +266,35 @@ Arriving (about 1.5 s), Balanced and Full:
 
 While at Ultra:
 - **The lit glass edge:** a 1.5 px rim in the cool light with a white highlight
-  (`conic-gradient(#4f8cff, #9b72ff 26%, #f07aa6 46%, #9b72ff 62%, #dce8ff 69%, #fff 71%, #dce8ff 73%, #4f8cff 84%)`)
+  in ice and white (`conic-gradient(#8fb7ff, #c9d8ff 26%, #fff 46%, #b9b0ff 62%, #dce8ff 69%, #fff 71%, #dce8ff 73%, #8fb7ff 84%)`)
   that turns once every 6 s, and a tight glow (a 2 px copy, `blur(3px)`, .75): about 2–6 px of light, no halo.
-- **Inside the glass:** `linear-gradient(180deg, rgba(79,140,255,.13), rgba(155,114,255,.06) 38%, transparent 72%)`
-  plus a faint horizontal blue → violet → rose wash, clipped to the glass.
-- **The horizon line:** 1 px, 4 px under the composer, 10 % in from each end, `#4f8cff .55 → #e2ecff .95 → #9b72ff .55`,
-  fading at both ends, `0 0 4px rgba(155,114,255,.45)`.
+- **Inside the glass:** `linear-gradient(180deg, rgba(143,183,255,.13), rgba(165,139,255,.06) 38%, transparent 72%)`
+  plus a faint horizontal ice → violet → ice-white wash, clipped to the glass.
+- **The horizon line:** 1 px, 4 px under the composer, 10 % in from each end, `#8fb7ff .55 → #e2ecff .95 → #a58bff .55`,
+  fading at both ends, `0 0 4px rgba(165,139,255,.45)`.
 - **The sky's stars answer:** the brightest (top 1.5 %) wear a faint four-point glint (arms falling off over about
   3 px) that twinkles gently, each at its own pace (.55 ± .45).
 - **Stars drift round the composer:** one every 170 ms, at most 40, from the outer thirds of the top edge (60 %; the
   centre stays clear so text is never covered) or a side, 5–9 px (one in five 10–13 px), drifting 30–130 px over
   5.2–7.6 s with a calm twinkle.
 - **The charged state:** hairlines and outlines turn faintly blue-violet (`--hair rgba(150,165,255,.13)`,
-  `--hair2 rgba(150,160,255,.22)`, `--line rgba(170,160,255,.45)`, registered so they ease), keyboard focus is a
-  1 px `#9b72ff` ring, the chosen mode's mark is a blue-violet diamond, the mode chip wears a 9 px "Ultra" badge
-  (the label's light sweep, a `#9b72ff` .5 hairline) on its corner, and the send key is charged: a violet outline
+  `--hair2 rgba(150,160,255,.22)`, `--line rgba(170,160,255,.45)`, registered so they ease), keyboard focus stays the
+  ember ring, the chosen mode's mark is an ice → violet diamond, the mode chip wears a 9 px "Ultra" badge
+  (the silver shimmer, a `#a58bff` .5 hairline) on its corner, and the send key is charged: a soft violet outline
   and a slow inner sheen (every 3 s).
 - **Sending at Ultra:** a 22 px star glint on the key (420 ms); a bright streak (a 90 px line, ice to white at its
   head) runs from the key to where the answer starts in 460 ms, leaving nine tiny stars that twinkle out in 520 ms;
   the writing star is born where it lands, with its prism tail.
-- The slider's fill flows (`#4f8cff → #9b72ff → #f07aa6 → #fff → #9b72ff → #4f8cff`, one 2 × width period per 4 s)
-  with its bloom; the orb's halo turns to the cool spectrum; the knob's glow cycles blue, violet, rose (3.5 s).
+- The slider's fill flows slowly in the pair (`#8fb7ff → #a58bff → #b8ccff → #a58bff → #8fb7ff`, one 2 × width period
+  per 7 s) with its bloom; the knob's halo turns to the pair; the knob's glow breathes ice ↔ violet (3.5 s).
 
+- **Stars above the box (per the owner: "more stars above the box versus in the box"):** at Ultra a gentle field of
+  small white-ice stars (1.5–3.2 px, one in eight 1.4 px larger; the star palette) fills the space between the greeting
+  and the composer, across the composer's width plus 30 px each side: 26 in Full, 13 in Balanced. It fades in over
+  600 ms; each twinkles slowly (.62–1 of its .38–.78 brightness, 3–6 s); every 4–8 s one drifts up 28 px over 3 s and
+  fades, and another appears elsewhere. In a conversation, a subtler strip in the 34 px above the composer (half as
+  many, .7 as bright). In the sky layer, behind everything; never over the greeting's letters; re-seated when the
+  composer moves; fades with Ultra's power-down. None in Calm or reduced motion.
 - **Shooting stars:** every 10–16 s (the first 4–7 s after arriving), one thin streak (1.1 px, white, a tail fading to
   nothing over the last 42 % of its run, a 4.5 px glint at its head) crosses 120–260 px of the upper sky (72 px to
   26 % down) at 18–32° in 500 ms, only in the sky beside the text column (never over it, the sidebar or the header).
@@ -307,7 +321,7 @@ the opening, the menus, Ultra, a slider drag and typing.
   words leave it at an even 30 a second (36 at Extra and Ultra), ×0.82 when fewer than 6 are buffered and ×1.12 when
   more than 30, with a 0.09 s breath after `. ! ? :`. Code blocks and tables arrive whole and take the time of 4–8 words.
 - **Each word:** fades in over 220 ms with a 1 px rise and a 2 px → 0 blur, `cubic-bezier(.2,.7,.2,1)`; its light, a
-  `drop-shadow(0 0 6px rgba(214,228,255,.6 → .38 → .14 → 0))`, lasts 300 ms in all, so the newest three or four words
+  `drop-shadow(0 0 6px rgba(255,255,255,.6 → .38 → .14 → 0))`, lasts 300 ms in all, so the newest three or four words
   glow like wet ink and settle to plain white. The writing star rides the newest word.
 - **No jumps:** the answer's height follows its content on a 240 ms `--out` transition; the reading column follows the
   newest line (it closes 9 × the overshoot per second) until the reader scrolls away. A paragraph's space opens in
@@ -369,8 +383,8 @@ A glass segmented control in the header's centre (the same place and centring as
 (at least 88 px, 76 on a phone), 32 px tall, radius 6 outside and 4.5 inside (the slider's language). The lit box
 (`linear-gradient(180deg, rgba(255,255,255,.13), .06)`, an inner top light, a 1 px `rgba(150,165,255,.3)` edge and a
 12 px blue glow) slides between segments in 200 ms on `--out`; the labels cross from `--ink3` to `--ink`. Funnels wears a
-9 px four-point star (it twinkles once on hover, never otherwise); selected, its box's edge turns violet → rose
-(`rgba(196,140,240,.42)`, a rose glow). Tabs with arrow keys, Home and End; an inset ember ring for the keyboard. On a
+9 px four-point star (it twinkles once on hover, never otherwise); selected, its box's edge is a brighter silver
+(`rgba(240,242,248,.46)`, a soft white glow); the other segments' box is silver too (`rgba(226,230,240,.28)`). Tabs with arrow keys, Home and End; an inset ember ring for the keyboard. On a
 phone it sits just under the header. Chat returns home; Code shows a sample task (two reads and an approval card for a
 write: Approve or Skip, the preview runs nothing); Funnels shows a sample funnel (three narrowing questions with the
 chosen option lit, then the one pick with its reason and next step), as the app's funnels work.
@@ -381,7 +395,7 @@ chosen option lit, then the one pick with its reason and next step), as the app'
 - Kept on purpose: the status dot (Calm and Balanced) and the machine chips (Full) are one indicator shown per level,
   not a duplicate.
 - Feel: every control in the composer row and the lanes presses in 1 px (and to .985) in 80 ms and lets go with a soft
-  glow (`0 0 0 1px rgba(207,224,255,.32), 0 0 14px rgba(159,192,255,.32)` fading in 450 ms on `--out`). The row's
+  glow (`0 0 0 1px rgba(255,255,255,.3), 0 0 14px rgba(255,255,255,.22)` fading in 450 ms on `--out`, neutral white). The row's
   controls are all 36 px tall (32 on a phone); the slider's hit area matches them.
 
 ## The sidebar's chats
@@ -392,6 +406,21 @@ runs no models." The chosen row is `.on` with `aria-current`; focus moves to the
 so a screen reader is not read the whole answer); under 1100 px the sidebar closes. A chat asked in the preview
 reopens the same way. New chat returns home and clears the selection. The rows' keyboard ring sits inside the row
 (the list clips outside it).
+
+## Silver and one hue: the sweep (what changed from the rainbow)
+- The effort fill, Low to Extra: silver-white (above); only Ultra has colour, in the pair.
+- The wet-ink edge while an answer streams, the polish's shimmer and the release glow: neutral white.
+- The lanes: a silver box for every lane; Funnels' edge a brighter silver, never violet → rose. The sample funnel's
+  chosen options: silver.
+- The aurora (Full): blue-violet only, its curtains in `(.56,.68,1)`, `(.66,.56,1)`, `(.8,.86,1)`, `(.6,.62,1)` and a
+  base `(.55,.7,1)` (was pink, gold and green); the DOM curtain that was teal is violet.
+- The opening: the wordmark's glints, flare and glow in silver and ice (was pink, teal and gold); its wash silver.
+- The greeting's trace: the same blue-violet palette.
+- The sky's rare warm stars are near-white (`1, .98, .95`).
+- Approval card's write tag: silver (the ember is kept for the send strike, the focus ring and errors). Keyboard focus is
+  the ember ring at Ultra too (the violet ring is gone).
+- Checked by a scan of every colour literal and shader constant for rose, pink, red, gold, orange, green or teal: the
+  only warm ones left are the ember (send key, its hover, errors), the greeting's warm-white glow, and the machine dies.
 
 ## Modes and effort
 

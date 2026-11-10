@@ -18,7 +18,7 @@
   /* colour: the night, ink to deep indigo; type white or near-white; colour only in light */
   --halo-dark:1px 0 1px rgba(3,3,5,.7),-1px 0 1px rgba(3,3,5,.7),0 1px 1px rgba(3,3,5,.7),0 -1px 1px rgba(3,3,5,.7),1px 1px 2px rgba(3,3,5,.5),-1px -1px 2px rgba(3,3,5,.5),0 0 4px rgba(3,3,5,.75),0 0 9px rgba(3,3,5,.45);   /* small labels over the sky: a dark halo, invisible on the black, holds AA at the footage's brightest */
   --night:#030305; --indigo:#0a0a0c; --ink:#f4f5fa; --ink2:#c6cde0; --ink3:#9aa6c6; --read:#e8ebf5; --ice:#9fc0ff; --ember:#e8415a;
-  --rose:#f2a6b4; --champagne:#f1dcb2;                                          /* the warm horizon, light only */
+  --rose:#dfe6f2; --champagne:#e6e8ee;                                          /* the warm horizon, light only */
   /* hairlines in champagne silver */
   --hair:rgba(241,230,206,.09); --hair2:rgba(241,230,206,.15); --line:rgba(243,235,216,.32); --spec:rgba(255,250,240,.12);
   /* glass: layered frost, one material everywhere */
@@ -59,7 +59,7 @@ textarea:focus-visible{box-shadow:none}
 .novfx #sky{display:none}
 /* the horizon: a faint warmth of Venus rose and champagne low in the sky, in the light only, never in the type */
 #horizon{inset:0;mix-blend-mode:screen;opacity:0;transition:opacity 3s var(--out);
-  background:linear-gradient(180deg,rgba(242,166,180,0) 52%,rgba(242,166,180,.11) 86%,rgba(241,220,178,.17) 100%)}   /* flat: no dome, no arc */
+  background:linear-gradient(180deg,rgba(220,224,234,0) 52%,rgba(220,224,234,.1) 86%,rgba(232,234,240,.15) 100%)}   /* silver, not rose */   /* flat: no dome, no arc */
 .home #horizon,.markin #horizon{opacity:.24}   /* over black it reads as a coloured base, so only a trace remains (was .62) */
 html.calm #horizon{opacity:.12}
 .chat #horizon{opacity:.12}
@@ -67,7 +67,7 @@ html.calm #horizon{opacity:.12}
 /* the colour wash under everything */
 #washwrap{inset:-12%;animation:drift 22s ease-in-out infinite alternate}
 #wash{position:absolute;inset:0;opacity:.1;filter:blur(46px);mix-blend-mode:screen;
-  background:radial-gradient(38% 32% at 72% 30%,rgba(255,118,178,.4),transparent 72%),radial-gradient(40% 30% at 50% 64%,rgba(255,182,108,.44),transparent 72%)}
+  background:radial-gradient(38% 32% at 72% 30%,rgba(210,216,232,.3),transparent 72%),radial-gradient(40% 30% at 50% 64%,rgba(222,224,232,.3),transparent 72%)}
 .full .busy #wash{opacity:.3;transition:opacity 2s var(--out)}
 @keyframes drift{from{transform:translate(-3%,-1%)}to{transform:translate(3%,1.5%)}}
 
@@ -79,7 +79,7 @@ html.calm #horizon{opacity:.12}
 .mark b{font-weight:400;-webkit-text-stroke:.14em currentColor;font-size:.865em;vertical-align:.06em}
 .mark svg{overflow:visible}
 .mark .glint{position:absolute;inset:0;display:inline-flex;align-items:center;gap:inherit;pointer-events:none;
-  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 9px rgba(255,143,196,.85)) drop-shadow(0 0 16px rgba(159,168,255,.75))}
+  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 9px rgba(220,230,255,.75)) drop-shadow(0 0 16px rgba(160,180,230,.55))}
 .mark .glint .gm{display:inline-flex;align-items:center;gap:inherit;color:#fff;
   -webkit-mask-image:linear-gradient(105deg,transparent 42%,#000 49%,#000 51%,transparent 58%);mask-image:linear-gradient(105deg,transparent 42%,#000 49%,#000 51%,transparent 58%);
   -webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:100% 0;mask-position:100% 0;animation:glint 11s var(--out) 2s infinite}
@@ -102,7 +102,7 @@ html:not(.full) #ui{transition:opacity .8s var(--out)}
 #bigmark .mark{font-size:clamp(25px,3.25vw,42px)}
 .mark svg g{stroke-width:1.3}
 #bigmark .mark svg{filter:drop-shadow(0 0 10px rgba(159,192,255,.75)) drop-shadow(0 0 28px rgba(110,150,255,.45))}
-#bigmark .word{opacity:0;transition:opacity .6s var(--out);text-shadow:0 0 12px rgba(190,212,255,.75),0 0 40px rgba(159,168,255,.5),0 0 80px rgba(255,143,196,.22)}
+#bigmark .word{opacity:0;transition:opacity .6s var(--out);text-shadow:0 0 12px rgba(190,212,255,.75),0 0 40px rgba(159,168,255,.5),0 0 80px rgba(220,226,240,.18)}
 #bigmark .word.shown{opacity:1}
 #bigmark line{stroke-dasharray:1 2;stroke-dashoffset:1;opacity:0}
 .full .markin #bigmark line,.bal .markin #bigmark line{animation:draw 1s var(--out) forwards}
@@ -110,18 +110,17 @@ html:not(.full) #ui{transition:opacity .8s var(--out)}
 .markin #bigmark line:nth-child(4){animation-delay:.24s}.markin #bigmark line:nth-child(5){animation-delay:.32s}
 @keyframes draw{0%{opacity:0;stroke-dashoffset:1}12%{opacity:1}100%{opacity:1;stroke-dashoffset:0}}
 #bigmark .flare{position:absolute;left:4%;right:4%;top:50%;height:2px;margin-top:-1px;border-radius:2px;opacity:0;transform:scaleX(0);pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(159,168,255,.55) 22%,rgba(220,232,255,.95) 46%,#fff 50%,rgba(255,190,220,.95) 54%,rgba(127,240,214,.5) 78%,transparent);
-  filter:drop-shadow(0 0 6px rgba(159,192,255,.95)) drop-shadow(0 0 22px rgba(255,143,196,.55))}
+  background:linear-gradient(90deg,transparent,rgba(200,210,235,.5) 22%,rgba(235,240,255,.95) 46%,#fff 50%,rgba(235,240,255,.95) 54%,rgba(200,210,235,.5) 78%,transparent);
+  filter:drop-shadow(0 0 6px rgba(220,230,255,.85)) drop-shadow(0 0 22px rgba(170,190,240,.35))}
 .lit-mark #bigmark .flare{animation:aflare 2.8s cubic-bezier(.22,.8,.25,1) forwards}
 @keyframes aflare{0%{opacity:0;transform:scaleX(0)}14%{opacity:1}55%{opacity:.85;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1.12)}}
 #bigmark .glint.big .gm{animation:none}
-#bigmark .glint.big{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px rgba(255,143,196,.9)) drop-shadow(0 0 26px rgba(159,168,255,.85))}
+#bigmark .glint.big{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px rgba(220,230,255,.8)) drop-shadow(0 0 26px rgba(160,180,230,.55))}
 .lit-mark #bigmark .glint.big .gm{animation:glint1 2.5s cubic-bezier(.45,0,.25,1) .55s both}
 @keyframes glint1{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
 .lit-mark #bigmark .mark{animation:prism 9s ease-in-out 1}   /* one slow cycle through the opening, not a loop */
-@keyframes prism{0%,100%{filter:drop-shadow(0 0 14px rgba(159,168,255,.7)) drop-shadow(0 0 42px rgba(255,143,196,.28))}
-  33%{filter:drop-shadow(0 0 14px rgba(127,240,214,.6)) drop-shadow(0 0 42px rgba(159,168,255,.3))}
-  66%{filter:drop-shadow(0 0 14px rgba(255,197,138,.55)) drop-shadow(0 0 42px rgba(127,240,214,.26))}}
+@keyframes prism{0%,100%{filter:drop-shadow(0 0 14px rgba(200,212,240,.6)) drop-shadow(0 0 42px rgba(160,180,230,.22))}
+  50%{filter:drop-shadow(0 0 14px rgba(235,240,255,.7)) drop-shadow(0 0 42px rgba(190,200,230,.26))}}   /* silver: one slow breath of light, no spectrum */
 .markin #bigmark{opacity:1}
 .markout #bigmark{opacity:0;transform:translateY(-24px);transition:opacity 1.2s var(--out),transform 1.2s var(--out)}
 .markout #bigmark .mark{animation:none}
@@ -153,10 +152,10 @@ html:not(.calm) .seg button:hover .fstar{animation:fstar 1.4s ease-in-out}
 @keyframes fstar{0%,100%{transform:scale(1) rotate(0);opacity:.85}40%{transform:scale(1.35) rotate(45deg);opacity:1}70%{transform:scale(.9) rotate(45deg);opacity:.7}}
 .seg-hi{position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px) / 3);border-radius:4.5px;pointer-events:none;transform:translateX(calc(var(--i,0) * 100%));
   background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.06));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 1px rgba(150,165,255,.3),0 0 12px -3px rgba(110,130,255,.45);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 1px rgba(226,230,240,.28),0 0 12px -3px rgba(255,255,255,.22);
   transition:transform .2s var(--out),box-shadow .2s var(--out)}
 nav.seg[data-lane="code"] .seg-hi{--i:1}
-nav.seg[data-lane="funnels"] .seg-hi{--i:2;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 1px rgba(196,140,240,.42),0 0 14px -3px rgba(240,122,166,.45)}
+nav.seg[data-lane="funnels"] .seg-hi{--i:2;box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 0 0 1px rgba(240,242,248,.46),0 0 14px -3px rgba(255,255,255,.32)}
 .beta{font-family:var(--mono);font-size:9px;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:var(--r-tag);padding:3px 6px 2px;line-height:1;margin-left:-4px}
 
 /* your machines: one tiny die per machine, in its maker's colour */
@@ -249,17 +248,16 @@ html:not(.calm) #hero h1.aglow::before{opacity:var(--ag-rest);animation:afterglo
 .cbox:focus-within{border-color:var(--line);box-shadow:inset 0 1px 0 rgba(255,250,240,.18),var(--shadow)}
 .cbox .edge{display:none;position:absolute;left:10%;right:10%;top:-1px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(207,224,255,.45),transparent);opacity:.55;transition:opacity .7s var(--out),background .7s var(--out)}
 .bal .cbox .edge{display:block}
-.bal .cbox:focus-within .edge{opacity:1;background:linear-gradient(90deg,transparent,rgba(241,220,178,.8),transparent)}   /* focus warms the light to champagne */
+.bal .cbox:focus-within .edge{opacity:1;background:linear-gradient(90deg,transparent,rgba(240,242,248,.8),transparent)}   /* focus brightens the light, silver */
 textarea{width:100%;border:0;background:transparent;outline:none;resize:none;font-size:var(--t-read);line-height:1.5;min-height:52px;padding:0;caret-color:var(--ink);transition:color .6s var(--inout)}
-/* ULTRA'S LIGHT (per the owner: "less rainbow and more like Claude's ultracode or Gemini/Astra"): one cool, luminous
-   palette, electric blue #4f8cff, violet #9b72ff, soft rose #f07aa6, with white highlights (a warm gold only as a rare
-   glint). The word ULTRA, the byline's "Ultra" and the typed words wear the gradient in lighter tints that pass AA on
-   the glass, with a white-blue highlight that glides across them (once every 2.5 s: across in about 1.1 s, then rest),
-   like Claude's shimmer on its thinking text. Calm and reduced motion: the gradient, still. */
-.lum{background:linear-gradient(100deg,rgba(235,243,255,0) 40%,rgba(240,246,255,.95) 50%,rgba(235,243,255,0) 60%) 150% 0/250% 100% no-repeat,
-    linear-gradient(90deg,#9cc0ff,#c4b0ff 55%,#f7a3c3);-webkit-background-clip:text;background-clip:text;color:transparent!important;
-  filter:drop-shadow(0 0 6px rgba(155,114,255,.4))}
-html:not(.calm) .lum.go{animation:lumsweep 2.5s cubic-bezier(.45,0,.25,1) infinite}
+/* ULTRA'S LIGHT, "silver and one hue" (per the owner: "we have too much rainbow"; ChatGPT and Claude think in a grey
+   to white sweep, Gemini keeps its gradient for its signature moment). The word Ultra, the byline's "Ultra" and the chip's
+   badge are silver text with a white highlight passing over them every 3 s (across in about 1.3 s, then rest). Colour
+   lives only in the slider at Ultra and the lit glass: ice #8fb7ff to soft violet #a58bff. Calm and reduced motion:
+   the silver, still. */
+.lum{background:linear-gradient(100deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.98) 50%,rgba(255,255,255,0) 60%) 150% 0/250% 100% no-repeat,
+    linear-gradient(90deg,#c6cad4,#c6cad4);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+html:not(.calm) .lum.go{animation:lumsweep 3s cubic-bezier(.45,0,.25,1) infinite}
 @keyframes lumsweep{0%{background-position:150% 0,0 0}45%,100%{background-position:-50% 0,0 0}}
 .tawrap{position:relative}
 .tawrap textarea,.mirror{text-rendering:optimizeLegibility;font-kerning:normal;font-variant-ligatures:normal}   /* the mirror and the textarea set type alike, so the caret meets the lit words */
@@ -268,7 +266,7 @@ html:not(.calm) .lum.go{animation:lumsweep 2.5s cubic-bezier(.45,0,.25,1) infini
 .mirror.ph{opacity:0}
 /* the typed words: near-white tints of the same light (they read like the white text), the sweep subtler and slower */
 .mirror.lum{background:linear-gradient(100deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 58%) 150% 0/300% 100% no-repeat,
-    linear-gradient(90deg,#dbe6ff,#e4dcff 55%,#f8dde9);-webkit-background-clip:text;background-clip:text;filter:none}
+    linear-gradient(90deg,#eceef3,#eceef3);-webkit-background-clip:text;background-clip:text;filter:none}
 html:not(.calm) .mirror.lum.go{animation:lumsweep 3.6s cubic-bezier(.45,0,.25,1) infinite}
 .ultra .mirror{opacity:1;transition:opacity .3s var(--out)}
 .ultra .mirror.ph{opacity:.85}
@@ -277,7 +275,7 @@ html:not(.calm) .mirror.lum.go{animation:lumsweep 3.6s cubic-bezier(.45,0,.25,1)
 /* the send key at Ultra: a slowly flowing spectrum while there is text (navy arrow on the light set), eased off in 600 ms */
 .send{position:relative;isolation:isolate}
 .send::before{content:"";position:absolute;inset:-1px;border-radius:inherit;z-index:-1;opacity:0;pointer-events:none;transition:opacity .6s var(--inout);
-  background:linear-gradient(90deg,#6f9bff,#9b72ff 30%,#f07aa6 52%,#fff 58%,#9b72ff 66%,#6f9bff) 0 0/108px 100% repeat-x}
+  background:linear-gradient(90deg,#8fb7ff,#a58bff 40%,#dfe8ff 54%,#a58bff 66%,#8fb7ff) 0 0/108px 100% repeat-x}
 .ultra .send.ready::before{opacity:1;transition:opacity .3s var(--out)}
 html:not(.calm) .ultra .send.ready::before,html:not(.calm) .uout .send::before{animation:sendflow 4s linear infinite}
 @keyframes sendflow{to{background-position:-108px 0}}
@@ -289,7 +287,7 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 .round:active,.pick:active,.sugg:active,.newchat:active,.ibtn:active,.send:active,.details:active,#fxpop button:active,.seg button:active,.apbtn:active{transform:translateY(1px) scale(.985)!important;transition-duration:80ms}
 /* release: a soft glow that fades in 450 ms on --out (the composer's controls) */
 .rel{animation:relGlow .45s var(--out)}
-@keyframes relGlow{0%{box-shadow:0 0 0 1px rgba(207,224,255,.32),0 0 14px rgba(159,192,255,.32)}100%{box-shadow:0 0 0 1px rgba(207,224,255,0),0 0 14px rgba(159,192,255,0)}}
+@keyframes relGlow{0%{box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 14px rgba(255,255,255,.22)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0),0 0 14px rgba(255,255,255,0)}}
 /* the send key: a silver outline until there is text, then ember; navy arrow on ember reads 5:1 */
 .send{width:36px;height:36px;border-radius:var(--r-ctl);border:1px solid var(--line);background:transparent;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background var(--t2) var(--out),border-color var(--t2) var(--out),color var(--t2) var(--out),transform var(--t1) var(--out)}
 .send svg{transform:translateY(-.5px)}   /* the arrow's optical centre */
@@ -370,8 +368,8 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 
 /* THE EFFORT SLIDER (per the owner: "more like Claude and ChatGPT have ... I think we can do better", "a bit more like
    Astra", then "much thicker ... instead of this little dinky thing"): a substantial 26 px pill, a segmented control
-   in Gemini's luminous language. A faint frosted channel; a fill of light from the left round the orb (blue #4f8cff,
-   violet #9b72ff, rose #f07aa6, fixed to the track so each step has its own colour) with a blurred copy beneath it so
+   in a quiet, luminous language. A faint frosted channel; a fill of silver light from the left round the knob (white .86
+   to .58 top to bottom, a touch brighter each step; at Ultra the one cool pair, ice to soft violet) with a blurred copy beneath it so
    it glows, the glow growing with effort; five notches, passed ones lit. The orb sits inside the pill: a 20 px
    near-white core with a 40 px halo in the fill's colour where it stands, which rises past the pill's edge while
    hovered or held and settles on release (driven by the hand, never a loop). It snaps between steps in 160 ms on a
@@ -382,11 +380,13 @@ textarea::placeholder{color:var(--ink2);opacity:1}
    reduced motion: the same colours, still. */
 .slider{position:relative;width:220px;height:36px;flex:none;--sw:220px;--ph:16px;--ob:14px;--sr:4.5px;--kr:4px;--p:.25;--snap:140ms cubic-bezier(.22,1,.36,1);
   --ks:0 1px 2px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.35);   /* the orb's own shadow, kept under every glow */
-  --fill:linear-gradient(90deg,#4f8cff,#9b72ff 55%,#f07aa6);--halo:#4f8cff;--bloom:.32}
-.slider[data-lv="1"]{--halo:#6f80ff;--bloom:.4}
-.slider[data-lv="2"]{--halo:#9b72ff;--bloom:.5}
-.slider[data-lv="3"]{--halo:#c776d2;--bloom:.62}
-.slider[data-lv="4"]{--halo:#f07aa6;--bloom:.78}
+  --fill:linear-gradient(180deg,rgba(255,255,255,var(--ft,.86)),rgba(255,255,255,var(--fb,.58)));--halo:#e9edf5;--bloom:.18}
+/* SILVER AND ONE HUE (per the owner: "we have too much rainbow"): Low to Extra are silver-white, differing only in
+   length and a slight brightening; colour arrives only at Ultra, one cool pair, ice #8fb7ff to soft violet #a58bff */
+.slider[data-lv="1"]{--ft:.88;--fb:.6;--bloom:.21}
+.slider[data-lv="2"]{--ft:.9;--fb:.61;--bloom:.24}
+.slider[data-lv="3"]{--ft:.92;--fb:.62;--bloom:.27}
+.slider[data-lv="4"]{--fill:linear-gradient(90deg,#8fb7ff,#a58bff);--halo:#a58bff;--bloom:.42}
 .slider::before{content:"";position:absolute;top:50%;left:calc(100% + var(--lgap,12px) - 24px);width:80px;height:34px;margin-top:-17px;pointer-events:none;
   background:radial-gradient(closest-side,rgba(3,3,5,.62),rgba(3,3,5,.56) 35%,rgba(3,3,5,.3) 62%,rgba(3,3,5,.1) 82%,rgba(3,3,5,0));opacity:0;transition:opacity .9s var(--inout)}
 .ultra .slider::before{opacity:1;transition:opacity .6s var(--out)}   /* "Ultra" holds AA over Full's lifted sky; the show itself is untouched */
@@ -400,14 +400,14 @@ textarea::placeholder{color:var(--ink2);opacity:1}
 .slider.kb:has(input:focus) .sl-track{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 2px var(--night),0 0 0 3px var(--ember)}
 .slider .sl-fill,.slider .sl-bloom{width:calc(var(--ph) + (100% - var(--ph)) * var(--p));overflow:hidden;transition:width var(--snap);
   background:var(--fill) 0 0/var(--sw,220px) 100% no-repeat}
-.slider .sl-fill{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 2px rgba(20,10,60,.18)}
+.slider .sl-fill{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 2px rgba(0,0,0,.16)}
 .slider .sl-bloom{filter:blur(8px);opacity:var(--bloom);transition:width var(--snap),opacity var(--t3) var(--out)}
-/* Ultra: the light flows, ember and gold join it; one period every 4 s (two of the label's waves) */
+/* Ultra: the fill flows slowly in its one pair, ice to soft violet and back, one period every 7 s */
 .slider .sl-fill::after,.slider .sl-bloom::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity .6s var(--inout);
-  background:linear-gradient(90deg,#4f8cff,#9b72ff 30%,#f07aa6 50%,#fff 56%,#9b72ff 64%,#4f8cff) 0 0/calc(var(--sw,220px) * 2) 100% repeat-x}
+  background:linear-gradient(90deg,#8fb7ff,#a58bff 45%,#b8ccff 55%,#a58bff 70%,#8fb7ff) 0 0/calc(var(--sw,220px) * 2) 100% repeat-x}
 .ultra .slider .sl-fill::after,.ultra .slider .sl-bloom::after{opacity:1;transition:opacity .3s var(--out)}
 html:not(.calm) .ultra .slider .sl-fill::after,html:not(.calm) .uout .slider .sl-fill::after,
-html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .sl-bloom::after{animation:fillflow 4s linear infinite}
+html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .sl-bloom::after{animation:fillflow 7s linear infinite}
 @keyframes fillflow{to{background-position:calc(var(--sw,220px) * -2) 0}}
 /* the five notches: dim in the channel, lit under the light */
 .slider .sl-det{position:absolute;top:calc(50% - 1.25px);left:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--k));width:2.5px;height:2.5px;margin-left:-1.25px;border-radius:.5px;background:rgba(255,255,255,.18);opacity:0;transition:background var(--t2) var(--out),box-shadow var(--t2) var(--out)}
@@ -425,7 +425,7 @@ html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .s
   transition:opacity .3s var(--out),transform .3s var(--out)}
 .slider:hover .sl-thumb::before{opacity:.7;transform:scale(1.05)}
 .slider.drag .sl-thumb::before{opacity:.85;transform:scale(1.22)}
-.ultra .slider .sl-thumb::before{background:conic-gradient(from 0deg,#4f8cff,#9b72ff,#f07aa6,#dce8ff,#4f8cff);
+.ultra .slider .sl-thumb::before{background:conic-gradient(from 0deg,#8fb7ff,#a58bff,#dce8ff,#8fb7ff);
 }
 /* the core: near-white, lit from above, a crisp edge, a soft shadow */
 .slider .sl-thumb::after{content:"";position:absolute;inset:0;border-radius:var(--kr);opacity:1;box-sizing:border-box;border:1px solid rgba(255,255,255,.95);
@@ -436,7 +436,7 @@ html:not(.calm) .ultra .slider .sl-bloom::after,html:not(.calm) .uout .slider .s
 html.calm .slider *,html.calm .slider *::before,html.calm .slider *::after{transition:none}
 
 /* Full: Extra shimmers softly (a still gradient, no loop) */
-.full .shim.soft{background:linear-gradient(90deg,#cfe0ff,#b9a8ff,#cfe0ff);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.full .shim.soft{background:linear-gradient(90deg,#dfe2ea,#f4f5f8,#dfe2ea);-webkit-background-clip:text;background-clip:text;color:transparent!important}
 /* THE ULTRA MOMENT (per the owner: "that's where I want to use VFX"): on reaching Ultra, once, about 900 ms. The diamond
    ignites (a white core, a brief spectral bloom); a spark runs from the diamond back along the beam (160 ms); a line of
    light leaves the beam's end and runs all the way round the composer's border (600 ms) and settles into a still spectral
@@ -453,21 +453,21 @@ html.calm .slider *,html.calm .slider *::before,html.calm .slider *::after{trans
    star glint when pressed). Leaving drains it back in 800 ms. Calm and reduced motion: unchanged. */
 #stage{transition:--hair .8s var(--inout),--hair2 .8s var(--inout),--line .8s var(--inout)}
 html:not(.calm) #stage.ultra{--hair:rgba(150,165,255,.13);--hair2:rgba(150,160,255,.22);--line:rgba(170,160,255,.45);transition-timing-function:var(--out)}
-html:not(.calm) .ultra :focus-visible:not(textarea){box-shadow:0 0 0 1px #9b72ff}   /* the textarea never: the composer's border is its focus (a violet box hugged the words) */
-html:not(.calm) .ultra .slider.kb:has(input:focus) .sl-track{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 2px var(--night),0 0 0 3px #9b72ff}
-html:not(.calm) .ultra .opt[aria-checked="true"]>b::after{background:linear-gradient(135deg,#86b0ff,#b9a2ff)}
+
+
+html:not(.calm) .ultra .opt[aria-checked="true"]>b::after{background:linear-gradient(135deg,#b9cfff,#c4b6ff)}
 .ubadge{position:absolute;top:-8px;right:-8px;padding:2px 5px 3px;border-radius:var(--r-tag);font:600 9px/1 var(--ui);letter-spacing:.06em;pointer-events:none;
-  background:rgba(8,8,10,.88);border:1px solid rgba(155,114,255,.5);box-shadow:0 0 8px -2px rgba(155,114,255,.55);opacity:0;transform:scale(.8);transition:opacity .8s var(--inout),transform .8s var(--inout)}
+  background:rgba(8,8,10,.88);border:1px solid rgba(165,139,255,.5);box-shadow:0 0 8px -2px rgba(165,139,255,.55);opacity:0;transform:scale(.8);transition:opacity .8s var(--inout),transform .8s var(--inout)}
 html:not(.calm) .ultra .ubadge{opacity:1;transform:none;transition:opacity .3s var(--out) .6s,transform .3s var(--out) .6s}
-html:not(.calm) .ultra .send{border-color:rgba(155,114,255,.6)}
+html:not(.calm) .ultra .send{border-color:rgba(165,139,255,.6)}
 .send::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .8s var(--inout);
   background:linear-gradient(100deg,rgba(255,255,255,0) 35%,rgba(235,243,255,.4) 50%,rgba(255,255,255,0) 65%) 150% 0/250% 100% no-repeat}
 html:not(.calm) .ultra .send::after{opacity:1;animation:sheenSweep 3s cubic-bezier(.45,0,.25,1) infinite}
 @keyframes sheenSweep{0%{background-position:150% 0}45%,100%{background-position:-50% 0}}
 .ustreak{position:fixed;left:0;top:0;width:90px;height:2px;margin-top:-1px;border-radius:1px;pointer-events:none;opacity:0;
-  background:linear-gradient(90deg,rgba(155,114,255,0),rgba(134,176,255,.8) 60%,#fff);box-shadow:0 0 6px rgba(155,114,255,.8)}
+  background:linear-gradient(90deg,rgba(165,139,255,0),rgba(134,176,255,.8) 60%,#fff);box-shadow:0 0 6px rgba(165,139,255,.8)}
 @property --rev{syntax:'<angle>';initial-value:0deg;inherits:true}   /* inherited: the head layer reads the clip's angle */
-.spectral{background:linear-gradient(90deg,#cfe0ff,#b9a8ff,#f2a6b4,#e8415a,#f1dcb2,#cfe0ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.spectral{background:linear-gradient(90deg,#d2d6df,#f4f5f8,#d2d6df);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important}
 .elevel.spectral{transition:none}
 /* THE LIVING ULTRA (per the owner: "rival ultrathink"): the one approved loop on text, and only while at Ultra. The label's
    spectral gradient flows across the letters, ice to violet to rose to ember to gold and round again, one cycle in 3.5 s,
@@ -482,21 +482,26 @@ html:not(.calm) .ultra .slider.ignite .sl-thumb::after{animation:ignite .9s var(
    core with blue -> violet light; tiny four-point stars drift through the filled track, twinkling, clipped to it. Leaving,
    the star folds back into the rounded square in 200 ms and the track's stars fade. Calm and reduced motion: a still star. */
 .slider .sl-thumb .kstar{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;overflow:visible;pointer-events:none;opacity:0;transform:scale(.45) rotate(-35deg);
-  filter:drop-shadow(0 0 2px rgba(220,232,255,.95)) drop-shadow(0 0 5px rgba(79,140,255,.85)) drop-shadow(0 0 9px rgba(155,114,255,.6));transition:opacity .2s var(--out),transform .2s var(--out)}
+  filter:drop-shadow(0 0 1.5px rgba(240,245,255,.95)) drop-shadow(0 0 4px rgba(143,183,255,.5));transition:opacity .2s var(--out),transform .2s var(--out)}
 .ultra .slider .sl-thumb .kstar{opacity:1;transform:none}
-.chat .slider .sl-thumb .kstar{width:18px;height:18px;margin:-9px 0 0 -9px}
+.chat .slider .sl-thumb .kstar{width:16px;height:16px;margin:-8px 0 0 -8px}
+/* ANCHORED (per the owner: "the star that doesn't stick"): at Ultra the fill ends at the star's centre, so the star caps
+   it (no gap, held or dragged); the star is at most 1.25 x the track (19 px on 16, 14 on 12), its points under 2 px past
+   the track's edge, its light within about 5 px; the knob's square halo shrinks under it */
+.ultra .slider .sl-fill,.ultra .slider .sl-bloom{width:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--p))}
+.ultra .slider .sl-thumb::before{opacity:.3;transform:scale(.7)}
 .slider .sl-thumb::after{transition:transform var(--t1) var(--out),opacity .2s var(--out),border-radius .2s var(--out)}
 .ultra .slider .sl-thumb::after{opacity:0;transform:scale(.55) rotate(45deg)}
 .slider .tst{position:absolute;left:0;top:var(--y);width:7px;height:7px;margin:-3.5px 0 0 -3.5px;opacity:0;pointer-events:none;
   background:radial-gradient(circle,#fff 0 1px,rgba(255,255,255,0) 1.6px),linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent) center/100% 1px no-repeat,linear-gradient(0deg,transparent,rgba(255,255,255,.95),transparent) center/1px 100% no-repeat}
 html:not(.calm) .ultra .slider .tst{animation:tdrift var(--du) linear var(--dl) infinite}
 .chat .slider .tst{width:5px;height:5px;margin:-2.5px 0 0 -2.5px}
-@keyframes tdrift{0%{transform:translateX(-8px) scale(.6);opacity:0}12%{opacity:.95}35%{opacity:.4;transform:translateX(calc(var(--sw) * .3)) scale(1)}55%{opacity:.9}80%{opacity:.35}100%{transform:translateX(var(--sw)) scale(.7);opacity:0}}
-@keyframes knobFlow{0%,100%{box-shadow:var(--ks),0 0 9px 2px rgba(79,140,255,.6)}33%{box-shadow:var(--ks),0 0 9px 2px rgba(155,114,255,.6)}66%{box-shadow:var(--ks),0 0 9px 2px rgba(240,122,166,.55)}}
+@keyframes tdrift{0%{transform:translateX(-8px) scale(.6);opacity:0}12%{opacity:.5}35%{opacity:.25;transform:translateX(calc(var(--sw) * .3)) scale(1)}55%{opacity:.5}80%{opacity:.2}100%{transform:translateX(var(--sw)) scale(.7);opacity:0}}   /* two faint ones only: the stars live above the box */
+@keyframes knobFlow{0%,100%{box-shadow:var(--ks),0 0 9px 2px rgba(143,183,255,.55)}50%{box-shadow:var(--ks),0 0 9px 2px rgba(165,139,255,.5)}}
 .elevel.lit{animation:ultraLit .9s var(--out) both}
-@keyframes ultraLit{0%{text-shadow:0 0 1px #fff,0 0 12px rgba(255,255,255,.95),0 0 28px rgba(185,168,255,.7)}100%{text-shadow:0 0 0 rgba(255,255,255,0),0 0 0 rgba(255,255,255,0),0 0 0 rgba(185,168,255,0)}}
+@keyframes ultraLit{0%{text-shadow:0 0 1px #fff,0 0 12px rgba(255,255,255,.95),0 0 28px rgba(200,214,255,.55)}100%{text-shadow:0 0 0 rgba(255,255,255,0),0 0 0 rgba(255,255,255,0),0 0 0 rgba(200,214,255,0)}}
 .slider.ignite .sl-thumb::after{animation:ignite .9s var(--out) both}
-@keyframes ignite{0%{box-shadow:var(--ks),0 0 0 0 #fff,0 0 0 0 rgba(185,168,255,0),0 0 0 0 rgba(242,166,180,0)}18%{box-shadow:var(--ks),0 0 6px 2px #fff,0 0 12px 3px rgba(155,114,255,.7),0 0 0 0 rgba(242,166,180,0)}100%{box-shadow:var(--ks),0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(185,168,255,0),0 0 0 0 rgba(242,166,180,0)}}
+@keyframes ignite{0%{box-shadow:var(--ks),0 0 0 0 #fff,0 0 0 0 rgba(143,183,255,0)}18%{box-shadow:var(--ks),0 0 6px 2px #fff,0 0 12px 3px rgba(143,183,255,.6)}100%{box-shadow:var(--ks),0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(143,183,255,0)}}
 .sl-spark{position:absolute;left:0;top:calc(50% - 1.5px);z-index:1;width:22px;height:3px;border-radius:2px;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);box-shadow:0 0 8px rgba(207,224,255,.9)}
 /* the rim's clip reaches 14 px beyond the border so the bloom and the head's glow are not cut; the rings inside sit back
    on the border (inset 13 px = 1 px outside the glass) */
@@ -509,7 +514,7 @@ html:not(.calm) .ultra .slider .tst{animation:tdrift var(--du) linear var(--dl) 
 /* the spectrum is a disc behind the ring's mask: at Ultra it turns, one turn in 8 s, so the colours travel round the
    border (composited: only a transform moves). Calm and reduced motion: still. */
 .cbox .rim::before,.cbox .rimbloom>i::before{content:"";position:absolute;left:50%;top:50%;width:112%;aspect-ratio:1;transform:translate(-50%,-50%);
-  background:conic-gradient(from var(--a0),#4f8cff,#9b72ff 26%,#f07aa6 46%,#9b72ff 62%,#dce8ff 69%,#fff 71%,#dce8ff 73%,#4f8cff 84%)}
+  background:conic-gradient(from var(--a0),#8fb7ff,#c9d8ff 26%,#ffffff 46%,#b9b0ff 62%,#dce8ff 69%,#fff 71%,#dce8ff 73%,#8fb7ff 84%)}
 html:not(.calm) .ultra .cbox.ultra-on .rim::before,html:not(.calm) .ultra .cbox.ultra-on .rimbloom>i::before,
 html:not(.calm) .uout .cbox .rim::before,html:not(.calm) .uout .cbox .rimbloom>i::before{animation:rimflow 6s linear infinite}
 @keyframes rimflow{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
@@ -530,11 +535,11 @@ html.calm .cbox .rimhead,html.calm .cbox .rimbloom{display:none}
    strongest along the top edge, like light caught in the glass (it cannot spill: it is clipped to the glass); beneath
    it, one thin line of light like a horizon, fading at both ends. */
 .cbox .itint{position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;opacity:0;transition:opacity .9s var(--inout);
-  background:linear-gradient(180deg,rgba(79,140,255,.13),rgba(155,114,255,.06) 38%,rgba(155,114,255,0) 72%),linear-gradient(90deg,rgba(79,140,255,.05),rgba(155,114,255,.04) 55%,rgba(240,122,166,.05))}
+  background:linear-gradient(180deg,rgba(143,183,255,.13),rgba(165,139,255,.06) 38%,rgba(165,139,255,0) 72%),linear-gradient(90deg,rgba(143,183,255,.05),rgba(165,139,255,.04) 55%,rgba(220,230,255,.04))}
 html:not(.calm) .ultra .cbox .itint{opacity:1;transition:opacity 1s var(--out)}
 .uline{position:absolute;left:10%;right:10%;top:calc(100% + 4px);height:1px;pointer-events:none;opacity:0;transition:opacity .9s var(--inout);
-  background:linear-gradient(90deg,rgba(79,140,255,0),rgba(79,140,255,.55) 22%,rgba(226,236,255,.95) 50%,rgba(155,114,255,.55) 78%,rgba(155,114,255,0));
-  box-shadow:0 0 4px rgba(155,114,255,.45)}
+  background:linear-gradient(90deg,rgba(143,183,255,0),rgba(143,183,255,.55) 22%,rgba(226,236,255,.95) 50%,rgba(165,139,255,.55) 78%,rgba(165,139,255,0));
+  box-shadow:0 0 4px rgba(165,139,255,.45)}
 html:not(.calm) .ultra .uline{opacity:1;transition:opacity 1s var(--out)}
 html.calm .uline,html.calm .cbox .itint{display:none}
 /* the rays: on arrival the diamond flares with eight short, fine rays, four along its corners and four shorter between,
@@ -549,7 +554,7 @@ html:not(.calm) .slider.ignite .sl-rays{animation:rays .4s var(--out) both}
 /* leaving Ultra: the knob's light fades back over 800 ms */
 html:not(.calm) .uout .slider .sl-thumb::after{animation:knobOut .9s var(--inout) both}
 @keyframes knobOut{from{box-shadow:var(--ks),0 0 9px 2px rgba(207,224,255,.55)}to{box-shadow:var(--ks),0 0 0 0 rgba(207,224,255,0)}}
-.cbox::after{content:"";position:absolute;left:12%;right:12%;bottom:-1px;height:1.5px;border-radius:2px;pointer-events:none;opacity:.55;background:linear-gradient(90deg,transparent,#9fa8ff 20%,#ff8fc4 40%,#ffc58a 60%,#7ff0d6 80%,transparent);background-size:200% 100%;filter:drop-shadow(0 0 6px rgba(255,143,196,.6)) drop-shadow(0 0 12px rgba(159,168,255,.5));animation:rim 12s linear infinite}
+.cbox::after{content:"";position:absolute;left:12%;right:12%;bottom:-1px;height:1.5px;border-radius:2px;pointer-events:none;opacity:.55;background:linear-gradient(90deg,transparent,#cfd9ff 20%,#ffffff 45%,#dfe8ff 70%,transparent);background-size:200% 100%;filter:drop-shadow(0 0 6px rgba(220,230,255,.5)) drop-shadow(0 0 12px rgba(143,183,255,.3));animation:rim 12s linear infinite}
 @keyframes rim{from{background-position:0 0}to{background-position:200% 0}}
 html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .full .ultra .cbox::after,.full .maxe .cbox::after{opacity:0;transition:opacity .6s}
@@ -578,7 +583,6 @@ html:not(.full) .cbox::after{display:none}   /* the rim light is Full's */
 .hrow{display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:var(--r-ctl);font-size:var(--t-ui);color:var(--ink2);cursor:pointer;overflow:hidden;transform-origin:0 50%;transition:background var(--t1) var(--out),color var(--t1) var(--out)}
 button.hrow{width:100%;margin:0;border:0;background:transparent;font-family:inherit;font-weight:400;text-align:left;-webkit-appearance:none;appearance:none}
 .hrow:focus-visible{box-shadow:inset 0 0 0 1px var(--ember)}   /* inside the row: the list clips anything outside it */
-html:not(.calm) .ultra .hrow:focus-visible{box-shadow:inset 0 0 0 1px #9b72ff}
 .hrow .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s}
 .hrow:hover{background:rgba(255,255,255,.06);color:var(--ink)}
 .hrow.on{background:rgba(255,255,255,.09);color:var(--ink)}
@@ -622,7 +626,7 @@ html:not(.calm) .ultra .hrow:focus-visible{box-shadow:inset 0 0 0 1px #9b72ff}
 .runs pre{grid-column:2;margin:0;padding:10px 12px;border-radius:var(--r-ctl);background:rgba(0,0,0,.5);border:1px solid var(--hair);font:400 12px/1.6 var(--mono);color:var(--ink2);overflow:auto;scrollbar-width:thin}
 .runs .note2{grid-column:2;margin:0;font-size:var(--t-small);color:var(--ink2)}
 .risk{font-family:var(--mono);font-size:var(--t-micro);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink3);border:1px solid var(--hair2);border-radius:4px;padding:2px 5px 1px;line-height:1.3}
-.risk.w{color:#f3c9d3;border-color:rgba(232,65,90,.45)}
+.risk.w{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .approve{padding:16px;border-radius:var(--r-panel);background:var(--glass);border:1px solid var(--hair2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow);display:flex;flex-direction:column;gap:10px}
 .aph{display:flex;align-items:center;gap:10px;font-size:var(--t-ui);font-weight:500;color:var(--ink)}
 .approve p{margin:0;font-size:var(--t-small);color:var(--ink2);line-height:1.55}
@@ -637,7 +641,7 @@ html:not(.calm) .ultra .hrow:focus-visible{box-shadow:inset 0 0 0 1px #9b72ff}
 .sq{font-size:var(--t-ui);color:var(--ink2)}
 .ops{display:flex;flex-wrap:wrap;gap:6px}
 .op{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:var(--r-ctl);border:1px solid var(--hair);font-size:var(--t-small);color:var(--ink3)}
-.op.on{color:var(--ink);border-color:rgba(196,140,240,.45);background:rgba(255,255,255,.06);box-shadow:0 0 12px -4px rgba(240,122,166,.4)}
+.op.on{color:var(--ink);border-color:rgba(240,242,248,.42);background:rgba(255,255,255,.07);box-shadow:0 0 12px -4px rgba(255,255,255,.28)}
 .verdict{padding:18px 18px 16px;border-radius:var(--r-panel);background:var(--glass);border:1px solid var(--hair2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow)}
 .verdict h3{margin:0 0 8px;font-size:var(--t-h3);font-weight:600;color:var(--ink)}
 .verdict p{margin:0 0 10px;font-size:var(--t-read);line-height:1.6;color:var(--read)}
@@ -726,7 +730,7 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .star::after{transform:rotate(90deg)}
 /* at Ultra the writing star is a prism: a short tail of spectrum behind it, teal at its end to ice at the star */
 .star .tail{position:absolute;right:2px;top:50%;width:20px;height:1.5px;margin-top:-.75px;border-radius:1px;opacity:0;transition:opacity .25s var(--out);
-  background:linear-gradient(90deg,rgba(240,122,166,0),rgba(240,122,166,.55) 30%,rgba(155,114,255,.8) 58%,rgba(79,140,255,.9) 82%,#e6efff)}
+  background:linear-gradient(90deg,rgba(165,139,255,0),rgba(165,139,255,.4) 30%,rgba(143,183,255,.8) 62%,#eef3ff)}
 .star.prism .tail{opacity:1}
 .plain{animation:swapIn .35s ease both}
 /* THE INK: each word fades in over 220 ms with a 1 px rise and a 2 px blur coming sharp; its faint light fades over the
@@ -736,10 +740,10 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .ink{display:inline-block;white-space:pre;animation:inkIn .3s cubic-bezier(.2,.7,.2,1) both,inkWeight .28s cubic-bezier(.2,.7,.2,1) both}
 .ink.hold,.ink.nw{animation:inkIn .3s cubic-bezier(.2,.7,.2,1) both}
 @keyframes inkWeight{from{font-variation-settings:"wght" var(--w0,320)}to{font-variation-settings:"wght" var(--w1,400)}}
-@keyframes inkIn{0%{opacity:0;transform:translateY(1px);filter:blur(2px) drop-shadow(0 0 6px rgba(214,228,255,.6))}
-  40%{filter:blur(.8px) drop-shadow(0 0 6px rgba(214,228,255,.38))}
-  73%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,.14))}
-  100%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,0))}}
+@keyframes inkIn{0%{opacity:0;transform:translateY(1px);filter:blur(2px) drop-shadow(0 0 6px rgba(255,255,255,.6))}
+  40%{filter:blur(.8px) drop-shadow(0 0 6px rgba(255,255,255,.38))}
+  73%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 6px rgba(255,255,255,.14))}
+  100%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 6px rgba(255,255,255,0))}}
 .ink.c{animation:inkFade .22s ease both}
 @keyframes inkFade{from{opacity:0}}
 .body .ink-in{animation:inkSpace .12s var(--out) both}   /* a new paragraph or list item: its space opens */
@@ -755,7 +759,7 @@ html:not(.full) .msg.ai:not(.open)>aside{display:none}
 .dissolving .ink-old{opacity:.12;filter:blur(1.5px)}
 .ink-new{animation:inkShimmer .62s var(--out) both}
 .ink-new.c{animation:inkFade .4s ease both}
-@keyframes inkShimmer{0%{opacity:0;filter:blur(1.5px) drop-shadow(0 0 6px rgba(214,228,255,.6))}55%{opacity:1;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,.35))}100%{opacity:1;filter:blur(0) drop-shadow(0 0 6px rgba(214,228,255,0))}}
+@keyframes inkShimmer{0%{opacity:0;filter:blur(1.5px) drop-shadow(0 0 6px rgba(255,255,255,.6))}55%{opacity:1;filter:blur(0) drop-shadow(0 0 6px rgba(255,255,255,.35))}100%{opacity:1;filter:blur(0) drop-shadow(0 0 6px rgba(255,255,255,0))}}
 .wf{display:inline-block;animation:wordIn .16s var(--out) both}
 @keyframes wordIn{from{opacity:0;transform:translateY(2px)}}
 .msg.ai.live .details{opacity:0;pointer-events:none}
@@ -833,7 +837,7 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
 #aurora i{position:absolute;inset:-40px 0;animation:sway 28s ease-in-out infinite alternate}
 #aurora .a1{background:linear-gradient(90deg,rgba(159,192,255,0),rgba(159,192,255,.22) 28%,rgba(176,204,255,.3) 55%,rgba(159,192,255,0));-webkit-mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.4) 50%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.4) 50%,#000 86%,transparent);filter:blur(34px);opacity:.42}
 #aurora .a2{background:repeating-linear-gradient(90deg,rgba(168,198,255,0) 0,rgba(168,198,255,.9) 7px,rgba(168,198,255,0) 15px,rgba(168,198,255,0) 28px,rgba(196,216,255,.55) 34px,rgba(168,198,255,0) 43px),repeating-linear-gradient(90deg,rgba(210,222,255,0) 0,rgba(210,222,255,.34) 60px,rgba(210,222,255,0) 150px);-webkit-mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.3) 42%,#000 84%,transparent);mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.3) 42%,#000 84%,transparent);filter:blur(5px);opacity:.55}
-#aurora .a3{background:repeating-linear-gradient(90deg,rgba(150,236,212,0) 0,rgba(150,236,212,.7) 7px,rgba(150,236,212,0) 15px,rgba(150,236,212,0) 28px,rgba(170,240,220,.45) 34px,rgba(150,236,212,0) 43px);-webkit-mask-image:linear-gradient(180deg,transparent 62%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent 62%,#000 88%,transparent);filter:blur(5px);opacity:.42}
+#aurora .a3{background:repeating-linear-gradient(90deg,rgba(176,160,255,0) 0,rgba(176,160,255,.6) 7px,rgba(176,160,255,0) 15px,rgba(176,160,255,0) 28px,rgba(190,178,255,.4) 34px,rgba(176,160,255,0) 43px);-webkit-mask-image:linear-gradient(180deg,transparent 62%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent 62%,#000 88%,transparent);filter:blur(5px);opacity:.42}
 #aurora .a4{animation:sway2 37s ease-in-out infinite alternate;background:repeating-linear-gradient(90deg,rgba(186,208,255,0) 0,rgba(186,208,255,.55) 5px,rgba(186,208,255,0) 11px,rgba(186,208,255,0) 23px);-webkit-mask-image:linear-gradient(180deg,transparent 10%,rgba(0,0,0,.5) 60%,#000 90%,transparent);mask-image:linear-gradient(180deg,transparent 10%,rgba(0,0,0,.5) 60%,#000 90%,transparent);filter:blur(10px);opacity:.3}
 @keyframes sway{from{transform:translateX(-64px) skewX(-12deg)}to{transform:translateX(64px) skewX(-18deg)}}
 @keyframes sway2{from{transform:translateX(52px) skewX(-19deg)}to{transform:translateX(-58px) skewX(-10deg)}}
@@ -963,9 +967,9 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
             <button type="button" class="round" aria-label="Attach a file"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
             <button type="button" class="pick" id="pick" aria-haspopup="menu" aria-expanded="false" aria-controls="menu"><b id="mName"></b><i class="ubadge" aria-hidden="true"><span class="lum go">Ultra</span></i><i class="under" id="under" aria-hidden="true"></i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
             <div class="slider" id="slider">
-              <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"><i class="tst" style="--y:32%;--dl:0s;--du:3.6s"></i><i class="tst" style="--y:66%;--dl:-.7s;--du:4.4s"></i><i class="tst" style="--y:48%;--dl:-1.5s;--du:3.2s"></i><i class="tst" style="--y:24%;--dl:-2.2s;--du:4.8s"></i><i class="tst" style="--y:72%;--dl:-2.9s;--du:3.9s"></i><i class="tst" style="--y:40%;--dl:-3.4s;--du:4.2s"></i><i class="tst" style="--y:58%;--dl:-1.1s;--du:5s"></i></span>
+              <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"><i class="tst" style="--y:40%;--dl:0s;--du:4.6s"></i><i class="tst" style="--y:60%;--dl:-2.4s;--du:5.4s"></i></span>
               <span class="sl-det" style="--k:0"></span><span class="sl-det" style="--k:.25"></span><span class="sl-det" style="--k:.5"></span><span class="sl-det" style="--k:.75"></span><span class="sl-det" style="--k:1"></span>
-              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i><svg class="kstar" viewBox="-11 -11 22 22" aria-hidden="true"><defs><radialGradient id="ksg"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#e6efff"/><stop offset="1" stop-color="#a99bff"/></radialGradient></defs><path id="kpath" fill="url(#ksg)"/></svg></span><span class="sl-spark" id="spark"></span>
+              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i><svg class="kstar" viewBox="-11 -11 22 22" aria-hidden="true"><defs><radialGradient id="ksg"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#f4f8ff"/><stop offset="1" stop-color="#d4e2ff"/></radialGradient></defs><path id="kpath" fill="url(#ksg)"/></svg></span><span class="sl-spark" id="spark"></span>
               <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="4" step="1" value="1"></label>
             </div>
             <span class="elevel" id="eName">Medium</span>
@@ -1086,7 +1090,7 @@ function pfxProgram(gl){const sh=(k,s)=>{const x=gl.createShader(k);gl.shaderSou
       gl.uniform2f(uR,cssW,cssH);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,additive?gl.ONE:gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLES,0,n);gl.disable(gl.BLEND);
       gl.disableVertexAttribArray(aC);gl.disableVertexAttribArray(aL);}};}
 const hexRGB=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
-const UCOL=["#ffffff","#dce8ff","#cfe0ff","#86b0ff","#b9a2ff","#9b72ff","#ffffff","#e6efff"].map(hexRGB);   // white, ice-blue, violet
+const UCOL=["#ffffff","#eef3ff","#dce8ff","#c6d8ff","#ffffff","#e6efff","#d9d4ff","#ffffff"].map(hexRGB);   // white and ice, the faintest violet
 /* the sky's star hash, mirrored on the CPU in float32 (the same as the shader's), so the constellation links real stars */
 const F32=Math.fround,fr32=x=>F32(x-Math.floor(x));
 function skyHash(x,y){x=F32(x);y=F32(y);const k=F32(.1031),e=F32(33.33);let a=fr32(F32(x*k)),b=fr32(F32(y*k)),c=fr32(F32(x*k));
@@ -1111,7 +1115,7 @@ const Sky=(function(){
     gl_FragColor=vec4(max(lit,p.rgb*decay-1.5/255.),max(e,p.a*edecay-2./255.));
   }`;
   const SHOW=HEAD+`uniform sampler2D vid,trail,bl1,bl2,stk,aur;uniform vec2 px,res,mpos,ctw;uniform float time,boost,expo,warm,moon,mrad,dscale,foot,rise,calm,fw,tw,twist,arc,starB,glint,wa,ww,wa2,wr2,vg;uniform vec3 gS,gM,gH,gx,skyTop,skyMid,skyLow,wv;
-  vec3 spec(float t){t=fract(t)*5.;vec3 a=vec3(.86,.91,1.),b=vec3(.31,.55,1.),c=vec3(.61,.45,1.),d=vec3(.94,.48,.65),e=vec3(.61,.45,1.);   // ice, electric blue, violet, soft rose, violet: Ultra's cool light
+  vec3 spec(float t){t=fract(t)*5.;vec3 a=vec3(.86,.91,1.),b=vec3(.56,.72,1.),c=vec3(.65,.55,1.),d=vec3(.86,.91,1.),e=vec3(.65,.55,1.);   // ice, electric blue, violet, soft rose, violet: Ultra's cool light
     if(t<1.)return mix(a,b,t);if(t<2.)return mix(b,c,t-1.);if(t<3.)return mix(c,d,t-2.);if(t<4.)return mix(d,e,t-3.);return mix(e,a,t-4.);}
   float hash(vec2 p){vec3 p3=fract(vec3(p.xyx)*.1031);p3+=dot(p3,p3.yzx+33.33);return fract((p3.x+p3.y)*p3.z);}   // a hash the CPU can repeat exactly (skyHash), so the constellation finds the real stars
   float starLayer(vec2 p,float cell,float keep,float sz,vec2 cq){vec2 c=floor(p/cell),f=p-c*cell;float h=hash(c);if(h<keep)return 0.;
@@ -1143,7 +1147,7 @@ const Sky=(function(){
     float dw=pc.y-wv.y, wr=wa>0.?(exp(-dw*dw/(ww*ww))+.22*exp(-dw*dw/(16.*ww*ww)))*wa:0., wq=0.;
     float st=starLayer(q,46.,.84,.75,cq)+starLayer(q+31.,19.,.93,.55,cq+31.)*.55;
     float warmStar=step(.985,hash(floor(q/46.)+9.));
-    sky+=mix(vec3(.9,.93,1.),vec3(1.,.93,.82),warmStar)*st*smoothstep(.98,.4,s)*starB*(1.+2.5*(wr+wq));   // starB: brighter at Ultra; the wave makes them bloom as it passes
+    sky+=mix(vec3(.92,.94,1.),vec3(1.,.98,.95),warmStar)*st*smoothstep(.98,.4,s)*starB*(1.+2.5*(wr+wq));   // starB: brighter at Ultra; the wave makes them bloom as it passes
     float r=length(pc-mpos)/mrad;vec4 mg=moonRamp(r);float an=atan(pc.y-mpos.y,pc.x-mpos.x);
     float shafts=(.55+.45*sin(an*17.+time*.013)*sin(an*29.-time*.009))*exp(-r*1.7)*.08;
     vec3 moonL=(mg.rgb*mg.a+vec3(.86,.86,.88)*shafts*(1.-calm))*moon*mix(1.,.75,calm);
@@ -1155,9 +1159,9 @@ const Sky=(function(){
     // the knee: above .45 the bloom rolls off toward .85, so a bright city glows and never burns to a white blob
     earth=mix(earth,.45+(earth-.45)/(1.+(earth-.45)*2.5),step(.45,earth));
     vec3 col=screen(screen(screen(sky*(1.-gx.z*wf*fw*ef),earth),moonL),texture2D(aur,uv).rgb);   // the gradient thins a little where the footage is
-    if(wr>.001){vec3 wc=mix(vec3(.98,.99,1.),mix(vec3(.31,.55,1.),vec3(.61,.45,1.),uv.x),smoothstep(.2*ww,1.4*ww,abs(dw)));col=screen(col,wc*wr*.6);}   // white at its core, blue to violet at its edges
+    if(wr>.001){vec3 wc=mix(vec3(.98,.99,1.),mix(vec3(.56,.72,1.),vec3(.65,.55,1.),uv.x),smoothstep(.2*ww,1.4*ww,abs(dw)));col=screen(col,wc*wr*.6);}   // white at its core, blue to violet at its edges
     if(vg>.001){vec2 e=(uv-.5)*2.;float ed=smoothstep(.78,1.,max(abs(e.x),abs(e.y)));col=screen(col,spec(atan(e.y,e.x)*.159+time*.03)*ed*vg);}   // the spectral vignette: colour at the edges   // white within, spectral at its edge
-    col+=vec3(1.,.62,.36)*warm*(1.-smoothstep(0.,.75,uv.y))*.07;
+    col+=vec3(1.,.97,.94)*warm*(1.-smoothstep(0.,.75,uv.y))*.07;
     vec2 d=(uv-vec2(.5,.48))*vec2(.9,1.15);col*=clamp(1.-dot(d,d)*.9,.35,1.);
     float g=fract(sin(dot(floor(uv*res)+fract(time*7.)*91.,vec2(12.9898,78.233)))*43758.5453)-.5;col+=g*.022*mix(1.,.4,calm);
     gl_FragColor=vec4(clamp(col,0.,1.),1.);
@@ -1166,7 +1170,7 @@ const Sky=(function(){
   float h1(float n){return fract(sin(n)*43758.5453123);}
   float nz(vec2 x){vec2 p=floor(x),f=fract(x);f=f*f*(3.-2.*f);float n=p.x+p.y*57.;return mix(mix(h1(n),h1(n+1.),f.x),mix(h1(n+57.),h1(n+58.),f.x),f.y);}
   float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*nz(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
-  vec3 pal(float t){vec3 a=vec3(.624,.659,1.),b=vec3(1.,.561,.769),c=vec3(1.,.773,.541),d=vec3(.498,.941,.839);t=fract(t)*4.;
+  vec3 pal(float t){vec3 a=vec3(.56,.68,1.),b=vec3(.66,.56,1.),c=vec3(.8,.86,1.),d=vec3(.6,.62,1.);t=fract(t)*4.;
     if(t<1.)return mix(a,b,smoothstep(0.,1.,t));if(t<2.)return mix(b,c,smoothstep(1.,2.,t));if(t<3.)return mix(c,d,smoothstep(2.,3.,t));return mix(d,a,smoothstep(3.,4.,t));}
   void main(){
     vec2 p=vec2(uv.x*asp,uv.y);float t=time;vec3 col=vec3(0.);   // time is the flow phase, integrated on the CPU (speed can change smoothly)
@@ -1177,12 +1181,12 @@ const Sky=(function(){
       float rays=smoothstep(.25,.95,fbm(vec2(x*(18.+fk*7.)+wave*2.+t*(1.2+fk*.5),d*.9+t*.2)));
       float body=smoothstep(-.035,0.,d)*exp(-max(d,0.)*(4.+fk*2.)), fringe=exp(-abs(d)*30.)*.8;
       float a=(body*(.25+rays*1.4)+fringe*rays*.6)*(.55-.15*fk);
-      vec3 c=mix(vec3(.5,.94,.84),pal(x*.35+t*.15+fk*.3),smoothstep(0.,.08,d));
+      vec3 c=mix(vec3(.55,.7,1.),pal(x*.35+t*.15+fk*.3),smoothstep(0.,.08,d));
       c=mix(c,pal(x*.35+t*.15+fk*.3+.25),smoothstep(.08,.24,d));
       col+=c*a*(k==1?c2:1.);}
     col*=smoothstep(0.,.25,uv.x)*smoothstep(1.,.75,uv.x)*smoothstep(.99,.8,uv.y);
     float lu=dot(col,vec3(.299,.587,.114));col=max(mix(vec3(lu),col,1.+.45*rich),0.);   // richer at Ultra: more colour, not more white
-    vec3 bv=mix(vec3(.31,.55,1.),vec3(.61,.45,1.),smoothstep(.45,.85,uv.y));col=mix(col,bv*(lu*1.7+.02),cool*.7);   // at Ultra the light leans blue and violet
+    vec3 bv=mix(vec3(.56,.72,1.),vec3(.65,.55,1.),smoothstep(.45,.85,uv.y));col=mix(col,bv*(lu*1.7+.02),cool*.7);   // at Ultra the light leans blue and violet
     gl_FragColor=vec4(col*neon,1.);
   }`;
   const pF=glProgram(gl,FEED),pS=glProgram(gl,SHOW),pA=glProgram(gl,AUR),pB=glProgram(gl,BLUR_FS);
@@ -1290,8 +1294,27 @@ const Sky=(function(){
       pfx.star(x,y,p.s*(p.hero?1:.9),p.col,(p.hero?1:.85)*tw*fade,still?0:th*2);});
     chand.links.forEach(([i,j])=>{const a=S[i],b=S[j];const m=Math.min(a[2],b[2]);if(m<.9)return;pfx.line(a[0],a[1],b[0],b[1],.6,ICE,.12*fade,.12*fade);});
     chand.now=S.map(s=>[s[0],s[1]]);}
+  /* STARS ABOVE THE BOX (per the owner: "more stars above the box versus in the box"): at Ultra a gentle field of small
+     white-ice stars fills the space between the greeting and the composer (26 in Full, 13 in Balanced), fading in over
+     600 ms and twinkling slowly; now and then one drifts up 28 px and fades, and another takes its place. In a
+     conversation, a subtler strip just above the composer (half as many, dimmer). Behind everything; never over the
+     greeting's letters; none in Calm or reduced motion. */
+  let field=null,fieldChk=0;
+  function buildField(){const R=e=>e?e.getBoundingClientRect():null,cb=R($(".cbox"));if(!cb||!cb.width)return null;const chat=stage.classList.contains("chat"),h1=R($("#h1"));
+    const y0=chat?cb.top-34:Math.max((h1&&h1.height?h1.bottom:cb.top-200)+14,cb.top-230),y1=cb.top-8;if(y1-y0<20)return null;
+    const x0=Math.max(12,cb.left-30),x1=Math.min(innerWidth-12,cb.right+30),n=Math.round((skyMode==="full"?26:13)*(chat?.5:1)),P=[];
+    const spawn=(p,nowT)=>{p.x=x0+Math.random()*(x1-x0);p.y=y0+Math.random()*(y1-y0);p.s=1.5+Math.random()*1.7+(Math.random()<.12?1.4:0);p.a=(.38+Math.random()*.4)*(chat?.7:1);p.w=2*Math.PI/(3+Math.random()*3);p.ph=Math.random()*6.28;
+      p.col=UCOL[Math.floor(Math.random()*UCOL.length)];p.born=nowT;p.up=0;return p;};
+    const now=performance.now();for(let i=0;i<n;i++)P.push(spawn({},now));return {P,spawn,t0:now,key:(chat?"c":"h")+Math.round(cb.top/8),nextUp:now+3000+Math.random()*3000};}
+  function drawField(nowT,t,on){if(!field)return;const ue=ultraE;if(ue<.002&&!on){field=null;return;}
+    if(++fieldChk%30===0){const cb=$(".cbox").getBoundingClientRect(),key=(stage.classList.contains("chat")?"c":"h")+Math.round(cb.top/8);if(key!==field.key){field=buildField();if(!field)return;}}   // the composer moved: re-seat the field
+    const fin=Math.min(1,(nowT-field.t0)/600);
+    if(nowT>field.nextUp){field.nextUp=nowT+4000+Math.random()*4000;const p=field.P[Math.floor(Math.random()*field.P.length)];if(!p.up)p.up=nowT;}
+    for(const p of field.P){let y=p.y,a=p.a*(.62+.38*Math.sin(t*p.w+p.ph));const born=Math.min(1,(nowT-p.born)/600);
+      if(p.up){const u=(nowT-p.up)/3000;if(u>=1){field.spawn(p,nowT);continue;}y-=28*u*(2-u)*.5*2;a*=1-u;}
+      pfx.star(p.x,y,p.s*2.2,p.col,a*fin*born*ue,0);}}
   function skyFx(nowT,t,dt){if(!pfx)return;pfx.clear();const ue=ultraE;
-    drawChand(nowT,t);
+    drawChand(nowT,t);drawField(nowT,t,ultraWant&&lift());
     if(ue<.002&&!ultraWant){cons=null;shoot=null;rain.length=0;if(pfx.count()){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}return;}
     const on=ultraWant&&lift();
     // the constellation: each line draws in over 260 ms (all within about 600), holds, then fades over 1.2 s
@@ -1394,14 +1417,15 @@ const Sky=(function(){
   mode(FX());c2E=c2To;spd=spdTo;   // the first level is not eased in
   return {hangs(){return chand&&chand.now&&!chandOff?chand.now.map((p,i)=>[p[0],p[1],chand.P[i].x]):[];},
     ultra(on,x,y){ultraWant=on;
-      if(on){if(!chand||chandOff){chand=buildChand();chandOff=0;}}else if(chand&&!chandOff)chandOff=performance.now();
+      if(on){if(!chand||chandOff){chandOff=0;chand=null;requestAnimationFrame(()=>{if(ultraWant&&!chand)chand=buildChand();});}}else if(chand&&!chandOff)chandOff=performance.now();   // built a frame later: the arrival's own frame stays light
       {const n=performance.now();if(!on&&uTwAt){uTwFrom=uTwDeg(n);uTwTo=0;uTwAt=n;}}
       if(on&&lift()){const n=performance.now();surgeAt=n;uTwFrom=uTwDeg(n);uTwTo=UTW_DEG;uTwAt=n;
-        cons=buildCons((n-t0)/1000);nextShoot=n+4000+Math.random()*3000;nextRain=n+300;
+        nextShoot=n+4000+Math.random()*3000;nextRain=n+300;cons=null;field=null;
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!ultraWant)return;cons=buildCons((performance.now()-t0)/1000);requestAnimationFrame(()=>{if(ultraWant)field=buildField();});}));   // spread over the next frames
         if(x!=null){waveX=x;waveY=y;waveR=y;waveAt=n;}}
       apply();},
     twistLeft(){return readyAt&&twistDeg?Math.max(0,readyAt+TWIST_S*1000-performance.now()):0;},
-    busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.45,.58,.66][m]+Math.min(e,3)*.035;setNeon();},mode,state(){return {chand:chand?chand.P.length:0,cons:cons?cons.edges.length:0,shoot:!!shoot,rain:rain.length,mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,neonBase:+neonBase.toFixed(3),ultraE:+ultraE.toFixed(3),eff:eff(),c2:+c2E.toFixed(3),wave:+waveA.toFixed(3),wave2:+waveA2.toFixed(3),vg:+vg.toFixed(3),uTwist:+uTwDeg(performance.now()).toFixed(2),rich:+rich.toFixed(3),starB:+starB.toFixed(3),spd,one,twistDeg,twistNowDeg:+(twistNow*180/Math.PI).toFixed(3),arc:+arcNow.toFixed(3),sinceReadyS:readyAt?+((performance.now()-readyAt)/1000).toFixed(2):null};}};
+    busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.45,.58,.66][m]+Math.min(e,3)*.035;setNeon();},mode,state(){return {field:field?field.P.length:0,chand:chand?chand.P.length:0,cons:cons?cons.edges.length:0,shoot:!!shoot,rain:rain.length,mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,neonBase:+neonBase.toFixed(3),ultraE:+ultraE.toFixed(3),eff:eff(),c2:+c2E.toFixed(3),wave:+waveA.toFixed(3),wave2:+waveA2.toFixed(3),vg:+vg.toFixed(3),uTwist:+uTwDeg(performance.now()).toFixed(2),rich:+rich.toFixed(3),starB:+starB.toFixed(3),spd,one,twistDeg,twistNowDeg:+(twistNow*180/Math.PI).toFixed(3),arc:+arcNow.toFixed(3),sinceReadyS:readyAt?+((performance.now()-readyAt)/1000).toFixed(2):null};}};
 })();
 /* mp4 first (WKWebView and Safari can freeze a .webm on its last frame), and a loop watchdog: if the clip stalls near
    its end while it should be playing, back to 0 and play */
@@ -1467,7 +1491,7 @@ async function traceIn(el,opts){
   if(!gl)return fallback();
   const IFS=`precision highp float;varying vec2 uv;uniform sampler2D map;uniform float t,TE;
   float tf(vec4 s){return (s.r*65280.+s.g*255.)/65535.*TE;}
-  vec3 pal(float t){vec3 a=vec3(.624,.659,1.),b=vec3(1.,.561,.769),c=vec3(1.,.773,.541),d=vec3(.498,.941,.839);t=fract(t)*4.;
+  vec3 pal(float t){vec3 a=vec3(.56,.68,1.),b=vec3(.66,.56,1.),c=vec3(.8,.86,1.),d=vec3(.6,.62,1.);t=fract(t)*4.;
     if(t<1.)return mix(a,b,smoothstep(0.,1.,t));if(t<2.)return mix(b,c,smoothstep(1.,2.,t));if(t<3.)return mix(c,d,smoothstep(2.,3.,t));return mix(d,a,smoothstep(3.,4.,t));}
   void main(){vec4 s=texture2D(map,vec2(uv.x,1.-uv.y));float d=t-tf(s);
     float e=step(.5/255.,s.b),hue=(s.b*255.-1.)/254.;vec3 neon=pal(hue+t*.18),ice=vec3(.62,.77,1.);
@@ -1775,7 +1799,7 @@ function liftComposer(cb){if(!cb.animate)return;
   cb.animate([{transform:"none"},{transform:"scale(1.01)",offset:.3},{transform:"none"}],{duration:1500,easing:"cubic-bezier(.45,0,.25,1)"});}
 /* the motes: one every 240 ms, each rising 110 to 260 px over 4.2 to 6.4 s and fading, never more than 12; leaving Ultra
    fades the lot over 800 ms. Calm and reduced motion: none. All compositor work (transform and opacity). */
-const motes=$("#motes"),MOTEC=["#ffffff","#cfe0ff","#86b0ff","#b9a2ff","#ffffff","#9b72ff","#dce8ff","#86b0ff","#ffffff","#b9a2ff","#cfe0ff","#f3d27a"];   // white, ice-blue, violet; gold one in twelve
+const motes=$("#motes"),MOTEC=["#ffffff","#eef3ff","#dce8ff","#c6d8ff","#ffffff","#e6efff","#d9d4ff","#ffffff","#eef3ff","#dce8ff","#ffffff","#e6efff"];   // white, ice-blue, violet; gold one in twelve
 let moteI=0,moteK=0,moteOutT=0;
 function moteSpawn(){if(!stage.classList.contains("ultra")||FX()==="calm"||reduce||document.hidden||motes.querySelectorAll(".mote").length>=40)return;
   const r=$(".cbox").getBoundingClientRect();if(!r.width)return;
