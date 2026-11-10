@@ -475,33 +475,20 @@ html:not(.calm) .ultra .send::after{opacity:1;animation:sheenSweep 3s cubic-bezi
    goes). Calm and reduced motion keep the still gradient. The rim stays still: the life is in the word and the diamond. */
 .elevel.lum{letter-spacing:.01em}
 @keyframes flow{from{background-position:150% 0}to{background-position:0% 0}}
-html:not(.calm) .ultra .slider .sl-thumb::after{animation:knobFlow 3.5s linear infinite}
-html:not(.calm) .ultra .slider.ignite .sl-thumb::after{animation:ignite .9s var(--out) both,knobFlow 3.5s linear .9s infinite}
-/* ULTRA'S SLIDER (per the owner: "like ultracode on Claude, not just a rainbow"): the knob folds into a living star that
-   steps through its forms (four, six, eight points and back, 140 ms each, like Claude Code's thinking glyph), white at its
-   core with blue -> violet light; tiny four-point stars drift through the filled track, twinkling, clipped to it. Leaving,
-   the star folds back into the rounded square in 200 ms and the track's stars fade. Calm and reduced motion: a still star. */
-.slider .sl-thumb .kstar{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;overflow:visible;pointer-events:none;opacity:0;transform:scale(.45) rotate(-35deg);
-  filter:drop-shadow(0 0 1.5px rgba(240,245,255,.95)) drop-shadow(0 0 4px rgba(143,183,255,.5));transition:opacity .2s var(--out),transform .2s var(--out)}
-.ultra .slider .sl-thumb .kstar{opacity:1;transform:none}
-.chat .slider .sl-thumb .kstar{width:16px;height:16px;margin:-8px 0 0 -8px}
-/* ANCHORED (per the owner: "the star that doesn't stick"): at Ultra the fill ends at the star's centre, so the star caps
-   it (no gap, held or dragged); the star is at most 1.25 x the track (19 px on 16, 14 on 12), its points under 2 px past
-   the track's edge, its light within about 5 px; the knob's square halo shrinks under it */
-.ultra .slider .sl-fill,.ultra .slider .sl-bloom{width:calc(var(--ph) / 2 + (100% - var(--ph)) * var(--p))}
-.ultra .slider .sl-thumb::before{opacity:.3;transform:scale(.7)}
-.slider .sl-thumb::after{transition:transform var(--t1) var(--out),opacity .2s var(--out),border-radius .2s var(--out)}
-.ultra .slider .sl-thumb::after{opacity:0;transform:scale(.55) rotate(45deg)}
+/* the knob at Ultra (per the owner: no star knob, "one star that sits there spinning just looks tacky"): the same
+   rounded-square near-white knob as every level, with a soft, still ice halo of about 5 px; no shape change, no motion */
+.ultra .slider .sl-thumb::after{box-shadow:var(--ks),0 0 5px 1px rgba(143,183,255,.42)}
+.ultra .slider .sl-thumb::before{filter:blur(4px);opacity:.35;transform:scale(.85)}
+/* tiny four-point stars drift through the filled track at Ultra, twinkling, clipped to it (two, faint) */
 .slider .tst{position:absolute;left:0;top:var(--y);width:7px;height:7px;margin:-3.5px 0 0 -3.5px;opacity:0;pointer-events:none;
   background:radial-gradient(circle,#fff 0 1px,rgba(255,255,255,0) 1.6px),linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent) center/100% 1px no-repeat,linear-gradient(0deg,transparent,rgba(255,255,255,.95),transparent) center/1px 100% no-repeat}
 html:not(.calm) .ultra .slider .tst{animation:tdrift var(--du) linear var(--dl) infinite}
 .chat .slider .tst{width:5px;height:5px;margin:-2.5px 0 0 -2.5px}
 @keyframes tdrift{0%{transform:translateX(-8px) scale(.6);opacity:0}12%{opacity:.5}35%{opacity:.25;transform:translateX(calc(var(--sw) * .3)) scale(1)}55%{opacity:.5}80%{opacity:.2}100%{transform:translateX(var(--sw)) scale(.7);opacity:0}}   /* two faint ones only: the stars live above the box */
-@keyframes knobFlow{0%,100%{box-shadow:var(--ks),0 0 9px 2px rgba(143,183,255,.55)}50%{box-shadow:var(--ks),0 0 9px 2px rgba(165,139,255,.5)}}
 .elevel.lit{animation:ultraLit .9s var(--out) both}
 @keyframes ultraLit{0%{text-shadow:0 0 1px #fff,0 0 12px rgba(255,255,255,.95),0 0 28px rgba(200,214,255,.55)}100%{text-shadow:0 0 0 rgba(255,255,255,0),0 0 0 rgba(255,255,255,0),0 0 0 rgba(200,214,255,0)}}
 .slider.ignite .sl-thumb::after{animation:ignite .9s var(--out) both}
-@keyframes ignite{0%{box-shadow:var(--ks),0 0 0 0 #fff,0 0 0 0 rgba(143,183,255,0)}18%{box-shadow:var(--ks),0 0 6px 2px #fff,0 0 12px 3px rgba(143,183,255,.6)}100%{box-shadow:var(--ks),0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(143,183,255,0)}}
+@keyframes ignite{0%{box-shadow:var(--ks),0 0 0 0 #fff,0 0 0 0 rgba(143,183,255,0)}18%{box-shadow:var(--ks),0 0 4px 1px #fff,0 0 6px 1px rgba(143,183,255,.55)}100%{box-shadow:var(--ks),0 0 5px 1px rgba(143,183,255,.42),0 0 0 0 rgba(143,183,255,0)}}
 .sl-spark{position:absolute;left:0;top:calc(50% - 1.5px);z-index:1;width:22px;height:3px;border-radius:2px;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);box-shadow:0 0 8px rgba(207,224,255,.9)}
 /* the rim's clip reaches 14 px beyond the border so the bloom and the head's glow are not cut; the rings inside sit back
    on the border (inset 13 px = 1 px outside the glass) */
@@ -969,7 +956,7 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
             <div class="slider" id="slider">
               <span class="sl-glow"></span><span class="sl-track"></span><span class="sl-bloom"></span><span class="sl-fill"><i class="tst" style="--y:40%;--dl:0s;--du:4.6s"></i><i class="tst" style="--y:60%;--dl:-2.4s;--du:5.4s"></i></span>
               <span class="sl-det" style="--k:0"></span><span class="sl-det" style="--k:.25"></span><span class="sl-det" style="--k:.5"></span><span class="sl-det" style="--k:.75"></span><span class="sl-det" style="--k:1"></span>
-              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i><svg class="kstar" viewBox="-11 -11 22 22" aria-hidden="true"><defs><radialGradient id="ksg"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#f4f8ff"/><stop offset="1" stop-color="#d4e2ff"/></radialGradient></defs><path id="kpath" fill="url(#ksg)"/></svg></span><span class="sl-spark" id="spark"></span>
+              <span class="sl-thumb" id="thumb"><i class="sl-rays" aria-hidden="true"></i></span><span class="sl-spark" id="spark"></span>
               <label><span style="position:absolute;left:-9999px">Effort</span><input type="range" id="effort" min="0" max="4" step="1" value="1"></label>
             </div>
             <span class="elevel" id="eName">Medium</span>
@@ -1710,10 +1697,6 @@ function paint(){
 }
 /* the Ultra moment, once per arrival; the still rim and the label in every mode */
 let ultraT=0;
-/* the living star knob: n points (four, six, eight, six), crisp vector, one form every 140 ms while at Ultra */
-function starPath(n,R){const r=R*(n===4?.34:n===6?.44:.5);let d="";for(let k=0;k<n*2;k++){const a=-Math.PI/2+k*Math.PI/n,rr=k%2?r:R;d+=(k?"L":"M")+(Math.cos(a)*rr).toFixed(2)+" "+(Math.sin(a)*rr).toFixed(2);}return d+"Z";}
-const KFORMS=[4,6,8,6].map(n=>starPath(n,9.5));let kI=0,kT=0;$("#kpath").setAttribute("d",KFORMS[0]);
-function kstar(on){clearInterval(kT);kT=0;if(on&&!reduce&&FX()!=="calm")kT=setInterval(()=>{if(document.hidden)return;kI=(kI+1)%KFORMS.length;$("#kpath").setAttribute("d",KFORMS[kI]);},140);else{kI=0;$("#kpath").setAttribute("d",KFORMS[0]);}}
 function ultraOn(){const cb=$(".cbox"),clip=$("#rimclip"),en=$("#eName"),th=$("#thumb"),sp=$("#spark");
   // the light leaves the beam at its start: that point's angle from the composer's centre is where the rim begins
   const c=cb.getBoundingClientRect(),tr=slider.querySelector(".sl-track").getBoundingClientRect();
@@ -1729,11 +1712,11 @@ function ultraOn(){const cb=$(".cbox"),clip=$("#rimclip"),en=$("#eName"),th=$("#
   const tb=th.getBoundingClientRect();Sky&&Sky.ultra(true,tb.left+tb.width/2,c.top);   // the sweep leaves from the composer's top edge
   motesOn(true);mirrorSync(true);clearTimeout(lblT);lblT=setTimeout(()=>{if(stage.classList.contains("ultra"))en.classList.add("go");},reduce||FX()==="calm"?0:600);
   if(!reduce&&FX()!=="calm"){sparkle(th);liftComposer(cb);if(th.animate)th.animate([{transform:"scale(1)"},{transform:"scale(1.12)",offset:.45},{transform:"scale(1)"}],{duration:220,easing:"cubic-bezier(.2,.8,.2,1)"});}   // the knob clicks into place
-  cb.classList.add("ultra-on");kstar(true);}
+  cb.classList.add("ultra-on");}
 let uoutT=0,lblT=0;
 function ultraOff(){const cb=$(".cbox");cb.classList.remove("ultra-on","igniting");clearTimeout(ultraT);slider.classList.remove("ignite");$("#eName").classList.remove("lit");
   stage.classList.add("uout");clearTimeout(uoutT);uoutT=setTimeout(()=>stage.classList.remove("uout"),1000);   // everything eases back over 900 ms
-  Sky&&Sky.ultra(false);motesOn(false);Burst&&Burst.off();kstar(false);}
+  Sky&&Sky.ultra(false);motesOn(false);Burst&&Burst.off();}
 /* the arrival's sparkles: twelve fine points fly out of the orb and fade in about 600 ms (compositor only); the composer
    lifts a touch (1.01) with a soft coloured shadow beneath, and settles */
 function sparkle(th){const sr=slider.getBoundingClientRect(),ph=parseFloat(getComputedStyle(slider).getPropertyValue("--ph"))||26,cx=sr.right-ph/2,cy=sr.top+sr.height/2;if(!sr.width||!document.body.animate)return;   // from where the orb lands at Ultra (it is still snapping there)
@@ -1879,7 +1862,7 @@ $("#details").addEventListener("click",()=>{const ai=$("#ai"),on=!ai.classList.c
 const fxpop=$("#fxpop"),fxtog=$("#fxtog");
 function setFx(mode){const full=mode==="full";fxClass(mode);try{localStorage.setItem("concorde.beta.fx",mode==="bal"?"balanced":mode);}catch(e){}
   fxpop.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.fx===mode)));
-  Sky&&Sky.mode(mode);clipRate();fx.cancel();kstar(stage.classList.contains("ultra"));
+  Sky&&Sky.mode(mode);clipRate();fx.cancel();
   if(stage.classList.contains("home"))document.querySelectorAll(".rig").forEach(r=>r.classList.add("on"));
   if(!full){stage.classList.remove("busy","lit-mark");}
   setGreeting(greeting);greetShow();}

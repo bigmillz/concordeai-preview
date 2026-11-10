@@ -212,15 +212,13 @@ Arriving (about 1.5 s), Balanced and Full:
 - **The beat** (under 1.2 s): 0 ms the orb clicks into place (scale 1 → 1.12 → 1, 220 ms) as the first star wave and
   the sweep leave; +200 ms the second star wave and the sky's glint flash; +400 ms the lit glass edge comes up (the
   line of light runs round in 600 ms); +600 ms the ULTRA label's light sweep starts and the chip's badge appears.
-- **The slider becomes the star (per the owner: "like ultracode"):** the knob folds into a living star, crisp vector,
-  white at its core (`#fff → #f4f8ff → #d4e2ff`) with a tight ice light (below), stepping through four, six, eight and six
-  points, one form every 140 ms; leaving, it folds back into the rounded square in 200 ms. PINNED, anchored (per the
-  owner: "the star that doesn't stick"): at Ultra the fill ends at the star's centre, so the star caps the fill with no
-  gap, held or dragged; the star is at most 1.25 × the track (19 px on the 16 px track, 14 on the 12), its points
-  under 2 px past the track's edge, its light within about 5 px (`drop-shadow(0 0 1.5px rgba(240,245,255,.95))
-  drop-shadow(0 0 4px rgba(143,183,255,.5))`); the knob's square halo shrinks under it (.3, scale .7). Two faint
-  four-point stars (peak .5) drift through the filled track (4.6 and 5.4 s); the rest of the stars live above the box. The label keeps its light sweep
-  as the silver shimmer. Calm and reduced motion: a still four-point star, no drift.
+- **The knob at Ultra:** PINNED (per the owner: "one star that sits there spinning just looks tacky"; the star knob is
+  removed): the same rounded-square near-white knob as every level, with a soft, still ice halo of about 5 px
+  (`box-shadow: 0 0 5px 1px rgba(143,183,255,.42)` on the knob, its square halo at `blur(4px)`, .35, scale .85). No star
+  shape, no morph, no spin, no breathing. On arrival it flashes once within about 6 px (white 4 px, ice 6 px, 900 ms)
+  and settles to that halo. The fill runs to the knob as at every level, in the ice → violet pair. Two faint four-point
+  stars (peak .5) drift through the filled track (4.6 and 5.4 s); the rest of the stars live above the box. The label
+  keeps the silver shimmer. Calm and reduced motion: the same knob, no drift.
 - **A star trail and a stream:** as the knob slides to Ultra, 18 tiny stars light along the track behind it (over its
   140 ms snap, each 380–500 ms); as it lands, 12 stars stream up out of it (28 ms apart, 640–860 ms).
 - **The stars lead.** Three waves of four-point stars burst from where the knob lands (120 in all), drawn on the GPU
