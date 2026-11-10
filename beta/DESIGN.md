@@ -137,7 +137,8 @@ States: hover brightens the border to `--line` and the fill to `rgba(255,255,255
 (Balanced also lifts 1 px with a soft shadow); press scales to .97 in 120 ms; selected is
 `rgba(255,255,255,.09)` with `--ink` type; the chosen mode wears a small white diamond.
 Keyboard focus is a 1 px ember hairline; on the slider it is a ring round the pill (2 px off it)
-and shows only after a keydown (never after a click).
+and shows only for keyboard focus: after an arrow, Home, End, Page or Tab key, with `:focus-visible`; any pointer press
+clears it, so a click or a drag never leaves it behind (WKWebView can report a clicked range as focus-visible).
 
 ### The opening
 The star field turns about a point above the wordmark: 10° in Balanced, 16° in Full, 0 in
@@ -192,7 +193,7 @@ Ice `#8fb7ff` → soft violet `#a58bff`, with white highlights. Nothing warmer, 
 
 - **The label and the byline:** "Ultra" is silver text (`#c6cad4`), not gradient text, with the "thinking" shimmer: a
   white highlight band (`rgba(255,255,255,.98)`, 20 % of a 250 % background) passes over it every 3 s (across in about
-  1.3 s on `cubic-bezier(.45,0,.25,1)`, then rest); no glow. The chip's badge wears the same. The byline reads
+  1.3 s on `cubic-bezier(.45,0,.25,1)`, then rest; now every 2.5 s, in step with the fill's marquee); no glow. The byline reads
   "Concorde Thinking · Ultra"; its sweep stops when the answer lands (still silver).
   Under the composer's label, a feathered black pill holds it at AA at the sky's brightest (Full at 1280 and on a phone
   dipped to 3.5:1, and 2.9:1 under the noon sky): the slider's first layer, 80 × 34 centred on the word (its left edge
@@ -202,7 +203,7 @@ Ice `#8fb7ff` → soft violet `#a58bff`, with white highlights. Nothing warmer, 
   shade, not a shape.
 - **The typed words:** a mirror over the textarea carries the same shimmer on near-white silver (`#eceef3`), a subtler
   sweep every 3.6 s; "Ask anything" at .85 (AA in Full). Leaving Ultra crossfades back to white in 600 ms.
-- **The send key** (with text): `#8fb7ff → #a58bff → #dfe8ff → #a58bff → #8fb7ff`, flowing one 108 px period per 4 s; a black arrow.
+- **The send key** at Ultra: unchanged (see "No flashes, no shine on controls"): no gradient, no sheen, no outline colour.
 - **The writing star:** a 20 px tail behind it, soft violet (fading) → ice → `#eef3ff` at the star.
 - **The stars (every burst, the chandelier, the motes, the constellation, shooting stars, rain):** white and ice, the
   faintest violet at most: `#ffffff`, `#eef3ff`, `#dce8ff`, `#c6d8ff`, `#e6efff`, `#d9d4ff`. No gold.
@@ -211,13 +212,17 @@ Ice `#8fb7ff` → soft violet `#a58bff`, with white highlights. Nothing warmer, 
 Arriving (about 1.5 s), Balanced and Full:
 - **The beat** (under 1.2 s): 0 ms the orb clicks into place (scale 1 → 1.12 → 1, 220 ms) as the first star wave and
   the sweep leave; +200 ms the second star wave and the sky's glint flash; +400 ms the lit glass edge comes up (the
-  line of light runs round in 600 ms); +600 ms the ULTRA label's light sweep starts and the chip's badge appears.
+  line of light runs round in 600 ms); +600 ms the ULTRA label's light sweep and the fill's marquee start together.
 - **The knob at Ultra:** PINNED (per the owner: "one star that sits there spinning just looks tacky"; the star knob is
   removed): the same rounded-square near-white knob as every level, with a soft, still ice halo of about 5 px
   (`box-shadow: 0 0 5px 1px rgba(143,183,255,.42)` on the knob, its square halo at `blur(4px)`, .35, scale .85). No star
   shape, no morph, no spin, no breathing. On arrival it flashes once within about 6 px (white 4 px, ice 6 px, 900 ms)
-  and settles to that halo. The fill runs to the knob as at every level, in the ice → violet pair. Two faint four-point
-  stars (peak .5) drift through the filled track (4.6 and 5.4 s); the rest of the stars live above the box. The label
+  and settles to that halo. The fill runs to the knob as at every level, in the ice → violet pair. PINNED (per the owner: "special, not over the top", like
+  ultrathink): over the fill at Ultra only, a dot-matrix texture: 1 px square dots on a 4 px pitch, white at .16
+  (matching the field above the box); and a slow LED-marquee shimmer: a soft band (20 % of a 250 % mask, the dots at .9
+  inside it) lights the dots left to right every 2.5 s (across in about 1.1 s on `cubic-bezier(.45,0,.25,1)`, then
+  rest), starting 600 ms after arrival, in step with the word Ultra's silver sweep. No stars in the track; no travelling
+  glint (superseded). Below Ultra: plain silver, none of this. Calm and reduced motion: the dots, still. The label
   keeps the silver shimmer. Calm and reduced motion: the same knob, no drift.
 - **A star trail and a stream:** as the knob slides to Ultra, 18 tiny stars light along the track behind it (over its
   140 ms snap, each 380–500 ms); as it lands, 12 stars stream up out of it (28 ms apart, 640–860 ms).
@@ -278,15 +283,20 @@ While at Ultra:
   5.2–7.6 s with a calm twinkle.
 - **The charged state:** hairlines and outlines turn faintly blue-violet (`--hair rgba(150,165,255,.13)`,
   `--hair2 rgba(150,160,255,.22)`, `--line rgba(170,160,255,.45)`, registered so they ease), keyboard focus stays the
-  ember ring, the chosen mode's mark is an ice → violet diamond, the mode chip wears a 9 px "Ultra" badge
-  (the silver shimmer, a `#a58bff` .5 hairline) on its corner, and the send key is charged: a soft violet outline
-  and a slow inner sheen (every 3 s).
-- **Sending at Ultra:** a 22 px star glint on the key (420 ms); a bright streak (a 90 px line, ice to white at its
+  ember ring, the chosen mode's mark is an ice → violet diamond, the mode chip wears no badge (removed: it repeated the label beside the
+  slider). The send key is not charged (no outline, no sheen).
+- **Sending at Ultra:** no glint on the key; a bright streak (a 90 px line, ice to white at its
   head) runs from the key to where the answer starts in 460 ms, leaving nine tiny stars that twinkle out in 520 ms;
   the writing star is born where it lands, with its prism tail.
 - The slider's fill flows slowly in the pair (`#8fb7ff → #a58bff → #b8ccff → #a58bff → #8fb7ff`, one 2 × width period
   per 7 s) with its bloom; the knob's halo turns to the pair; the knob's glow breathes ice ↔ violet (3.5 s).
 
+- **The star signs (per the owner: "definitely keep the star signs dynamic"):** at Ultra, every 20–30 s (the first 9–15 s
+  after arriving) a constellation forms from the sky's own near-layer stars, in a different place each time: left of the
+  column, right of it, above the greeting, or above the box. 4–6 neighbouring stars are joined by their minimum spanning
+  tree (one in three closes into a figure), each line drawing star to star in 420 ms with a travelling light at its head
+  (a 3.2 px white point), 0.7 px `#cfe0ff` at .24 → .34, a 4.6 px point lighting at each star reached; it holds 2 s and
+  dissolves over 1.2 s; one in three drifts slowly up (9 px/s) as it fades. Plain geometry: no art, names or symbols.
 - **The smash (per the owner: "a little more smash effect when somebody slides to Ultra", like Astra or Ultra Code):**
   once per arrival, about 700 ms, ice, violet and white only; no circles, rings or ovals.
   1. *Light rush* (0–180 ms): a 56 px white highlight (`.95` at 72 %) races along the fill from the knob back to the start.
@@ -309,17 +319,41 @@ While at Ultra:
     first 5 s in): 90–150 px, 450 ms, a 1 px ice tail and a white head;
   - a faint wide strip of ice light spills up out of the box: 52 px tall, 5 % in from each side, `rgba(200,218,255,.08)`
     at the edge to nothing, horizontal fade at the ends, breathing to .75 of that over 10 s (a strip, never an oval);
-  - a glint travels along the fill every 5 s (a 40 px white highlight at .7, across in 1.3 s).
+  - the fill's dot-matrix marquee (see the knob at Ultra).
   Balanced: half the light (the strip .5, the glint .35), no comet, the band's shooting star every 25–35 s. Calm and
   reduced motion: none. All of it pauses while the page is hidden or not in front.
+- **The dot matrix (per the owner: "we do dots, like dot matrix, like Ultra Code"):** at Ultra a fine LED grid fills the
+  band above the box (the stars' band; a thinner strip in a conversation): square dots 1.8 px across (a 0.5 px soft
+  edge), on an 11 px pitch, at 4 % white, feathered 30 px at the sides, 22 px at the top and 8 px at the bottom. Soft
+  sweeps of light pass through it, horizontal or diagonal (±0.8, ±0.6), never radial: a Gaussian front 52 px wide moving
+  at 180 px/s (so a dot takes about 290 ms to light, never a flash), lifting the dots to 35 % ice-white `(.86,.92,1)` and
+  letting them fall back; a sweep every 4–6 s (Balanced: every 8–12 s at half the brightness), and one in five comes early
+  so two cross. On arrival, as part of the smash, one fast sweep (600 ms) runs out from the knob's x along the box's top
+  edge and then up (its front `|x − kx| + 1.6 (top − y)`), up to 45 %. Drawn in the sky's shader (no DOM), behind
+  everything, never under the greeting; fades with Ultra; none in Calm or reduced motion.
 - **Stars above the box (per the owner: "more stars above the box versus in the box"):** at Ultra a gentle field of
   small white-ice stars (1.5–3.2 px, one in eight 1.4 px larger; the star palette) fills the space between the greeting
-  and the composer, across the composer's width plus 30 px each side: 26 in Full, 13 in Balanced. It fades in over
+  and the composer, across the composer's width plus 30 px each side: 40 in Full, 20 in Balanced, four in ten sitting on
+  the dot matrix's grid (one system). Four of them (two in Balanced) are larger four-point glints (5–6.5 px, a brighter
+  core, .7–.9) that twinkle by brightening over 4–7 s, never turning. It fades in over
   600 ms; each twinkles slowly (.62–1 of its .38–.78 brightness, 3–6 s); every 4–8 s one drifts up 28 px over 3 s and
   fades, and another appears elsewhere. In a conversation, a subtler strip in the 34 px above the composer (half as
   many, .7 as bright). In the sky layer, behind everything; never over the greeting's letters; re-seated when the
   composer moves; fades with Ultra's power-down. None in Calm or reduced motion.
-- **Shooting stars:** every 10–16 s (the first 4–7 s after arriving), one thin streak (1.1 px, white, a tail fading to
+- **The aurora: level, shifting a touch, something special (per the owner: "level and a little more dynamic ... that
+  doesn't mean faster"):** level always: the curtain's base sits horizontal (its waviness .035, its ripple .012, its
+  segments rising and falling .03) and the rays stay vertical; the layer never rotates or tilts, and the CSS curtains
+  only slide (±44–48 px, no skew). Its centre wanders gently: legs of 60–120 s on a smootherstep (`u³(6u² − 15u + 10)`)
+  to targets 10–25 % of the width either side of centre (three in ten back to centre), never within 8 % of the last.
+  Its half-width breathes between .22 and .38 (legs 30–60 s). Its folds roll subtly: x displaced by
+  `tam × (.12 sin(2.2x − φ) + .05 sin(5.1x + 1.7φ))`, `tam` .45, φ one turn per 20–40 s. Its height breathes ±12 % over
+  26 s. Inside it: the rays brighten and fade along their length (`× (.72 + .28 noise(16x, 5d − 1.4ℓ))`) and across it
+  (`× (.7 + .3 noise(1.3x, ℓ))`), ℓ advancing .05 per second; the colour runs from blue `(.62,.78,1)` at the lower edge
+  to violet `(.7,.6,1)` towards the tips (a .18 touch of the blue-violet palette); the lower edge is crisp (rising over
+  .012) and softly luminous (`exp(−55|d|)`). Every 2–4 min it splits in two (the lobes ±.17 apart) for about 20 s: 6 s to
+  split, 8 s held, 6 s to merge. Balanced: 1.6 × slower and half the amplitude. Calm and reduced motion: still and
+  centred. Paused while the page is hidden or not in front. ?aur=0.5 pins its centre (for checks).
+- **Shooting stars:** every 6–10 s in Full, 10–16 s in Balanced (the first 4–7 s after arriving), one thin streak (1.1 px, white, a tail fading to
   nothing over the last 42 % of its run, a 4.5 px glint at its head) crosses 120–260 px of the upper sky (72 px to
   26 % down) at 18–32° in 500 ms, only in the sky beside the text column (never over it, the sidebar or the header).
 - **Star rain:** at the far left and right edges (6 % of the width, at most 90 px), tiny stars (1.6–3.2 px) fall at
@@ -402,6 +436,13 @@ rose and amber (its blue and teal are gone), and the horizon band is a trace (.2
   Ultra sweep, edge tint and the twist's centre were never set: the footage itself (as opposed to its trails) never
   drew, and the field turned about the top-left corner. All are set now.
 
+## The composer: flat and low (per the owner: "flatten out the Ask anything, make it lower, more centred")
+One line of text and the control row, as one unit centred in the glass: 99 px tall at rest on the home (95 on a phone):
+padding 13 px top, 12 px bottom, 16 px left and 14 px right (14 and 12 on a phone); the textarea one line (26 px), 2 px
+then the row's own 8 px above the 36 px row (a 10 px gap in all). Only typed text grows it, up to 156 px of text, then it
+scrolls. Its centre sits at the golden point of the free height below the header (61.8 %), measured within 0.5 px at
+1440 and 390, and re-seated whenever it grows.
+
 ## The lanes: Chat · Code · Funnels
 A glass segmented control in the header's centre (the same place and centring as before), three equal segments
 (at least 88 px, 76 on a phone), 32 px tall, radius 6 outside and 4.5 inside (the slider's language). The lit box
@@ -418,8 +459,8 @@ chosen option lit, then the one pick with its reason and next step), as the app'
   lane (the sliding box replaces it); the landed answer's token, speed and time line (Details already holds them).
 - Kept on purpose: the status dot (Calm and Balanced) and the machine chips (Full) are one indicator shown per level,
   not a duplicate.
-- Feel: every control in the composer row and the lanes presses in 1 px (and to .985) in 80 ms and lets go with a soft
-  glow (`0 0 0 1px rgba(255,255,255,.3), 0 0 14px rgba(255,255,255,.22)` fading in 450 ms on `--out`, neutral white). The row's
+- Feel: every control in the composer row and the lanes presses in 1 px (and to .985) in 80 ms and lets go cleanly,
+  with no glow on release (see "No flashes, no shine on controls"). The row's
   controls are all 36 px tall (32 on a phone); the slider's hit area matches them.
 
 ## The sidebar's chats
@@ -433,7 +474,7 @@ reopens the same way. New chat returns home and clears the selection. The rows' 
 
 ## Silver and one hue: the sweep (what changed from the rainbow)
 - The effort fill, Low to Extra: silver-white (above); only Ultra has colour, in the pair.
-- The wet-ink edge while an answer streams, the polish's shimmer and the release glow: neutral white.
+- The wet-ink edge while an answer streams and the polish's shimmer: neutral white.
 - The lanes: a silver box for every lane; Funnels' edge a brighter silver, never violet → rose. The sample funnel's
   chosen options: silver.
 - The aurora (Full): blue-violet only, its curtains in `(.56,.68,1)`, `(.66,.56,1)`, `(.8,.86,1)`, `(.6,.62,1)` and a
@@ -452,8 +493,93 @@ Modes: **Fast** (fast answers) · **Thinking** (thinks it through) · **Pro** (e
 your machines) · **Max** (every model, every machine) · **Deep** (keeps going until you stop
 it). Effort: **Low · Medium · High · Extra · Ultra**. Bylines read "Concorde Thinking" ("Concorde Thinking · Ultra" at Ultra).
 
+## The arrival's hang (PINNED, per the owner: "if somebody clicks Ultra, it has a certain hang to it"): weight and timing
+One family of easing: `--out` `cubic-bezier(.16,1,.3,1)` to release; `--inout` `cubic-bezier(.65,0,.35,1)` (and the
+smootherstep `u³(6u² − 15u + 10)`) to hang and settle; no bounce, no overshoot anywhere.
+1. **Anticipation, 0–140 ms:** the sky holds its breath: its exposure dims to .92 (ease-out over the 140 ms), the sky's
+   clock (twinkles, aurora flow, wander, drift) slows to a tenth; the knob settles to scale .97 (140 ms, `--out`).
+   Nothing fires.
+2. **Release, 140–500 ms:** the sky's clock eases back to full speed by 500 ms; the bar's rush (180 ms) and the knob's
+   lift back to 1 (300 ms, `--out`); the box's edge ignites from the knob outward (420 ms, `--out`, from 180 ms); the burst
+   leaves the knob; the kick (Full, 1 → 1.012 → 1 over 360 ms, `--inout`); the label's fast sweep; the matrix's arrival
+   sweep along the edge.
+3. **Hang, 500–1600 ms:** the field's stars launch from the box's edge (each after 80–340 ms of the release) and go
+   nine tenths of the way on a hard exponential ease-out in 420 ms, then float the last tenth on the smootherstep over
+   the next 0.9–1.2 s, like sparks at the top of their arc; the matrix's wave rolls up to the greeting on an in-out over
+   1.1 s (from 500 ms); the greeting's rim light rises as it arrives (1.3 s; Balanced 1.0 s at half) and fades over
+   1.2 s; the aurora's swell peaks at about 1.14 s and eases off.
+4. **Settle, 1600–2600 ms:** the exposure returns from .92 to 1 on the smootherstep; everything breathes out into
+   resting Ultra.
+Resting Ultra is thinned so the arrival stays the hero: showers every 60–90 s (was 45–60), the matrix's sweeps every
+3.4–4.6 s (one in four early), the greeting's rim glide every 16 s at .55.
+
+## Ultra, pushed further (per the owner: "push the Ultra effect even more"; the rules still hold)
+**Arrival (Full):**
+- After the bar's rush and the edge bloom, a wave rolls up through the dot matrix from the box to the greeting: a
+  horizontal band (Gaussian 34 px) lifting the dots by up to 42 %, starting 500 ms in and taking 1.1 s (in-out) to
+  cross the band (see the hang).
+- As it reaches the greeting (1.3 s in) the letters catch a thin ice rim light along their top edges: a copy of the
+  words (the same text, never offset sideways) whose `0 −1px 0 rgba(214,230,255,.9), 0 −1px 3px rgba(170,200,255,.3)`
+  shadow shows only above each letter (the copy sits beneath the letters, `z-index: −1` inside the greeting's own
+  stacking context, so the white letters cover all but the light above their top edges); it rises in 250 ms and fades
+  over 1.2 s.
+- The aurora swells for about 1.5 s with the arrival's surge (x² e^(2(1−x)), peak at 1 s): brighter (+.45), taller
+  (its height × 1 + .22), a little more violet (its cool lean × 1 + .3), then eases back.
+- The star burst lingers longer before settling: 3–5.2 s (those drifting to the chandelier 4.2–6 s); still 120 stars.
+**Resting Ultra (Full):**
+- The aurora 20 % stronger than before (× 1 + .56 at Ultra, was .3) and leaning violet (+.25 towards violet in its cool tint).
+- The dot matrix busier: a sweep every 3.4–4.6 s, one in four early so two cross (thinned from 2.6–3.4 s for the hang).
+- Meteor showers: every 60–90 s (the first 20 s after arriving), 3–5 shooting stars from one radiant (16–28°, all the same
+  way) cross the band between the header and the greeting, 120–380 ms apart, each 110–200 px over 480–600 ms, a 1 px ice
+  tail and a 3.8 px white head.
+- The greeting's rim light glides once across the letters every 16 s: the same rim, revealed by a soft band (20 % of a
+  250 % mask) moving left to right over 2 s, at .55.
+**Balanced:** about half of everything: the aurora's lift and surge at half, the arrival rim at half, no rim light at
+rest, the matrix every 5.2–6.8 s, showers about every 2 min (110–130 s). **Calm and reduced motion:** none. All of it
+pauses while the page is hidden or not in front.
+
+## The beauty pass (per the owner: "30 % more beautiful without being tacky, keep the look dark")
+- **Depth:** the sky's stars in three layers: near (46 px cells, 16 % of cells lit, core .8 px, full brightness, the rest
+  turn speed; the constellations' layer), mid (19 px, 7 %, .55 px, × .5, × .7 the turn) and far (12 px, 4.5 %, .42 px,
+  × .3, × .45 the turn). A barely-there camera drift moves the whole sky 4 px × 3 px over 97 s and 131 s; no rotation;
+  none in Calm or reduced motion.
+- **Darker and richer:** exposure × .9; a vignette `clamp(1 − 1.25 |d|², .16, 1)` (d from (.5,.48), scaled .9 × 1.15)
+  keeps the corners near-black; a gentle toe deepens the blacks (`× (1 − .3 e^(−28 L))`) without touching the footage's
+  mid-tones; a fine blue-noise dither (interleaved gradient noise, ±0.6 %, re-seeded each frame) kills banding.
+- **Light quality:** every star has a tiny core and a soft halo (sky stars `e^(−d²/σ²) + .14 e^(−d²/10σ²)`; the GPU
+  particles `1.3 e^(−90r²) + .16 e^(−9r²)` with arms `.7`); the brightest sky stars wear faint diffraction spikes
+  always (.16, more at Ultra), never turning.
+- **The glass:** `--blur: blur(30px) saturate(108%)` (was 24 px, 140 %); every glass panel keeps its 1 px top highlight
+  (`--spec`) and gains a whisper of inner shadow at the bottom (`inset 0 −1px 0 rgba(0,0,0,.28), inset 0 −12px 18px −14px
+  rgba(0,0,0,.45)`).
+- **Type:** the greeting tracks −0.03 em above 600 px and −0.02 em on a phone; its close glow is tighter (16 px and
+  34 px at .42 of it).
+
+## No flashes, no shine on controls (PINNED, per the owner: "maximize and run VFX hard, but we don't want tacky")
+- **No flashes.** Nothing on screen goes from dark to bright in under about 200 ms, except the deliberate Ultra arrival
+  rush along the bar. Every effect fades in and out over at least 300 ms; nothing spawns or ends with a flare.
+- **The footage's loop seam** is never a hard cut and never a dip: there is no native `loop`; through the last half
+  second the newest frame is kept in a texture (so a clip that stalls short of its end is covered too), the clip is
+  sent back to 0 on `ended` (or by the watchdog), and the footage dissolves from the held frame
+  into the new start over 1.4 s (smootherstep). This was the bottom-right flash: the city-lights clip jumped 23/255 in
+  that region's mean at every 7.2 s seam. (A 700 ms fade through black was tried first: its own fade-in brightened a
+  region by 8–10/255 in 200 ms.)
+- **The footage's lights** may not rise faster than the trails' attack limiter allows: the limiter now lets a light
+  climb at most 0.8 of full scale per second (about 600 ms from dark to bright; was 1.8), and the footage's highlights are
+  capped by that limited trail in Full and Balanced alike (the trails' feed now runs in Balanced too, unseen; their
+  bloom and streaks stay Full's). The highlight knee (above .45, rolling off toward .85) stays.
+- **Measured** by recording 60 s at rest (home and Ultra, Full and Balanced, at 1440, every clip) and reading every
+  frame: a spike is the bottom-right quadrant's peak rising by more than 8 % of full scale, or its mean by more than
+  8 %, within 100 ms; anywhere, an 8 × 5 region's mean rising by more than 8/255 within 200 ms.
+- **No shine on controls.** The composer's keys are clean, flat keys. Send: neutral glass when the box is empty, a solid
+  ember fill while there is text (a flat, slightly lighter ember on hover), a crisp 1 px press on click. No gradient,
+  sheen, glint, glow, outline colour or lift, at any level, Ultra included; no glow on release anywhere. Attach and
+  mic: the same; the mic's listening state is a plain brighter fill (its glow pulse is gone). The send strike stays: one
+  1 px ember line across the composer's top, 240 ms, no glow.
+
 ## Footage on WebKit
 - Every `<video>` lists the `.mp4` first, then the `.webm` (WKWebView and Safari can freeze a `.webm` on its last frame).
+- The clip loops by script (see the loop seam above), not by the `loop` attribute.
 - A loop watchdog checks every 400 ms: a clip stalled within 0.6 s of its end for two checks is sent back to 0 and played.
 - The sky draws from its first frame with a one-texel black footage texture; the footage is uploaded only once a frame
   has been decoded (`requestVideoFrameCallback`, else `loadeddata`), and fades in. No stall at the opening.
