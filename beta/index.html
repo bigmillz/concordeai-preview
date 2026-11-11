@@ -1136,6 +1136,79 @@ sup.cite{font-size:9px;font-weight:500}
 #ask.interim{color:rgba(255,255,255,.6)}   /* words still being heard, dimmed until final */
 #micnote.on{opacity:1;transform:none}
 #micnote span:empty{display:none}
+/* ---------- SETTINGS: a flat near-black dialog in the Claude-sharp chrome ---------- */
+#fxpop{display:none!important}
+#setbg{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);opacity:0;transition:opacity .18s var(--e)}
+#setbg.on{opacity:1}
+#setbg[hidden]{display:none}
+#settings{width:672px;height:640px;max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);display:grid;grid-template-columns:184px minmax(0,1fr);box-sizing:border-box;background:#141416;border:var(--hl) solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;transform:translateY(6px);transition:transform .2s var(--e);font:450 13px/1.4 var(--ui);color:var(--ink2);text-align:left}
+#setbg.on #settings{transform:none}
+.srail{display:flex;flex-direction:column;gap:2px;padding:16px 8px;border-right:var(--hl) solid rgba(255,255,255,.08);min-width:0}
+.slab{margin:0 10px 8px;font:600 11px/16px var(--ui);letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.srow{height:30px;flex:none;padding:0 10px;border:0;border-radius:8px;background:none;color:rgba(255,255,255,.78);font:450 13px/1 var(--ui);text-align:left;cursor:pointer;white-space:nowrap}
+.srow:hover{background:#1a1a1d;color:var(--ink)}
+.srow.on{background:#1f1f22;color:var(--ink)}
+#settings button:focus-visible,#settings a:focus-visible{outline:1px solid var(--ember);outline-offset:1px}
+.spanes{position:relative;overflow-y:auto;padding:24px 24px 32px;scrollbar-width:thin}
+.sclose{position:absolute;top:12px;right:12px;width:28px;height:28px;border:0;border-radius:8px;background:none;color:var(--ink3);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sclose:hover{background:#1f1f22;color:var(--ink)}
+.spane h2{margin:0 0 16px;font:600 15px/24px var(--ui);color:var(--ink)}
+.spane[hidden]{display:none}
+.sr{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;padding:8px 0;border-top:var(--hl) solid rgba(255,255,255,.08)}
+.spane h2+.sr{border-top:0}
+.sr b,.mr b{display:block;font:500 13px/18px var(--ui);color:var(--ink)}
+.sr span,.mr span{display:block;font:450 12px/16px var(--ui);color:var(--meta)}
+.sseg{display:inline-flex;gap:2px;padding:2px;border-radius:8px;background:#1a1a1d;border:var(--hl) solid rgba(255,255,255,.08);flex:none}
+.sseg button{height:24px;padding:0 10px;border:0;border-radius:6px;background:none;color:rgba(255,255,255,.7);font:450 12px/1 var(--ui);cursor:pointer;white-space:nowrap;transition:background .15s var(--e),color .15s var(--e)}
+.sseg button:hover{color:var(--ink)}
+.sseg button[aria-checked="true"]{background:#2a2a2f;color:var(--ink)}
+.sw{position:relative;width:32px;height:18px;flex:none;box-sizing:border-box;padding:0;border:var(--hl) solid rgba(255,255,255,.22);border-radius:5px;background:#1a1a1d;cursor:pointer;transition:background .18s var(--e),border-color .18s var(--e)}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:3px;background:#8d919b;transition:transform .18s var(--e),background .18s var(--e)}
+.sw[aria-checked="true"]{background:#d9dde6;border-color:#d9dde6}
+.sw[aria-checked="true"]::after{transform:translateX(14px);background:#141416}
+.sbtn{height:28px;flex:none;padding:0 12px;border-radius:8px;border:var(--hl) solid rgba(255,255,255,.2);background:#1a1a1d;color:var(--ink);font:500 12px/1 var(--ui);cursor:pointer;transition:background .15s var(--e)}
+.sbtn:hover{background:#222226}
+.snote{min-height:16px;margin:0;font:450 12px/16px var(--ui);color:var(--meta)}
+.sfield{display:grid;gap:8px;margin:0 0 16px}
+.sfield label{font:500 12px/16px var(--ui);color:var(--ink2)}
+.sin{width:100%;height:32px;box-sizing:border-box;padding:0 10px;border-radius:8px;border:var(--hl) solid rgba(255,255,255,.14);background:#0e0e10;color:var(--ink);font:450 13px/1 var(--ui)}
+textarea.sin{height:72px;padding:8px 10px;line-height:1.45;resize:none}
+.sin::placeholder{color:rgba(255,255,255,.4)}
+.sin:focus{outline:1px solid var(--ember);outline-offset:-1px}
+.srange{width:100%;margin:0;accent-color:#d9dde6}
+.sends{display:flex;justify-content:space-between;font:450 12px/16px var(--ui);color:var(--meta)}
+.who2{display:flex;align-items:center;gap:12px}
+.av{width:40px;height:40px;border-radius:10px;background:#1f1f22;border:var(--hl) solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font:600 14px/1 var(--ui);color:var(--ink2)}
+.slist{margin:8px 0 0;padding:0 0 0 18px;font:450 13px/20px var(--ui);color:var(--ink2)}
+.slist li{margin:0 0 4px}
+.mtabs{margin:0 0 8px}
+.mpane[hidden]{display:none}
+.mr{display:flex;align-items:center;gap:12px;min-height:52px;border-bottom:var(--hl) solid rgba(255,255,255,.08)}
+.mr>div{flex:1;min-width:0}
+.mr em{font:450 12px/16px var(--ui);font-style:normal;color:var(--ink2)}
+.sdot{width:6px;height:6px;flex:none;border-radius:2px;background:#d9dde6}
+.sdot.off{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.mpane .snote{margin-top:8px}
+.ssub{margin:0 0 8px;font:450 12px/16px var(--ui);color:var(--meta)}
+.uchart{display:flex;align-items:flex-end;gap:8px;height:96px;border-bottom:var(--hl) solid rgba(255,255,255,.12)}
+.uchart i{flex:1;height:calc(var(--h) * 100%);border-radius:3px 3px 0 0;background:#c9ced8}
+.udays{display:flex;gap:8px;margin:6px 0 16px;font:450 11px/16px var(--ui);color:var(--meta)}
+.udays span{flex:1;text-align:center}
+.utab{width:100%;border-collapse:collapse;font:450 12px/16px var(--ui);color:var(--ink2)}
+.utab th,.utab td{text-align:left;padding:8px 0;border-top:var(--hl) solid rgba(255,255,255,.08);font-weight:450}
+.utab th{color:var(--meta)}
+.utab .num{text-align:right;font-variant-numeric:tabular-nums}
+.slinks{display:flex;flex-wrap:wrap;gap:8px 16px;margin:8px 0 16px}
+.slinks a{font:500 13px/20px var(--ui);color:var(--ink);text-decoration:none;border-bottom:var(--hl) solid rgba(255,255,255,.3)}
+.slinks a:hover{border-bottom-color:var(--ink)}
+.sfine{margin:0;font:450 12px/18px var(--ui);color:var(--meta)}
+.sideset{margin-top:auto;flex:none}
+.sideset svg{flex:none;color:var(--ink3)}
+#foot>span{font-size:11px}
+@media (max-width:600px){#setbg{align-items:stretch}#settings{width:100vw;height:100%;max-width:none;max-height:none;border:0;border-radius:0;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .srail{flex-direction:row;overflow-x:auto;scrollbar-width:none;padding:12px 52px 12px 12px;border-right:0;border-bottom:var(--hl) solid rgba(255,255,255,.08)}.slab{display:none}
+  .spanes{padding:20px 16px 32px}.sr{flex-wrap:wrap}.sseg{max-width:100%;overflow-x:auto;scrollbar-width:none}}
+@media (prefers-reduced-motion:reduce){#setbg,#settings{transition:none}}
 </style>
 </head>
 <body>
@@ -1176,6 +1249,7 @@ sup.cite{font-size:9px;font-weight:500}
         <p class="day">This week</p>
         <div><button type="button" class="hrow" data-chat="lisbon"><span class="t">Plan a week in Lisbon</span></button><button type="button" class="hrow" data-chat="nas"><span class="t">Pick a NAS for backups</span></button></div>
       </div>
+      <button type="button" class="hrow sideset" id="sideset"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"/></svg><span class="t">Settings</span></button>
     </aside>
     <main>
       <section id="hero"><h1 id="h1"></h1></section>
@@ -1254,11 +1328,75 @@ sup.cite{font-size:9px;font-weight:500}
     </main>
   </div>
 </div>
+<div id="setbg" hidden>
+  <div id="settings" role="dialog" aria-modal="true" aria-labelledby="set-title">
+    <nav class="srail" aria-label="Settings sections">
+      <p class="slab" id="set-title">Settings</p>
+      <button type="button" class="srow" data-p="general">General</button>
+      <button type="button" class="srow" data-p="account">Account</button>
+      <button type="button" class="srow" data-p="personality">Personality</button>
+      <button type="button" class="srow" data-p="stuff">Your stuff</button>
+      <button type="button" class="srow" data-p="models">Models</button>
+      <button type="button" class="srow" data-p="usage">Usage</button>
+      <button type="button" class="srow" data-p="about">About</button>
+    </nav>
+    <div class="spanes">
+      <button type="button" class="sclose" aria-label="Close settings"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg></button>
+      <section class="spane" data-p="general" aria-label="General">
+        <h2>General</h2>
+        <div class="sr"><div><b>Effects</b><span>How much the sky moves.</span></div><div class="sseg" data-k="fx" role="radiogroup" aria-label="Effects"><button type="button" role="radio" data-v="calm">Calm</button><button type="button" role="radio" data-v="bal">Balanced</button><button type="button" role="radio" data-v="full">Full</button></div></div>
+        <div class="sr"><div><b>Look</b><span>The backdrop.</span></div><div class="sseg" data-k="look" role="radiogroup" aria-label="Look"><button type="button" role="radio" data-v="auto">Auto</button><button type="button" role="radio" data-v="milkyway">Milky Way</button><button type="button" role="radio" data-v="night">Asia</button><button type="button" role="radio" data-v="northern">Canada</button><button type="button" role="radio" data-v="calicoast">Coast</button></div></div>
+        <div class="sr"><div><b>Update channel</b><span>Beta gets new builds first.</span></div><div class="sseg" data-k="chan" data-d="beta" role="radiogroup" aria-label="Update channel"><button type="button" role="radio" data-v="stable">Stable</button><button type="button" role="radio" data-v="beta">Beta</button><button type="button" role="radio" data-v="nightly">Nightly</button></div></div>
+        <div class="sr"><div><b>Check for updates</b><span>Once a day, in the background.</span></div><button type="button" class="sw" role="switch" aria-checked="true" aria-label="Check for updates" data-k="updates"></button></div>
+        <div class="sr"><div><b>Update ready</b><span>7.0 beta 3, downloaded.</span></div><button type="button" class="sbtn" data-act="upd" data-msg="In the app this restarts into the new version. This preview has nothing to install.">Restart to update</button></div>
+        <p class="snote" data-for="upd"></p>
+      </section>
+      <section class="spane" data-p="account" aria-label="Account" hidden>
+        <h2>Account</h2>
+        <div class="sr"><div class="who2"><span class="av" aria-hidden="true">Y</span><div><b>You</b><span>Signed in on this Mac</span></div></div><button type="button" class="sbtn" data-act="out" data-msg="Signed out (a sample: this preview has no accounts).">Sign out</button></div>
+        <p class="snote" data-for="out"></p>
+        <div class="sfield"><label for="s-name">Name</label><input class="sin" id="s-name" type="text" value="You" autocomplete="off"></div>
+      </section>
+      <section class="spane" data-p="personality" aria-label="Personality" hidden>
+        <h2>Personality</h2>
+        <div class="sfield"><label for="s-call">What should Concorde call you?</label><input class="sin" id="s-call" type="text" placeholder="Your name" autocomplete="off"></div>
+        <div class="sfield"><label for="s-keep">Anything it should keep in mind?</label><textarea class="sin" id="s-keep" placeholder="I cook for a vegetarian; I prefer metric."></textarea></div>
+        <div class="sr"><div><b>Tone</b></div><div class="sseg" data-k="tone" data-d="plain" role="radiogroup" aria-label="Tone"><button type="button" role="radio" data-v="plain">Plain</button><button type="button" role="radio" data-v="warm">Warm</button><button type="button" role="radio" data-v="brief">Brief</button></div></div>
+        <div class="sfield"><label for="s-len">Answer length</label><input class="srange" id="s-len" type="range" min="0" max="4" step="1" value="2"><div class="sends"><span>Short</span><span>Long</span></div></div>
+      </section>
+      <section class="spane" data-p="stuff" aria-label="Your stuff" hidden>
+        <h2>Your stuff</h2>
+        <div class="sr"><div><b>Remember things between chats</b><span>Memories stay on your machines; you can see and delete each one.</span></div><button type="button" class="sw" role="switch" aria-checked="true" aria-label="Remember things between chats" data-k="memory"></button></div>
+        <ul class="slist"><li>Chats, memories and files stay on your machines.</li><li>A cloud model only sees a question when you choose a mode that uses one.</li><li>Nothing is sent to us.</li></ul>
+      </section>
+      <section class="spane" data-p="models" aria-label="Models" hidden>
+        <h2>Models</h2>
+        <div class="sseg mtabs" data-k="mtab" data-d="local" role="radiogroup" aria-label="Where models run"><button type="button" role="radio" data-v="local">Local</button><button type="button" role="radio" data-v="cloud">Cloud</button><button type="button" role="radio" data-v="servers">Servers</button></div>
+        <div class="mpane" data-m="local"><div class="mr"><i class="sdot"></i><div><b>This computer</b><span>Apple silicon · MLX</span></div><em>Ready</em></div><div class="mr"><i class="sdot"></i><div><b>Qwen 3.6 35B</b><span>On this computer · 19 GB</span></div><em>Ready</em></div></div>
+        <div class="mpane" data-m="cloud" hidden><div class="mr"><i class="sdot off"></i><div><b>Claude</b><span>Not connected</span></div><button type="button" class="sbtn" data-act="key" data-msg="In the app you paste a key here; it stays on your machines.">Add key</button></div><div class="mr"><i class="sdot off"></i><div><b>Gemini</b><span>Not connected</span></div><button type="button" class="sbtn" data-act="key" data-msg="In the app you paste a key here; it stays on your machines.">Add key</button></div><p class="snote" data-for="key"></p></div>
+        <div class="mpane" data-m="servers" hidden><div class="mr"><i class="sdot"></i><div><b>Ollama1</b><span>NVIDIA · Gemma 4 26B, Qwen 3.8 27B</span></div><em>Ready</em></div><div class="mr"><i class="sdot"></i><div><b>This computer</b><span>Apple silicon · MLX</span></div><em>Ready</em></div></div>
+      </section>
+      <section class="spane" data-p="usage" aria-label="Usage" hidden>
+        <h2>Usage</h2>
+        <p class="ssub">Answers this week (a sample)</p>
+        <div class="uchart" role="img" aria-label="Answers per day this week: 12, 18, 9, 22, 15, 6, 11"><i style="--h:.55"></i><i style="--h:.82"></i><i style="--h:.41"></i><i style="--h:1"></i><i style="--h:.68"></i><i style="--h:.27"></i><i style="--h:.5"></i></div>
+        <div class="udays" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+        <table class="utab"><thead><tr><th>Where</th><th class="num">Answers</th><th class="num">Tokens</th></tr></thead><tbody><tr><td>This computer</td><td class="num">58</td><td class="num">71,400</td></tr><tr><td>Ollama1</td><td class="num">35</td><td class="num">96,250</td></tr><tr><td>Cloud</td><td class="num">0</td><td class="num">0</td></tr></tbody></table>
+      </section>
+      <section class="spane" data-p="about" aria-label="About" hidden>
+        <h2>About</h2>
+        <div class="sr"><div><b>ConcordeAI</b><span>Version 7.0 beta 3 · build: web preview</span></div><button type="button" class="sbtn" data-act="chk" data-msg="You're up to date.">Check now</button></div>
+        <p class="snote" data-for="chk"></p>
+        <div class="slinks"><a href="https://github.com/bigmillz/concordeai-preview/releases/tag/preview-1" target="_blank" rel="noopener">Download the Mac preview</a><a href="https://github.com/bigmillz/concordeai-preview/releases" target="_blank" rel="noopener">Release notes</a></div>
+        <p class="sfine">This preview runs no models: the answers are samples. Backdrops: video courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center.</p>
+      </section>
+    </div>
+  </div>
+</div>
 <div id="sparks" aria-hidden="true"></div>
 <i class="star" id="star" aria-hidden="true"><i class="tail"></i></i>
 <footer id="foot">
   <span>Backdrop: <span id="clipname"></span>. <a href="https://eol.jsc.nasa.gov/BeyondThePhotography/CrewEarthObservationsVideos/" target="_blank" rel="noopener">Video courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center</a>.</span>
-  <a class="maclink" id="maclink" href="https://github.com/bigmillz/concordeai-preview/releases/tag/preview-1" target="_blank" rel="noopener">Download the Mac preview</a>
 </footer>
 
 <script>
@@ -1288,7 +1426,8 @@ function pickClip(){let recent=[];try{recent=JSON.parse(localStorage.getItem("co
   try{localStorage.setItem("concorde.beta.recent",JSON.stringify([c.n,...recent.filter(x=>x!==c.n)].slice(0,2)));}catch(e){}
   return c;}
 const forced=CLIPS.find(c=>c.n===new URLSearchParams(location.search).get("clip"));   // ?clip=name pins a backdrop (for checks)
-let clip=forced||pickClip(), footMul=0, footTo=1;
+function lookClip(){try{const n=localStorage.getItem("concorde.beta.look");return n&&n!=="auto"?CLIPS.find(x=>x.n===n)||null:null;}catch(e){return null;}}   /* Settings › Look, remembered */
+let clip=forced||lookClip()||pickClip(), footMul=0, footTo=1;
 
 /* ---------- the night, graded to the viewer's own clock and tonight's real Moon ---------- */
 const age=(((now.getTime()-Date.UTC(2000,0,6,18,14))/864e5)%29.530588853+29.530588853)%29.530588853;
@@ -2849,6 +2988,40 @@ askEl.addEventListener("keyup",e=>{if(e.key!==" "||!lis||!spaceAt)return;const h
   if(held>350||lis.tap)micStop();else lis.tap=true;});   // held: release stops; a tap leaves it listening, the next tap stops
 window.__dict=()=>({path:dictPath,listening:!!lis,sr:!!SR,mac:IS_MAC});
 $("#form").addEventListener("submit",e=>{e.preventDefault();if(lis)micStop();const t=askEl.value.trim();if(!t)return;askEl.value="";sendState();strike();ask(t);});
+/* ---------- SETTINGS (per the owner: "it should look cohesive with the design we already have"). A centred, flat
+   near-black dialog (672 × 640) with a left rail, matching the app's Settings; the gear, ⌘, and the sidebar's foot
+   open it; Esc or a click outside closes it; focus stays inside. Effects and Look apply live and are remembered. ---------- */
+const lsGet=k=>{try{return localStorage.getItem(k);}catch(e){return null;}},lsSet=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
+const setbg=$("#setbg"),setdlg=$("#settings");let setPrev=null,setCur="general";
+function setPane(p){setCur=p;setdlg.querySelectorAll(".srow").forEach(r=>{const on=r.dataset.p===p;r.classList.toggle("on",on);if(on)r.setAttribute("aria-current","page");else r.removeAttribute("aria-current");});
+  setdlg.querySelectorAll(".spane").forEach(s=>{s.hidden=s.dataset.p!==p;});setdlg.querySelectorAll(".snote").forEach(n=>n.textContent="");}
+function setSync(){const v={fx:FX(),look:lsGet("concorde.beta.look")||"auto",chan:lsGet("concorde.beta.chan"),tone:lsGet("concorde.beta.tone"),mtab:null};
+  setdlg.querySelectorAll(".sseg").forEach(g=>{const cur=v[g.dataset.k]||g.dataset.d||g.querySelector("button").dataset.v;g.querySelectorAll("button").forEach(b=>{const on=b.dataset.v===cur;b.setAttribute("aria-checked",String(on));b.tabIndex=on?0:-1;});
+    if(g.dataset.k==="mtab")setdlg.querySelectorAll(".mpane").forEach(m=>{m.hidden=m.dataset.m!==cur;});});
+  setdlg.querySelectorAll(".sw").forEach(s=>{const k=lsGet("concorde.beta.sw."+s.dataset.k);if(k!==null)s.setAttribute("aria-checked",String(k==="1"));});}
+function setOpen(p){if(!setbg.hidden&&setbg.classList.contains("on"))return;setPrev=document.activeElement;closeMenu&&closeMenu();setbg.hidden=false;void setbg.offsetWidth;setbg.classList.add("on");
+  setPane(p||setCur);setSync();fxtog.setAttribute("aria-expanded","true");const r=setdlg.querySelector(".srow.on");if(r)r.focus();}
+function setClose(){if(setbg.hidden)return;setbg.classList.remove("on");fxtog.setAttribute("aria-expanded","false");setTimeout(()=>{if(!setbg.classList.contains("on"))setbg.hidden=true;},200);if(setPrev&&setPrev.focus)setPrev.focus();}
+function segPick(b){const g=b.parentElement,k=g.dataset.k,v=b.dataset.v;
+  g.querySelectorAll("button").forEach(x=>{const on=x===b;x.setAttribute("aria-checked",String(on));x.tabIndex=on?0:-1;});
+  if(k==="fx")setFx(v);   // applies live, remembered by setFx
+  else if(k==="look"){lsSet("concorde.beta.look",v);const c=v==="auto"?pickClip():CLIPS.find(x=>x.n===v);if(c&&c!==clip)loadClip(c);}
+  else if(k==="mtab")setdlg.querySelectorAll(".mpane").forEach(m=>{m.hidden=m.dataset.m!==v;});
+  else lsSet("concorde.beta."+k,v);}
+setdlg.addEventListener("click",e=>{const r=e.target.closest(".srow");if(r){setPane(r.dataset.p);return;}
+  const b=e.target.closest(".sseg button");if(b){segPick(b);return;}
+  const sw=e.target.closest(".sw");if(sw){const on=sw.getAttribute("aria-checked")!=="true";sw.setAttribute("aria-checked",String(on));lsSet("concorde.beta.sw."+sw.dataset.k,on?"1":"0");return;}
+  const a=e.target.closest("[data-act]");if(a){setdlg.querySelectorAll('.snote[data-for="'+a.dataset.act+'"]').forEach(n=>{if(!n.closest("[hidden]"))n.textContent=a.dataset.msg;});return;}
+  if(e.target.closest(".sclose"))setClose();});
+setbg.addEventListener("pointerdown",e=>{if(e.target===setbg)setClose();});
+setdlg.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){e.preventDefault();e.stopPropagation();setClose();return;}
+  if(e.key==="Tab"){const f=[...setdlg.querySelectorAll('button,input,textarea,a[href]')].filter(x=>x.tabIndex>=0&&x.offsetParent&&!x.closest("[hidden]"));if(!f.length)return;const i=f.indexOf(document.activeElement);
+    if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus();}return;}
+  const g=e.target.closest&&e.target.closest(".sseg");if(g&&/^Arrow(Left|Right|Up|Down)$/.test(e.key)){e.preventDefault();const bs=[...g.querySelectorAll("button")],i=bs.indexOf(e.target),n=bs[(i+(/Right|Down/.test(e.key)?1:bs.length-1))%bs.length];n.focus();segPick(n);return;}
+  const rr=e.target.closest&&e.target.closest(".srow");if(rr&&/^Arrow(Up|Down)$/.test(e.key)){e.preventDefault();const rs=[...setdlg.querySelectorAll(".srow")],i=rs.indexOf(rr),n=rs[(i+(e.key==="ArrowDown"?1:rs.length-1))%rs.length];n.focus();setPane(n.dataset.p);}});
+fxtog.addEventListener("click",e=>{e.stopImmediatePropagation();setbg.hidden||!setbg.classList.contains("on")?setOpen():setClose();},true);   // the gear opens Settings (the old effects strip is gone)
+$("#sideset").addEventListener("click",()=>setOpen());
 })();
 </script>
 </body>

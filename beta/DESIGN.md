@@ -741,3 +741,20 @@ suggestion chips. The composer's centre sits on the golden point of the space un
 - **Checked in Chrome 157 on this Mac** (headed): ⌘D is cancelled in the capture phase; the mic lights at once; hold,
   tap and Esc behave; on a Windows user agent Ctrl+D is taken and ⌘D left alone. On-device recognition for en-US
   reports "downloadable" (the language pack is not installed), so Chrome uses its speech service.
+
+## Settings (per the owner: "it should look cohesive with the design we already have")
+- **Opening:** the gear (tooltip "Settings (⌘,)"), ⌘, and the Settings row at the foot of the sidebar. A centred, flat
+  dialog, 672 × 640 (`#141416`, a one-device-pixel hairline at 10 %, radius 14) over a 55 % black backdrop; it fades in
+  over 180 ms and rises 6 px. Esc or a click outside closes it; focus stays inside (Tab and Shift-Tab wrap) and
+  returns to where it was. The old effects strip under the gear is gone.
+- **The rail:** 184 px, "SETTINGS" in 11 px caps at 50 %, rows 13 px and 30 high (hover `#1a1a1d`, selected `#1f1f22`,
+  radius 8); arrow keys move through it. On a phone the dialog fills the screen and the rail becomes a top row.
+- **Panes** (sample data): General (Effects and Look, applied live and remembered; the update channel; a check for
+  updates switch; an "Update ready" row); Account; Personality (short fields, tone, an answer-length slider); Your stuff
+  (the memory switch and what stays on your machines); Models (Local · Cloud · Servers: This computer, Ollama1, cloud
+  keys not connected); Usage (one silver bar chart and a table); About (7.0 beta 3, "Check now", the Mac preview
+  download, release notes, the NASA credit). The build reads "web preview": this page has no app build number.
+- **Controls:** rows 48 px high on hairlines; segmented controls on a `#1a1a1d` track with the choice on `#2a2a2f`
+  (24 px, radius 6 in 8); squared switches (32 × 18, radius 5; on: silver track, dark knob); flat 32 px inputs on
+  `#0e0e10` with a hairline; buttons 28 px, radius 8. No glow, no shine.
+- **The home** keeps only the NASA credit, at 11 px; the Mac preview download lives in About.
