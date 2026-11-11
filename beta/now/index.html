@@ -1131,6 +1131,11 @@ sup.cite{font-size:9px;font-weight:500}
 .fnums{margin-top:12px}
 .fnums .num{padding-left:8px}
 .who .dot{display:none}   /* the byline needs no mark */
+
+/* ---------- DICTATION (⌘D / Ctrl+D) ---------- */
+#ask.interim{color:rgba(255,255,255,.6)}   /* words still being heard, dimmed until final */
+#micnote.on{opacity:1;transform:none}
+#micnote span:empty{display:none}
 </style>
 </head>
 <body>
@@ -1243,7 +1248,7 @@ sup.cite{font-size:9px;font-weight:500}
         </div>
         <div id="menu" role="menu" aria-label="Mode"></div>
         <p class="note" id="note" role="status"></p>
-        <p id="micnote" aria-live="polite"><span>Speech is handled by your browser in this preview.</span><span class="demo" id="demotag" hidden>Demo</span></p>
+        <p id="micnote" aria-live="polite"><span></span><span class="demo" id="demotag" hidden>Demo</span></p>
       </form>
       <div class="under"></div>
     </main>
@@ -2751,11 +2756,7 @@ async function ask(text){
   rowChat.set(row,{q:text,html:can.html,src:can.src,fine:FINE_ANSWER,meta,title:can.title});
   stage.classList.remove("busy");Sky&&Sky.busy(false);asking=false;
 }
-/* ---------- DICTATION. It starts the instant the button is pressed (or Space is held in an empty composer): the
-   listening state and the waveform at once, the microphone's real level as soon as the visitor allows it. The words
-   stream in through the browser's own recognition when it has one; otherwise, or if the microphone is refused, a
-   scripted line arrives at speaking pace under a small Demo tag. Release, click again or Escape stops it; the text
-   is left in the composer, ready to send. ---------- */
+/* ---------- DICTATION: see below (⌘D / Ctrl+D). ---------- */
 const mic=$("#mic"),wave=$("#wave"),wg=wave.getContext("2d"),askEl=$("#ask"),demoTag=$("#demotag"),sendBtn=$(".send");
 function sendState(){sendBtn.classList.toggle("ready",!!askEl.value.trim());mirrorSync();if(typeof taFit==="function")taFit();}
 /* the composer's words at Ultra: a mirror over the textarea carries the letters (the textarea's own text goes clear, its
@@ -2779,55 +2780,74 @@ function relayout(){footFit();placeComposer();flowFit();headerFit();scrimFit();}
 addEventListener("resize",relayout);addEventListener("load",relayout);
 try{document.fonts.ready.then(relayout);document.fonts.addEventListener("loadingdone",relayout);}catch(e){}
 relayout();
+/* ---------- DICTATION (per the owner: "hit ⌘ or Ctrl D and have it run without triggering Chrome to set it as a
+   bookmark. Very simple for most users and quick"). ⌘D on a Mac, Ctrl+D elsewhere, taken in the capture phase and
+   cancelled at once (before anything else runs), so the browser never sees it. Hold to talk and let go to stop; a quick
+   tap leaves it listening until the next press; Esc stops. The mic button lights the instant the key goes down, shows
+   the live level and the composer says "Listening…". Real recognition in the browser (the Web Speech API), on this
+   device when Chrome offers it; the words are written live (dimmed until final) and left ready to send. Honest about
+   where the voice goes; one calm line if the microphone is blocked; where there is no recognition at all, a quiet
+   tooltip on the mic button. Space held in an empty composer still talks too. ---------- */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-const DEMO_LINE="Plan a quiet weekend by the sea, with two good walks and one great dinner.";
-let lis=null,spaceAt=0;
+const IS_MAC=/Macintosh|Mac OS X|iPhone|iPad/.test(navigator.userAgent),DICT_LANG=navigator.language||"en-US";
+let lis=null,spaceAt=0,keyAt=0,keyStopped=false,dictPath="";
+const micLine=t=>{const n=$("#micnote");n.querySelector("span").textContent=t;n.classList.add("on");clearTimeout(micLine.t);micLine.t=setTimeout(()=>n.classList.remove("on"),7000);};
+if(!SR){mic.setAttribute("title","Dictation works in the app and in Chrome.");mic.dataset.tip="Dictation works in the app and in Chrome.";}
+async function srLocal(){try{if(SR&&typeof SR.available==="function"){const a=await SR.available({langs:[DICT_LANG],processLocally:true});return a==="available";}}catch(e){}return false;}
 function micStart(){
   if(lis||asking)return;
-  const L=lis={rec:null,stream:null,ac:null,an:null,buf:null,raf:0,tm:0,base:askEl.value.trim()?askEl.value.replace(/\s*$/," "):"",heard:false,demo:false,demoT:0,speaking:0,tap:false,closing:false,t0:performance.now(),lv:new Float32Array(48)};
-  stage.classList.add("listening");mic.classList.add("on");mic.setAttribute("aria-pressed","true");demoTag.hidden=true;
+  const L=lis={rec:null,stream:null,ac:null,an:null,buf:null,raf:0,tm:0,base:askEl.value.trim()?askEl.value.replace(/\s*$/," "):"",heard:false,tap:false,closing:false,t0:performance.now(),lv:new Float32Array(48),ph:askEl.placeholder};
+  stage.classList.add("listening");mic.classList.add("on");mic.setAttribute("aria-pressed","true");askEl.placeholder="Listening…";
   drawWave();
-  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+  if(!SR){micLine("Dictation works in the app and in Chrome.");setTimeout(()=>{if(lis===L)micStop();},1200);return;}
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){   // the live level (the browser asks for the microphone the first time only)
     navigator.mediaDevices.getUserMedia({audio:true}).then(st=>{if(lis!==L){st.getTracks().forEach(t=>t.stop());return;}L.stream=st;
-      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;L.ac=new AC();L.an=L.ac.createAnalyser();L.an.fftSize=512;L.buf=new Uint8Array(L.an.fftSize);L.ac.createMediaStreamSource(st).connect(L.an);})
-    .catch(()=>{if(lis===L&&!L.heard)micDemo(L);});}
-  if(SR){try{const r=new SR();r.interimResults=true;r.continuous=true;r.lang=navigator.language||"en-US";L.rec=r;
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;L.ac=new AC();L.an=L.ac.createAnalyser();L.an.fftSize=512;L.buf=new Uint8Array(L.an.fftSize);L.ac.createMediaStreamSource(st).connect(L.an);}).catch(()=>{});}
+  srLocal().then(local=>{if(lis!==L)return;
+    try{const r=new SR();r.interimResults=true;r.continuous=true;r.lang=DICT_LANG;if(local)try{r.processLocally=true;}catch(e){}L.rec=r;dictPath=local?"on-device":"service";
+      if(!local){let seen=false;try{seen=localStorage.getItem("concorde.beta.dictnote")==="1";localStorage.setItem("concorde.beta.dictnote","1");}catch(e){}
+        if(!seen)micLine("In the browser, Chrome's speech service hears this. The app keeps your voice on your machines.");}
       r.onresult=e=>{if(lis!==L&&!L.closing)return;let fin="",mid="";for(let i=0;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)fin+=t;else mid+=t;}
-        if(fin||mid){if(!L.heard){clearTimeout(L.watch);clearTimeout(L.demoT);L.demo=false;demoTag.hidden=true;}L.heard=true;askEl.value=L.base+(fin+mid).replace(/^\s+/,"");sendState();}};
-      r.onerror=()=>{if(lis===L&&!L.heard)micDemo(L);};
-      r.onend=()=>{if(lis===L&&!L.heard)micDemo(L);};
-      r.start();
-      // recognition that stays silent (no words, no error) hands over to the scripted line after 1.6 s; real words, if they come, take it back
-      L.watch=setTimeout(()=>{if(lis===L&&!L.heard)micDemo(L);},1600);}catch(e){L.rec=null;micDemo(L);}}
-  else micDemo(L);
+        L.heard=true;askEl.value=L.base+(fin+mid).replace(/^\s+/,"");askEl.classList.toggle("interim",!!mid);sendState();};
+      r.onerror=e=>{if(lis!==L&&!L.closing)return;const k=e.error;
+        if(k==="not-allowed"||k==="service-not-allowed")micLine("The microphone is blocked. Allow it from the icon at the left of the address bar, then try again.");
+        else if(k==="network")micLine("Dictation couldn't reach the speech service. Try again in a moment.");
+        else if(k==="language-not-supported")micLine("Dictation doesn't support this language here yet.");
+        if(k!=="no-speech"&&k!=="aborted"&&lis===L)micStop();};
+      let quick=0,began=performance.now();r.onstart=()=>{began=performance.now();};
+      r.onend=()=>{if(lis!==L){askEl.classList.remove("interim");return;}   // continuous until it is stopped; a service that keeps ending at once is not retried forever
+        quick=performance.now()-began<1500?quick+1:0;if(quick>=3){micLine("Chrome's speech service didn't answer. Try again in a moment.");micStop();return;}try{r.start();}catch(e){}};
+      r.start();}
+    catch(e){L.rec=null;micLine("Dictation couldn't start here.");micStop();}});
 }
-function micDemo(L){if(L.demo||L.heard||lis!==L)return;L.demo=true;demoTag.hidden=false;const words=DEMO_LINE.split(" ");let i=0;
-  const step=()=>{if(lis!==L)return;askEl.value=L.base+words.slice(0,++i).join(" ");sendState();L.speaking=performance.now();if(i<words.length)L.demoT=setTimeout(step,reduce?120:(300+Math.random()*180));};
-  L.demoT=setTimeout(step,250);}
 function level(L){
   if(L.an){L.an.getByteTimeDomainData(L.buf);let s=0;for(let i=0;i<L.buf.length;i++){const v=(L.buf[i]-128)/128;s+=v*v;}return Math.min(1,Math.sqrt(s/L.buf.length)*4);}
-  const t=(performance.now()-L.t0)/1000;
-  if(L.demo)return performance.now()-L.speaking<240?.22+.5*Math.abs(Math.sin(t*23))*(.6+.4*Math.random()):.06+.03*Math.sin(t*4);
-  return .06+.03*Math.sin(t*4);
-}
+  const t=(performance.now()-L.t0)/1000;return .06+.03*Math.sin(t*4);}
 function drawWave(){const L=lis;if(!L)return;L.raf=requestAnimationFrame(drawWave);clearTimeout(L.tm);L.tm=setTimeout(()=>{if(lis===L){cancelAnimationFrame(L.raf);drawWave();}},120);
   L.lv.copyWithin(0,1);L.lv[47]=level(L);
   wg.clearRect(0,0,96,36);for(let i=0;i<48;i++){const h=2+L.lv[i]*30;wg.fillStyle="rgba(207,224,255,"+(.25+.75*(i/48)).toFixed(2)+")";wg.fillRect(i*2,18-h/2,1.3,h);}}
-function micStop(){const L=lis;if(!L)return;lis=null;L.closing=true;setTimeout(()=>{L.closing=false;},1500);
-  cancelAnimationFrame(L.raf);clearTimeout(L.tm);clearTimeout(L.demoT);clearTimeout(L.watch);
+function micStop(){const L=lis;if(!L)return;lis=null;L.closing=true;setTimeout(()=>{L.closing=false;askEl.classList.remove("interim");},1500);
+  cancelAnimationFrame(L.raf);clearTimeout(L.tm);
   try{L.rec&&L.rec.stop();}catch(e){}
   L.stream&&L.stream.getTracks().forEach(t=>t.stop());L.ac&&L.ac.close&&L.ac.close().catch(()=>{});
-  stage.classList.remove("listening");mic.classList.remove("on");mic.setAttribute("aria-pressed","false");
+  stage.classList.remove("listening");mic.classList.remove("on");mic.setAttribute("aria-pressed","false");askEl.placeholder=L.ph;
   askEl.focus();askEl.selectionStart=askEl.selectionEnd=askEl.value.length;}
 mic.addEventListener("click",()=>lis?micStop():micStart());
+const isDictKey=e=>(e.code==="KeyD"||e.key==="d"||e.key==="D")&&!e.altKey&&!e.shiftKey&&(IS_MAC?e.metaKey&&!e.ctrlKey:e.ctrlKey&&!e.metaKey);
+addEventListener("keydown",e=>{   // ⌘D / Ctrl+D: cancelled first, in the capture phase, so the browser's bookmark never opens
+  if(isDictKey(e)){e.preventDefault();e.stopPropagation();if(e.repeat)return;keyAt=performance.now();if(lis){keyStopped=true;micStop();}else{keyStopped=false;micStart();}return;}
+  if(e.key==="Escape"&&lis){e.preventDefault();micStop();}},true);
+addEventListener("keyup",e=>{   // let go (of D, or of ⌘/Ctrl: a Mac sends no keyup for D while ⌘ is held): a hold stops, a tap keeps listening
+  if(!keyAt||!(e.code==="KeyD"||e.key==="Meta"||e.key==="Control"))return;const held=performance.now()-keyAt;keyAt=0;
+  if(keyStopped||!lis)return;if(held>350)micStop();else lis.tap=true;},true);
 askEl.addEventListener("keydown",e=>{
   if(e.key===" "){
     if(lis){e.preventDefault();if(!e.repeat)spaceAt=performance.now();return;}
     if(!askEl.value.trim()&&!e.repeat){e.preventDefault();spaceAt=performance.now();micStart();return;}}
-  if(e.key==="Escape"&&lis){e.preventDefault();micStop();return;}
   if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();if(lis)micStop();$("#form").requestSubmit();}});
 askEl.addEventListener("keyup",e=>{if(e.key!==" "||!lis||!spaceAt)return;const held=performance.now()-spaceAt;spaceAt=0;
   if(held>350||lis.tap)micStop();else lis.tap=true;});   // held: release stops; a tap leaves it listening, the next tap stops
+window.__dict=()=>({path:dictPath,listening:!!lis,sr:!!SR,mac:IS_MAC});
 $("#form").addEventListener("submit",e=>{e.preventDefault();if(lis)micStop();const t=askEl.value.trim();if(!t)return;askEl.value="";sendState();strike();ask(t);});
 })();
 </script>

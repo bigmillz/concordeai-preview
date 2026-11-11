@@ -721,3 +721,23 @@ suggestion chips. The composer's centre sits on the golden point of the space un
     speed: 0.81, a dark gap left of centre).
   - In motion: 17 % of the curtain's light moves within 2 s (Full; before 12 %). No flashes (bottom-right spikes 0).
   - AA under the greeting with the curtain at its lowest reach: 4.88 at rest, 3.36 at Ultra (large text, 3.0).
+
+## Dictation: ⌘D (per the owner: "hit ⌘ or Ctrl D and have it run without triggering Chrome to set it as a bookmark")
+- **The key:** ⌘D on a Mac, Ctrl+D elsewhere (Ctrl+D on a Mac stays forward-delete). It is taken on `window` in the
+  capture phase and cancelled at once (`preventDefault` and `stopPropagation`, before anything else runs), so the
+  page's browser never sees it. Hold to talk and let go to stop (a Mac sends no keyup for D while ⌘ is held, so letting
+  go of ⌘ counts); a tap (under 350 ms) keeps it listening until the next press; Esc stops. Space held in an empty
+  composer still talks too.
+- **At once:** the mic button lights, the live level runs and the composer says "Listening…" the moment the key goes
+  down, before recognition starts.
+- **Real recognition:** the Web Speech API in the visitor's language (`navigator.language`), interim words written live
+  and dimmed (60 % ink) until final, then left ready to send. On this device when Chrome offers it
+  (`SpeechRecognition.available({processLocally:true})` is "available", then `processLocally`); otherwise Chrome's
+  speech service, and the first time one honest line: "In the browser, Chrome's speech service hears this. The app keeps
+  your voice on your machines." Never claimed on-device when it is not.
+- **Calm lines:** microphone blocked ("Allow it from the icon at the left of the address bar, then try again"); the
+  service unreachable, or ending three times within 1.5 s ("didn't answer"); no recognition at all (Firefox): the mic
+  button's tooltip, "Dictation works in the app and in Chrome." No scripted demo text any more.
+- **Checked in Chrome 157 on this Mac** (headed): ⌘D is cancelled in the capture phase; the mic lights at once; hold,
+  tap and Esc behave; on a Windows user agent Ctrl+D is taken and ⌘D left alone. On-device recognition for en-US
+  reports "downloadable" (the language pack is not installed), so Chrome uses its speech service.
