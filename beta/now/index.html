@@ -7,7 +7,7 @@
 <title>ConcordeAI 7.0 beta</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%272 2.3 19.6 16.4%27%3E%3Cg stroke=%27%23e6e9f4%27 stroke-width=%271.6%27 stroke-linecap=%27round%27 fill=%27none%27%3E%3Cline x1=%273.2%27 y1=%2717.5%27 x2=%2720.4%27 y2=%273.5%27/%3E%3Cline x1=%277.5%27 y1=%2717.5%27 x2=%2720.4%27 y2=%277%27/%3E%3Cline x1=%2711.8%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2710.5%27/%3E%3Cline x1=%2716.1%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2714%27/%3E%3Cline x1=%2719.3%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2716.6%27/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Michroma&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Space+Grotesk:wght@300..700&family=Michroma&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* BALANCE AND STING, the quiet version. Balanced is the default (html.bal); html.full brings the whole show back
    (the Effects toggle under the settings icon); html.calm is the stillest. Every light, trail, shimmer and flight
@@ -168,7 +168,7 @@ html:not(.full) .rigs{display:none}
 .status .tip .m{display:flex;align-items:center;gap:8px;color:var(--ink2);font-size:var(--t-small)}
 .status .tip .m .die{opacity:1;transform:none}
 .status:hover .tip,.status:focus-visible .tip{opacity:1;transform:none}
-.full .status{display:none}
+.full .status{display:flex}
 /* the settings icon and its little Effects popover */
 #fxbtn{position:relative}
 #fxpop{position:absolute;right:0;top:44px;z-index:30;display:flex;align-items:center;gap:2px;padding:4px;border-radius:var(--r-ctl);white-space:nowrap;border:1px solid var(--hair2);background:var(--glass-dense);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:inset 0 1px 0 var(--spec),var(--shadow-float);
@@ -889,6 +889,248 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
 /* the lane tabs sit over the column's centre, sidebar open or not */
 @media (min-width:760px){header nav.seg{position:absolute;left:50%;transform:translateX(-50%);transition:left .6s var(--out)}}
 @media (min-width:1100px){.side-open header nav.seg{left:calc(282px + (100% - 282px) / 2)}}
+
+/* ---------- BETA 3 ALIGNMENT, THE BREATHE PASS AND SHARP (per the owner: "calmer and airier", "very sharp. Think
+   how Claude looks"). Values in DESIGN.md. ---------- */
+:root{--t-read:16px;--hl:1px}
+@media (min-resolution:2dppx){:root{--hl:.5px}}   /* hairlines are one device pixel */
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+/* the header: one row, nothing overlapping */
+header .spacer{flex:1 1 0;min-width:16px}
+header>*{flex:none}
+@media (min-width:601px){header nav.seg,.side-open header nav.seg{position:relative;left:auto;transform:none;transition:none}}
+header .hsep{display:none;width:var(--hl);height:16px;background:rgba(255,255,255,.22);margin:0 4px 0 0}
+header .ctitle{display:none;flex:0 1 auto;min-width:0;max-width:340px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:450 var(--t-ui)/1.2 var(--ui);color:var(--ink2)}
+.chat header .hsep,.chat header .ctitle{display:block}
+.chat header .beta,header.h-notitle .hsep,header.h-notitle .ctitle{display:none}
+header.h-mark .mark>span[aria-hidden="true"]{display:none}
+header.h-compact .seg button{min-width:0;padding:0 10px}
+@media (max-width:600px){header .hsep,header .ctitle{display:none!important}}
+.upd{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:6px;border:var(--hl) solid rgba(255,255,255,.2);font:450 var(--t-label)/1 var(--ui);color:var(--ink2);white-space:nowrap}
+.upd[hidden]{display:none}
+#fxtog.gear{width:32px;height:32px;border-radius:8px;border:var(--hl) solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+#fxtog.gear:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.32)}
+#fxbtn .ttip{position:absolute;right:0;top:40px;z-index:31;white-space:nowrap;padding:6px 10px;border-radius:8px;border:var(--hl) solid rgba(255,255,255,.2);background:var(--glass-dense);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);font:450 var(--t-label)/1.2 var(--ui);color:var(--ink2);opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity var(--t2) var(--out),transform var(--t2) var(--out)}
+#fxbtn:hover .ttip,#fxtog:focus-visible~.ttip{opacity:1;transform:none;transition-delay:.4s}
+#fxtog[aria-expanded="true"]~.ttip{opacity:0!important}
+.tip{box-shadow:none}
+.status .tip .m{color:var(--ink2)}
+.status .tip .m em{margin-left:auto;padding-left:16px;font-style:normal;color:var(--ink3)}
+/* the conversation: one 640 column; the question, the answer and the composer share its left edge */
+.full .chat main{--mw:640px}
+.msg.ai,html:not(.full) .msg.ai{grid-template-columns:minmax(0,640px)}
+#convo{padding-bottom:64px}
+.msg.user{margin:0 0 32px;color:rgba(244,245,250,.85);font-weight:400}
+.who{border-top:var(--hl) solid rgba(255,255,255,.18);font-weight:500}
+/* the working line lives in the byline's row and, on landing, becomes the byline: nothing moves */
+#live{display:none}
+.who .wk{font:450 var(--t-ui)/1.3 var(--ui);color:#aab2c3}
+.live .who .wk{background:linear-gradient(100deg,#9aa3b5 0%,#9aa3b5 38%,#e9edf5 50%,#9aa3b5 62%,#9aa3b5 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:wsweep 2.4s linear infinite}
+html.calm .live .who .wk{animation:none;background:none;color:#aab2c3}
+@keyframes wsweep{from{background-position:100% 0}to{background-position:-60% 0}}
+.who .wkc{font:400 var(--t-label)/1 var(--mono);color:var(--ink3);font-variant-numeric:tabular-nums}
+.who .wk:empty,.who .wkc:empty{display:none}
+/* reading: 16 px on 1.7, about 64 characters a line, ink at 87 %; bold and headings carry the emphasis */
+.body{font-weight:400;line-height:1.7;letter-spacing:-.005em;color:#dcdfe7;max-width:64ch}
+.body p,.body ul,.body ol{margin-bottom:1.1em}
+.body b,.body strong{font-weight:600;color:var(--ink)}
+sup.cite{font:500 9px/1 var(--mono);color:rgba(214,220,232,.7);border:var(--hl) solid rgba(214,220,232,.22);padding:1px 3px 0;margin:0 0 0 2px;vertical-align:.5em}
+/* under the answer: one quiet row of sources, one line of chips, the card */
+.srcline{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:24px 0 0;font:450 var(--t-small)/1.5 var(--ui);color:var(--ink3)}
+.srcline[hidden],.trail[hidden],.tcard[hidden]{display:none}
+.srcline a{color:var(--ink2);text-decoration:none}
+.srcline a:hover{color:var(--ink);text-decoration:underline;text-decoration-thickness:var(--hl);text-underline-offset:3px}
+.trail{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:16px 0 0;padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer;text-align:left;border-radius:6px}
+.trail:focus-visible{outline:1px solid var(--ember);outline-offset:4px}
+.tchip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:6px;border:var(--hl) solid rgba(255,255,255,.22);font:450 var(--t-label)/1 var(--ui);color:var(--ink2);white-space:nowrap;transition:border-color var(--t1) var(--out),color var(--t1) var(--out)}
+.tchip svg{flex:none}
+.trail:hover .tchip{border-color:rgba(255,255,255,.34);color:var(--ink)}
+.tmore{display:inline-flex;align-items:center;gap:8px;height:24px;margin-left:4px;font:450 var(--t-label)/1 var(--ui);color:var(--ink3)}
+.tmore::after,.tnums summary::after{content:"";width:5px;height:5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform var(--t2) var(--out)}
+.trail[aria-expanded="true"] .tmore::after,.tnums[open] summary::after{transform:translateY(1px) rotate(225deg)}
+.trail:hover .tmore{color:var(--ink2)}
+.tcard{margin:12px 0 0;padding:16px;border-radius:8px;border:var(--hl) solid rgba(255,255,255,.2);background:rgba(6,7,10,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);animation:tcin .2s var(--out)}
+@keyframes tcin{from{opacity:0}}
+.journey{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 24px}
+.journey li{position:relative;display:flex}
+.journey li+li::before{content:"";position:absolute;right:100%;width:24px;top:12px;height:var(--hl);background:rgba(255,255,255,.22)}
+.jc{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:6px;border:var(--hl) solid rgba(255,255,255,.22);font:450 var(--t-label)/1 var(--ui);color:var(--ink2)}
+.jc svg{color:#cdd4e2}
+.ttime{margin:16px 0 0;font:400 var(--t-label)/1.4 var(--mono);color:var(--ink3)}
+.tsrc{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.tsrc li{display:flex;align-items:center;gap:8px;min-width:0;font:400 var(--t-small)/1.4 var(--ui)}
+.tsrc .sn{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:4px;border:var(--hl) solid rgba(255,255,255,.22);font:500 10px/1 var(--mono);color:var(--ink2);flex:none}
+.tsrc a{color:var(--ink2);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tsrc a:hover{color:var(--ink)}
+.tsrc .td{margin-left:auto;padding-left:16px;font:400 var(--t-label)/1 var(--mono);color:var(--ink3);white-space:nowrap}
+.tnums{margin:16px 0 0}
+.tnums summary{display:inline-flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:450 var(--t-small)/1.4 var(--ui);color:var(--ink3)}
+.tnums summary::-webkit-details-marker{display:none}
+.tnums summary:hover{color:var(--ink2)}
+.tnums summary:focus-visible{outline:1px solid var(--ember);outline-offset:3px;border-radius:4px}
+.tnums table{width:100%;margin:8px 0 0;border-collapse:collapse;font:400 var(--t-label)/1.4 var(--ui);color:var(--ink2)}
+.tnums th,.tnums td{text-align:left;padding:6px 8px 6px 0;border-top:var(--hl) solid rgba(255,255,255,.14);font-weight:400}
+.tnums th{color:var(--ink3)}
+.tnums .num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;padding:6px 0 6px 12px}
+.tnums tfoot td{color:var(--ink)}
+@media (max-width:600px){.tnums .wh,.tsrc .td{display:none}.journey{gap:8px}.journey li+li::before{display:none}}
+.fine{font-size:var(--t-micro);margin-top:16px}
+/* the reading scrim: a soft, wide band of dark behind the column (a gradient, not a blur), feathered at its sides */
+#scrim{pointer-events:none;opacity:0;transition:opacity .8s var(--out);
+  background:linear-gradient(90deg,transparent calc(var(--cx,50vw) - var(--hw,344px) - 200px),rgba(0,0,0,.42) calc(var(--cx,50vw) - var(--hw,344px)),rgba(0,0,0,.42) calc(var(--cx,50vw) + var(--hw,344px)),transparent calc(var(--cx,50vw) + var(--hw,344px) + 200px))}
+.chat #scrim{opacity:1}
+/* sharp edges: the composer 12, keys 8, chips 6; its Ultra rim stays concentric */
+.cbox{border-width:var(--hl)}
+
+/* ---------- CLAUDE-SHARP CHROME, GPT-GRADE MOTION (per the owner, the governing rule for the working views: the
+   conversation, Code, Funnels and the sidebar). Flat near-black surfaces, 1 px hairlines, no gradients or glows on
+   chrome; the motion rich but smooth, one easing family (--e). Values in DESIGN.md. ---------- */
+:root{--e:cubic-bezier(.2,.7,.2,1);--hair8:rgba(255,255,255,.08);--meta:rgba(255,255,255,.55);--s0:#0e0e10;--s1:#141416;--s2:#151517;--s3:#1f1f22}
+/* the sky recedes in the working views (30 % of its home strength); the full show stays on the home and at Ultra */
+#stage.chat{background:var(--s0)}
+#stage.chat #sky,#stage.chat #decor{opacity:.3!important;transition:opacity 1.2s var(--e)!important}
+#stage.chat.ultra #sky,#stage.chat.ultra #decor{opacity:.6!important}
+#scrim{background:linear-gradient(90deg,transparent calc(var(--cx,50vw) - var(--hw,344px) - 200px),rgba(14,14,16,.6) calc(var(--cx,50vw) - var(--hw,344px)),rgba(14,14,16,.6) calc(var(--cx,50vw) + var(--hw,344px)),transparent calc(var(--cx,50vw) + var(--hw,344px) + 200px))}
+/* the header: flat, small icons, no glow; the lanes a flat segmented control */
+nav.seg{background:#1a1a1d;border:var(--hl) solid var(--hair8);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+.seg-hi,nav.seg[data-lane="funnels"] .seg-hi{background:#26262a;box-shadow:none;transition:transform .32s var(--e)}
+.seg button{font-size:13px;font-weight:450}
+/* the sidebar: a slightly lifted flat panel, compact 13 px rows */
+#side{background:var(--s1);border:var(--hl) solid var(--hair8);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+.day{font:500 13px/16px var(--ui);text-transform:none;letter-spacing:0;color:var(--meta);text-shadow:none;margin:16px 8px 4px}
+.hrow{height:30px;font-size:13px;font-weight:450;color:rgba(255,255,255,.78);border-radius:8px}
+.hrow:hover{background:#1a1a1d;color:var(--ink)}
+.hrow.on{background:var(--s3);color:var(--ink)}
+.newchat{font-size:13px;font-weight:450;box-shadow:none}
+/* messages: the question a quiet right-aligned bubble; the answer plain text under a tiny byline */
+.msg.user{width:fit-content;max-width:min(78%,520px);margin:0 0 32px auto;padding:10px 14px;border-radius:14px;background:var(--s3);font-size:15px;line-height:1.5;color:#e6e8ee}
+.msg{animation:rise6 .5s var(--e) both}
+@keyframes rise6{from{opacity:0;transform:translateY(6px)}}
+.who{border-top:0;padding-top:0;margin:0 0 12px;font-size:13px;color:var(--meta)}
+.who b{font-weight:500;color:rgba(255,255,255,.74)}
+.who .dot{width:4px;height:4px}
+.body{font-size:16px;line-height:1.65}
+.ttime,.fine,.srcline,.srcline .slk,.tsrc .td,.tnums summary,.tmore{color:var(--meta)}
+.fine{font-size:12px}
+/* the composer in the working views: flat, one hairline, radius 14 */
+#stage.chat .cbox{background:var(--s2);-webkit-backdrop-filter:none;backdrop-filter:none;border:var(--hl) solid var(--hair8);border-radius:14px;box-shadow:none}
+#stage.chat #ask::placeholder{color:rgba(255,255,255,.5)}
+#stage.chat .halo{display:none}
+/* Code: the same flat surfaces; command and approval cards flat with a hairline, mono text; runs shimmer */
+.runs pre{background:var(--s2);border:var(--hl) solid var(--hair8);border-radius:8px}
+.approve,.verdict{background:var(--s2);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;border:var(--hl) solid rgba(255,255,255,.1);border-radius:10px}
+.risk{border:var(--hl) solid rgba(255,255,255,.18)}
+.runs li,.stages li,#approve,.verdict{opacity:0;transform:translateY(6px);transition:opacity .4s var(--e),transform .4s var(--e)}
+.runs li.shown,.stages li.shown,#approve.shown,.verdict.shown{opacity:1;transform:none}
+.runs li .rst{grid-column:2;font:450 12px/1.4 var(--ui);color:#aab2c3}
+.runs li:not(.ran) .rst{background:linear-gradient(100deg,#9aa3b5 0%,#9aa3b5 38%,#e9edf5 50%,#9aa3b5 62%,#9aa3b5 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:wsweep 2.4s linear infinite}
+.runs li.ran .rst{color:var(--meta)}
+.runs li:not(.ran) pre,.runs li:not(.ran) .note2{display:none}
+.runs li.ran pre,.runs li.ran .note2{animation:fadeUp .35s var(--e) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}}
+/* Funnels: a clean vertical flow on a hairline; the current step shimmers, done steps carry a crisp check; flat option
+   cards (radius 10, a hairline, a subtle lift on hover); the chosen option flies into the trail */
+.ftrail{display:flex;flex-wrap:wrap;gap:6px;min-height:24px;margin:0 0 20px}
+.ftc{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:6px;border:var(--hl) solid rgba(255,255,255,.22);font:450 12px/1 var(--ui);color:var(--ink2)}
+.stages{border-left:var(--hl) solid rgba(255,255,255,.14);padding-left:20px}
+.stages li{position:relative}
+.stages li::before{content:"";position:absolute;left:-24px;top:4px;width:7px;height:7px;background:var(--s0);border:var(--hl) solid rgba(255,255,255,.3)}
+.stages li.done::before{width:4px;height:8px;left:-23px;top:2px;border:0;border-right:1.5px solid #dfe4ee;border-bottom:1.5px solid #dfe4ee;transform:rotate(45deg);background:none}
+.stages li.cur .sq{background:linear-gradient(100deg,#aab2c3 0%,#aab2c3 38%,#f2f4f9 50%,#aab2c3 62%,#aab2c3 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:wsweep 2.4s linear infinite}
+.stages li.done .sq{color:var(--meta)}
+.op{height:32px;padding:0 12px;border-radius:10px;border:var(--hl) solid rgba(255,255,255,.14);background:var(--s2);color:var(--ink2);transition:transform .2s var(--e),border-color .2s var(--e),color .2s var(--e),opacity .3s var(--e)}
+.op:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.28);color:var(--ink)}
+.op.on{color:var(--ink2);border-color:rgba(255,255,255,.14);background:var(--s2);box-shadow:none}
+.stages li.done .op.on{color:var(--ink);border-color:rgba(255,255,255,.42)}
+.stages li.done .op:not(.on){opacity:.45}
+/* streaming v2 (per the owner: "super clean, super smooth"): each word fades in over 180 ms from 1 px of blur to none
+   (no weight morph, no glow, no sideways move); a word that opens a new line rises 4 px; code arrives line by line;
+   the draft becomes the final by crossfading only the changed words (250 ms); a 4 px silver dot glides at the end */
+.body{transition:height .24s var(--e)}
+.ink{animation:inkIn .18s var(--e) both}
+.ink.nl{animation-name:inkInRise}
+@keyframes inkIn{from{opacity:0;filter:blur(1px)}to{opacity:1;filter:none}}
+@keyframes inkInRise{from{opacity:0;filter:blur(1px);transform:translateY(4px)}to{opacity:1;filter:none;transform:none}}
+.inkln{animation:inkFade .18s var(--e) both}
+.inkln.c{animation-duration:.22s}
+.ink-old{transition:opacity .12s ease}
+.dissolving .ink-old{opacity:0;filter:none}
+.ink-new,.ink-new.c{animation:inkFade .25s ease both}
+.star:not(.prism){background:#d9dee8;box-shadow:none;transition:transform .12s linear,opacity .3s var(--e)}
+.star:not(.prism)::before,.star:not(.prism)::after{display:none}
+@media (prefers-reduced-motion:reduce){.runs li,.stages li,#approve,.verdict{opacity:1;transform:none}}
+
+/* ---------- INTER, TIGHT AND SHARP (per the owner: "super sharp, super clean"). Inter for all UI and reading text;
+   Space Grotesk only for the greeting (the wordmark keeps its own face); Plex Mono only for code. ---------- */
+:root{--ui:'Inter',-apple-system,system-ui,sans-serif;--t-read:15px;--t-ui:13px;--t-small:13px;--t-label:12px;--t-micro:11px;--t-h2:17px;--t-h3:15px;--meta:rgba(255,255,255,.55)}
+body{letter-spacing:-.005em}
+#hero h1{font-family:'Space Grotesk',-apple-system,system-ui,sans-serif}
+/* the header: three columns, the lanes always at the centre; a title's length never moves them */
+header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:16px}
+header .hgl{display:flex;align-items:center;gap:12px;min-width:0}
+header .hgr{display:flex;align-items:center;gap:12px;justify-self:end;min-width:0}
+header .hgl>*,header .hgr>*{flex:none}
+header .hgl .ctitle{flex:0 1 auto}
+/* UI 13 px at 450-500; labels 11 px caps; metadata 12 px at 55 % */
+.seg button,.hrow,.newchat,.tchip,.jc,.tmore,.srcline,.ftc,.op,.pick b,.elevel,.upd,#fxbtn .ttip,#fxpop button,.who{font-size:13px}
+.tchip,.jc,.tmore,.ftc,.upd,.srcline{font-size:12px}
+.day,.lvk,.risk,.beta{font:600 11px/16px var(--ui);text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5)}
+.risk.w{color:var(--ink)}
+.ttime,.who .wkc,.tnums .num,.tsrc .td,.tsrc .sn,sup.cite{font-family:var(--ui);font-variant-numeric:tabular-nums}
+.ttime{font-size:12px}
+/* reading: 15 px on 1.6, ink at 88 %, about 66 characters; bold 600; headings 17 and 15 at 600 */
+.body{font-size:15px;line-height:1.6;font-weight:400;letter-spacing:-.01em;color:#e0e0e2;max-width:66ch}
+.body p,.body ul,.body ol{margin-bottom:.8em}
+.body h2{font-size:17px;font-weight:600;letter-spacing:-.01em;margin:1.4em 0 .5em}
+.body h3{font-size:15px;font-weight:600;margin:1.2em 0 .4em}
+.body b,.body strong{font-weight:600}
+.verdict p{font-size:15px;line-height:1.6;letter-spacing:-.01em}
+sup.cite{font-size:9px;font-weight:500}
+/* tighter: byline to text 12, question to answer 24; the sample note 11 px, quiet */
+.msg.user{margin-bottom:24px;font-size:14px}
+.who{margin-bottom:12px}
+.fine{font-size:11px;color:rgba(255,255,255,.5)}
+/* Funnels: a done step's check sits on the hairline, crisp */
+.stages li.done::before{width:12px;height:12px;left:-27px;top:2px;border:0;transform:none;background:var(--s0) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.4 6.4l2.4 2.3 4.8-5' fill='none' stroke='%23e2e6ee' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
+
+/* ---------- THE FLOW, and the reading surface (per the owner: "crisper"; "a cool flow showing what's going on") ---------- */
+/* the reading column sits on a near-solid flat surface: the sky shows through at most faintly, no stars behind text */
+#scrim{background:linear-gradient(90deg,transparent calc(var(--cx,50vw) - var(--hw,344px) - 160px),rgba(14,14,16,.93) calc(var(--cx,50vw) - var(--hw,344px)),rgba(14,14,16,.93) calc(var(--cx,50vw) + var(--hw,344px)),transparent calc(var(--cx,50vw) + var(--hw,344px) + 160px))}
+#convo,#convo *{text-shadow:none!important}
+.flow{display:none}
+#stage.flowon:not(.lane) main{--mw:920px}
+#stage.flowon .msg.ai{grid-template-columns:minmax(0,640px) 240px;column-gap:40px}
+#stage.flowon .msg.user{margin-right:280px}
+#stage.flowon .flow{display:block;grid-column:2;grid-row:1/span 9;position:sticky;top:0;align-self:start;padding-top:2px}
+#stage.flowon .trail,#stage.flowon .tcard{display:none!important}
+.flow{position:relative}
+.fl{list-style:none;margin:0;padding:0;position:relative}
+.fl::before{content:"";position:absolute;left:14px;top:10px;bottom:10px;width:var(--hl);background:rgba(255,255,255,.14)}
+.fn{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:12px;align-items:start;padding:0 0 20px}
+.fn:last-child{padding-bottom:0}
+.nd{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:28px;height:20px;box-sizing:border-box;border-radius:6px;border:var(--hl) solid rgba(255,255,255,.2);background:#141416;font:500 10px/1 var(--ui);font-variant-numeric:tabular-nums;color:var(--ink2);transition:border-color .4s var(--e),background-color .4s var(--e)}
+.nd svg{color:#e2e6ee}
+.fx{min-width:0;padding-top:1px}
+.fx b{display:block;font:500 13px/18px var(--ui);color:var(--ink2);transition:color .4s var(--e)}
+.fx .tag{display:inline-flex;align-items:center;height:18px;margin-top:4px;padding:0 6px;border-radius:4px;border:var(--hl) solid rgba(255,255,255,.14);font:450 11px/1 var(--ui);color:var(--meta)}
+.fn.wait .fx b{color:var(--meta)}
+.fn.wait .nd{border-color:rgba(255,255,255,.12)}
+.fn.on .fx b{color:var(--ink)}
+.fn.on .nd{border-color:rgba(255,255,255,.46);color:var(--ink);background:linear-gradient(100deg,#17171a 0%,#17171a 35%,#34363d 50%,#17171a 65%,#17171a 100%);background-size:260% 100%;animation:wsweep 1.8s linear infinite}
+.ultra .fn.on .nd{border-color:rgba(165,184,255,.6)}
+.fn.done .nd{border-color:rgba(255,255,255,.28)}
+.fchips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.fchip{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:4px;border:var(--hl) solid rgba(255,255,255,.14);font:450 11px/1 var(--ui);color:var(--ink2);animation:fchipIn .35s var(--e) both}
+.fchip.still{animation:none}
+@keyframes fchipIn{from{opacity:0;transform:translateX(-6px)}}
+.fbeam{position:absolute;left:14px;top:0;width:1px;height:36px;pointer-events:none;opacity:0;background:linear-gradient(180deg,rgba(236,240,248,0),rgba(236,240,248,.9),rgba(236,240,248,0))}
+.ffoot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:20px;padding-top:12px;border-top:var(--hl) solid rgba(255,255,255,.1);font:450 12px/1.4 var(--ui);color:var(--meta)}
+.ffoot[hidden]{display:none}
+.ffoot .safe{display:inline-flex;align-items:center;gap:6px;color:var(--ink2)}
+.ffoot .ftime{font-variant-numeric:tabular-nums}
+.fnums{margin-top:12px}
+.fnums .num{padding-left:8px}
+.who .dot{display:none}   /* the byline needs no mark */
 </style>
 </head>
 <body>
@@ -899,6 +1141,7 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
   <div class="layer" id="horizon" aria-hidden="true"></div>
   <div class="layer" id="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div></div>
 
+  <div class="layer" id="scrim" aria-hidden="true"></div>
   <div id="bigmark" aria-hidden="true">
     <span class="mark"><svg width="66" height="54" viewBox="2 2.3 19.6 16.4"><defs><linearGradient id="g1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#787e89"/><stop offset=".55" stop-color="#b7bcc6"/><stop offset="1" stop-color="#f4f5f8"/></linearGradient></defs><g stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round"><line pathLength="1" x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line pathLength="1" x1="7.5" y1="17.5" x2="20.4" y2="7"/><line pathLength="1" x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line pathLength="1" x1="16.1" y1="17.5" x2="20.4" y2="14"/><line pathLength="1" x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span class="word" id="bigword">Concorde<b>AI</b></span><span class="glint big"><span class="gm"><svg width="66" height="54" viewBox="2 2.3 19.6 16.4"><g stroke-width="1.5" stroke-linecap="round"><line x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line x1="7.5" y1="17.5" x2="20.4" y2="7"/><line x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line x1="16.1" y1="17.5" x2="20.4" y2="14"/><line x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span>Concorde<b>AI</b></span></span></span></span>
     <span class="flare"></span>
@@ -907,20 +1150,15 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
   <div id="motes" aria-hidden="true"></div>
   <div id="ui">
     <header>
-      <button class="ibtn" id="sidetog" type="button" aria-label="Show or hide chats" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></button>
+      <div class="hgl"><button class="ibtn" id="sidetog" type="button" aria-label="Show or hide chats" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></button>
       <span class="mark" aria-label="ConcordeAI"><svg aria-hidden="true" width="22" height="18" viewBox="2 2.3 19.6 16.4"><defs><linearGradient id="g2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#787e89"/><stop offset=".55" stop-color="#b7bcc6"/><stop offset="1" stop-color="#f4f5f8"/></linearGradient></defs><g stroke="url(#g2)" stroke-width="1.5" stroke-linecap="round"><line x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line x1="7.5" y1="17.5" x2="20.4" y2="7"/><line x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line x1="16.1" y1="17.5" x2="20.4" y2="14"/><line x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span aria-hidden="true">Concorde<b>AI</b></span>
         <span class="glint" aria-hidden="true"><span class="gm"><svg width="22" height="18" viewBox="2 2.3 19.6 16.4"><g stroke-width="1.5" stroke-linecap="round"><line x1="3.2" y1="17.5" x2="20.4" y2="3.5"/><line x1="7.5" y1="17.5" x2="20.4" y2="7"/><line x1="11.8" y1="17.5" x2="20.4" y2="10.5"/><line x1="16.1" y1="17.5" x2="20.4" y2="14"/><line x1="19.3" y1="17.5" x2="20.4" y2="16.6"/></g></svg><span>Concorde<b>AI</b></span></span></span></span>
-      <span class="beta">7.0 beta</span>
-      <span class="spacer"></span>
+      <span class="beta">7.0 beta</span><span class="hsep" aria-hidden="true"></span><span class="ctitle" id="ctitle"></span></div>
       <nav class="seg" id="lanes" role="tablist" aria-label="Lane" data-lane="chat"><i class="seg-hi" aria-hidden="true"></i><button type="button" role="tab" id="tab-chat" data-lane="chat" aria-selected="true" aria-controls="hero">Chat</button><button type="button" role="tab" id="tab-code" data-lane="code" aria-selected="false" aria-controls="v-code" tabindex="-1">Code</button><button type="button" role="tab" id="tab-funnels" data-lane="funnels" aria-selected="false" aria-controls="v-funnels" tabindex="-1"><svg class="fstar" width="9" height="9" viewBox="-5 -5 10 10" aria-hidden="true"><path d="M0 -5Q.7 -.7 5 0Q.7 .7 0 5Q-.7 .7 -5 0Q-.7 -.7 0 -5Z" fill="currentColor"/></svg>Funnels</button></nav>
-      <span class="spacer"></span>
-      <div class="status" id="status" tabindex="0" aria-label="Your machines: ready"><i></i><span class="tip"><strong>Ready</strong><span class="m"><i class="die" style="--ac:#c9ccd2;--ag:#e4e7ee"></i>Your Mac, Apple silicon</span><span class="m"><i class="die" style="--ac:#76b900;--ag:#93dc1a"></i>Your server, NVIDIA graphics</span></span></div>
-      <div class="rigs" role="list" aria-label="Your machines">
-        <div class="rig mlx" role="listitem" tabindex="0"><i class="die"></i><b>MLX</b><span class="tip"><strong>Your Mac</strong><span>Apple silicon</span><span class="st">Ready</span></span></div>
-        <div class="rig nvidia" role="listitem" tabindex="0"><i class="die"></i><b>NVIDIA</b><span class="tip"><strong>Your server</strong><span>NVIDIA graphics</span><span class="st">Ready</span></span></div>
-      </div>
-      <div id="fxbtn"><button class="ibtn" id="fxtog" type="button" aria-label="Effects" aria-expanded="false" aria-controls="fxpop"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="15.5" cy="7" r="2.2"/><circle cx="9.5" cy="17" r="2.2"/></svg></button>
-        <div id="fxpop" role="group" aria-label="Effects"><button type="button" data-fx="calm" aria-pressed="false">Calm</button><button type="button" data-fx="bal" aria-pressed="true">Balanced</button><button type="button" data-fx="full" aria-pressed="false">Full</button></div></div>
+      <div class="hgr"><div class="status" id="status" tabindex="0" aria-label="Your machines: this Mac and Ollama1, both ready"><i></i><span class="tip"><strong>Your machines</strong><span class="m"><i class="die" style="--ac:#c9ccd2;--ag:#e4e7ee"></i>This Mac<em>MLX · Ready</em></span><span class="m"><i class="die" style="--ac:#76b900;--ag:#93dc1a"></i>Ollama1<em>NVIDIA · Ready</em></span></span></div>
+      <span class="upd" id="upd" hidden>Update ready</span>
+      <div id="fxbtn"><button class="ibtn gear" id="fxtog" type="button" aria-label="Settings" aria-keyshortcuts="Meta+Comma" aria-expanded="false" aria-controls="fxpop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"/></svg></button><span class="ttip" aria-hidden="true">Settings (⌘,)</span>
+        <div id="fxpop" role="group" aria-label="Effects"><button type="button" data-fx="calm" aria-pressed="false">Calm</button><button type="button" data-fx="bal" aria-pressed="true">Balanced</button><button type="button" data-fx="full" aria-pressed="false">Full</button></div></div></div>
     </header>
     <aside id="side" aria-label="Chats">
       <button class="newchat" id="newchat" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New chat</button>
@@ -939,16 +1177,14 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
       <section id="convo" hidden aria-live="polite">
         <div class="msg user" id="q" tabindex="-1"></div>
         <div class="msg ai live" id="ai">
-          <div class="who"><i class="dot" aria-hidden="true"></i><b id="by">Concorde Thinking</b><span class="st" id="byst"></span><button type="button" class="details" id="details" aria-expanded="false" aria-controls="behind">Details</button></div>
+          <div class="who"><i class="dot" aria-hidden="true"></i><b id="by">Concorde Thinking</b><span class="wk" id="byst"></span><span class="wkc" id="byclk"></span></div>
           <div class="liveline" id="live"><span class="lstep" id="step"></span><span class="lstats" id="stats"></span></div>
           <div class="body" id="ans"></div>
-          <div class="srcrow" id="srcs" aria-label="Sources"></div>
+          <p class="srcline" id="srcline" hidden></p>
+          <button type="button" class="trail" id="trail" aria-expanded="false" aria-controls="tcard" hidden></button>
+          <div class="tcard" id="tcard" hidden></div>
           <p class="fine" id="fine">Sample answer. This preview runs no models.</p>
-          <aside class="behind" id="behind" aria-label="Behind this answer">
-            <div class="bh"><span>Behind this answer</span><span class="bt" id="bt"></span></div>
-            <ul class="spine" id="spine"></ul>
-            <div class="machines" id="machines"></div>
-          </aside>
+          <aside class="flow" id="flow" aria-label="How this answer is made"></aside>
         </div>
       </section>
       <section id="laneview" hidden>
@@ -972,6 +1208,7 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
         </article>
         <article class="lv" id="v-funnels" role="tabpanel" aria-labelledby="tab-funnels" hidden>
           <div class="lvh"><span class="lvk">Sample funnel</span><h2>What to cook for six on Saturday</h2><p>One vegetarian, about two hours, oven only.</p></div>
+          <div class="ftrail" id="ftrail" aria-label="Your choices"></div>
           <ol class="stages">
             <li><span class="sq">How should it be served?</span><span class="ops"><span class="op on">Shared, on the table</span><span class="op">Plated courses</span><span class="op">A buffet</span></span></li>
             <li><span class="sq">Which direction?</span><span class="ops"><span class="op on">Mediterranean</span><span class="op">Mexican</span><span class="op">Indian</span></span></li>
@@ -1008,7 +1245,6 @@ html.calm #fxgl{display:none}   /* the arrival burst, above the glass */
         <p class="note" id="note" role="status"></p>
         <p id="micnote" aria-live="polite"><span>Speech is handled by your browser in this preview.</span><span class="demo" id="demotag" hidden>Demo</span></p>
       </form>
-      <div class="suggs" id="suggs" aria-label="Things to try"></div>
       <div class="under"></div>
     </main>
   </div>
@@ -1294,7 +1530,7 @@ const Sky=(function(){
   const ICE=hexRGB("#cfe0ff"),WHITE=[1,1,1];
   function rects(){const R=e=>{if(!e)return null;const r=e.getBoundingClientRect();return r.width&&r.height?r:null;};const out=[];
     if(stage.classList.contains("side-open"))out.push(R($("#side")));out.push(R($("header")));
-    if(stage.classList.contains("chat"))out.push(R($("#convo")));else{out.push(R($("#h1")));out.push(R($("#suggs")));}
+    if(stage.classList.contains("chat"))out.push(R($("#convo")));else{out.push(R($("#h1")));}
     out.push(R($(".cbox")));return out.filter(Boolean);}
   const inR=(x,y,r,m)=>x>r.left-m&&x<r.right+m&&y>r.top-m&&y<r.bottom+m;
   function toScreen(qx,qy,t){const a=t*.002618,ca=Math.cos(a),sa=Math.sin(a),W2=innerWidth*.5,cx=W2,cy=innerHeight*.12,px=W2,py=-innerHeight*.9;
@@ -1365,7 +1601,7 @@ const Sky=(function(){
   function buildField(launch){const R=e=>e?e.getBoundingClientRect():null,cb=R($(".cbox"));if(!cb||!cb.width)return null;const chat=stage.classList.contains("chat"),h1=R($("#h1"));
     const y0=chat?cb.top-34:Math.max((h1&&h1.height?h1.bottom:cb.top-200)+14,cb.top-230),y1=cb.top-8;if(y1-y0<20)return null;
     const x0=Math.max(12,cb.left-30),x1=Math.min(innerWidth-12,cb.right+30),n=Math.round((skyMode==="full"?40:20)*(chat?.5:1)),P=[];let glints=skyMode==="full"?4:2;
-    const spawn=(p,nowT)=>{p.x=x0+Math.random()*(x1-x0);p.y=y0+Math.random()*(y1-y0);p.s=1.5+Math.random()*1.7+(Math.random()<.12?1.4:0);p.a=(.38+Math.random()*.4)*(chat?.7:1);p.w=2*Math.PI/(2+Math.random()*5);p.ph=Math.random()*6.28;p.amp=.2+Math.random()*.35;p.sh=Math.random()<.3;
+    const spawn=(p,nowT)=>{p.x=chat?x0+(x1-x0)*(.18+.64*Math.random()):x0+Math.random()*(x1-x0);p.y=y0+Math.random()*(y1-y0);p.life=chat?2000+Math.random()*2000:0;p.s=1.5+Math.random()*1.7+(Math.random()<.12?1.4:0);p.a=(.38+Math.random()*.4)*(chat?.7:1);p.w=2*Math.PI/(2+Math.random()*5);p.ph=Math.random()*6.28;p.amp=.2+Math.random()*.35;p.sh=Math.random()<.3;
       p.col=UCOL[Math.floor(Math.random()*UCOL.length)];p.born=nowT;p.up=0;p.big=false;
       if(Math.random()<.4){p.x=x0+(Math.floor((p.x-x0)/11)+.5)*11;p.y=y0+(Math.floor((p.y-y0)/11)+.5)*11;}   // some sit on the dot matrix: one system
       if(glints>0&&!chat){glints--;p.big=true;p.s=5+Math.random()*1.5;p.a=.7+Math.random()*.2;p.col=[1,1,1];p.amp=.45;p.sh=false;p.w=2*Math.PI/(4+Math.random()*3);}   // a few larger four-point glints: they twinkle by brightening, never turning
@@ -1411,6 +1647,7 @@ const Sky=(function(){
       if(p.lt){const u=(nowT-p.lt)/p.lu;if(u<0)continue;const to=p.far!=null?p.far:yw;   // up hard (expo out) to nine tenths of the way, then float the last tenth (in-out): sparks at the top of their arc
         const u1=Math.min(1,(nowT-p.lt)/420),u2=Math.max(0,Math.min(1,(nowT-p.lt-420)/(p.lu-420))),e=.9*(u1>=1?1:1-Math.pow(2,-10*u1))+.1*(u2*u2*u2*(u2*(u2*6-15)+10));y=p.l0+(to-p.l0)*e;a*=Math.min(1,u*4);edge=1;   // launched from the box's edge, easing out
         if(p.far!=null){a*=Math.max(0,1-u);if(u>=1){p.lt=0;p.far=null;field.spawn(p,nowT);continue;}}else if(u>=1)p.lt=0;}
+      if(p.life){const u=(nowT-p.born)/p.life;if(u>=1){field.spawn(p,nowT);continue;}a*=Math.sin(Math.PI*u);}   // a conversation: short-lived, fading in and out
       if(p.up){const u=(nowT-p.up)/3000;if(u>=1){field.spawn(p,nowT);continue;}y-=28*u*(2-u)*.5*2;a*=1-u;}
       pfx.star(p.x,y,p.s*2.2,p.col,a*edge*fin*born*ue,0);if(p.big)pfx.star(p.x,y,p.s*.9,[1,1,1],.35*a*edge*fin*born*ue,0);}}   // a glint: a brighter core
   const MX={w:[{a:0},{a:0}],next:0,arr:0,kx:0,top:0};
@@ -1445,7 +1682,8 @@ const Sky=(function(){
     const P=pts.slice(0,4+Math.floor(Math.random()*3));const inT=[0],edges=[];while(inT.length<P.length){let best=null;for(const i of inT)for(let j=0;j<P.length;j++){if(inT.includes(j))continue;const dd=Math.hypot(P[i].sx-P[j].sx,P[i].sy-P[j].sy);if(!best||dd<best[2])best=[i,j,dd];}inT.push(best[1]);edges.push([best[0],best[1]]);}
     if(Math.random()<.35&&P.length>4){const a=0,b2=P.length-1;if(!edges.some(e=>(e[0]===a&&e[1]===b2)||(e[0]===b2&&e[1]===a)))edges.push([a,b2]);}   // sometimes it closes into a figure
     return {P,edges,t0:performance.now(),drift:Math.random()<.35};}
-  function drawSign(nowT,t,on){if(on&&fxLive()&&!sign&&nowT>nextSign){sign=buildSign(t);nextSign=nowT+20000+Math.random()*10000;}
+  function drawSign(nowT,t,on){if(sign&&stage.classList.contains("chat")&&!sign.out){sign.out=1;const d=sign.edges.length*.42+2;if((nowT-sign.t0)/1000<sign.edges.length*.42)sign=null;else if((nowT-sign.t0)/1000<d)sign.t0=nowT-d*1000;}   /* a conversation: no constellation lines (the one showing fades) */
+    if(on&&fxLive()&&!sign&&nowT>nextSign&&!stage.classList.contains("chat")){sign=buildSign(t);nextSign=nowT+20000+Math.random()*10000;}
     if(!sign)return;const age=(nowT-sign.t0)/1000,n=sign.edges.length,per=.42,draw=n*per,hold=2,fade=1.2;
     if(age>draw+hold+fade){sign=null;return;}
     const fa=age<draw+hold?1:1-(age-draw-hold)/fade,dy=sign.drift&&age>draw+hold?-(age-draw-hold)*9:0,S=sign.P.map(p=>{const v=toScreen(p.qx,p.qy,t);return [v[0],v[1]+dy];}),lit=new Set([sign.edges[0][0]]);
@@ -1463,7 +1701,7 @@ const Sky=(function(){
         const [x0,y0]=S[i],[x1,y1]=S[j];pfx.line(x0,y0,x0+(x1-x0)*e,y0+(y1-y0)*e,.8,ICE,.3*fade*ue,.42*fade*ue);}
       lit.forEach(i=>pfx.star(S[i][0],S[i][1],5.5,WHITE,.5*fade*ue,0));}}
     // shooting stars: one every 6 to 12 s, about 500 ms, in the upper sky beside the text column, never over it
-    if(on&&ue>.9&&nowT>nextShoot&&!shoot){nextShoot=nowT+(skyMode==="full"?6000+Math.random()*4000:10000+Math.random()*6000);
+    if(on&&ue>.9&&nowT>nextShoot&&!shoot&&!stage.classList.contains("chat")){nextShoot=nowT+(skyMode==="full"?6000+Math.random()*4000:10000+Math.random()*6000);
       const ex=rects(),col=stage.classList.contains("chat")?$("#convo").getBoundingClientRect():(()=>{const a=$("#h1").getBoundingClientRect(),b=$(".cbox").getBoundingClientRect();return {left:Math.min(a.left,b.left),right:Math.max(a.right,b.right)};})();
       const side=stage.classList.contains("side-open")?$("#side").getBoundingClientRect().right+20:20;
       const regs=[[side,col.left-24],[col.right+24,innerWidth-20]].filter(r=>r[1]-r[0]>=120);
@@ -1475,7 +1713,7 @@ const Sky=(function(){
         f.band={x0:dir>0?x:x+L,y0:y,dx:dir*L,dy:10+Math.random()*16,t0:nowT};f.nextBand=nowT+(skyMode==="full"?12000+Math.random()*6000:25000+Math.random()*10000);}}
     if(field&&field.band){const b=field.band,u=(nowT-b.t0)/450;if(u>=1)field.band=null;else{const e=1-Math.pow(1-u,2),a=Math.min(1,u/.15)*Math.min(1,(1-u)/.35)*ue*.85,hx=b.x0+b.dx*e,hy=b.y0+b.dy*e,tl=Math.min(e,.45);
       pfx.line(b.x0+b.dx*(e-tl),b.y0+b.dy*(e-tl),hx,hy,1,[.88,.92,1],0,.85*a);pfx.star(hx,hy,3.6,WHITE,a,0);}}   // the band's own shooting star, just above the box
-    if(on&&ue>.9&&fxLive()){if(!nextShower)nextShower=nowT+(skyMode==="full"?20000:50000);
+    if(on&&ue>.9&&fxLive()&&!stage.classList.contains("chat")){if(!nextShower)nextShower=nowT+(skyMode==="full"?20000:50000);
       if(nowT>nextShower){nextShower=nowT+(skyMode==="full"?60000+Math.random()*30000:110000+Math.random()*20000);const hd=$("header").getBoundingClientRect(),h1=$("#h1").getBoundingClientRect(),chat=stage.classList.contains("chat");
         const y0=hd.bottom+18,y1=chat?Math.min(innerHeight*.3,y0+160):Math.max(y0+60,h1.top-18),side=stage.classList.contains("side-open")?$("#side").getBoundingClientRect().right+20:20,x0=side,x1=innerWidth-20;
         if(y1-y0>=50&&x1-x0>300){const dir=Math.random()<.5?1:-1,ang=(16+Math.random()*12)*Math.PI/180,n=3+Math.floor(Math.random()*3);let t=nowT;
@@ -1549,7 +1787,7 @@ const Sky=(function(){
     gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,v1.t);gl.uniform1i(pS.U.bl1,2);gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,v2.t);gl.uniform1i(pS.U.bl2,3);
     gl.activeTexture(gl.TEXTURE4);gl.bindTexture(gl.TEXTURE_2D,sk.t);gl.uniform1i(pS.U.stk,4);gl.activeTexture(gl.TEXTURE5);gl.bindTexture(gl.TEXTURE_2D,au.t);gl.uniform1i(pS.U.aur,5);
     gl.uniform4fv(pS.U.vmap,m);gl.uniform2f(pS.U.px,1/W,1/H);gl.uniform2f(pS.U.res,W,H);gl.uniform1f(pS.U.time,t);
-    const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo-footMul)*k(.045);
+    const mg=moonGeom();gl.uniform2f(pS.U.mpos,mg.x,mg.y);gl.uniform1f(pS.U.mrad,mg.r);gl.uniform1f(pS.U.moon,.08+.62*moonLit);gl.uniform1f(pS.U.dscale,W/innerWidth);footMul+=(footTo*(stage.classList.contains("chat")?.12:1)-footMul)*k(.045);
     gl.uniform1f(pS.U.foot,clip.foot*footMul);gl.uniform1f(pS.U.hiT,clip.hi);matrixUniforms(nowT,dt);
     gl.activeTexture(gl.TEXTURE6);gl.bindTexture(gl.TEXTURE_2D,htex);gl.uniform1i(pS.U.hold,6);gl.uniform1f(pS.U.hmix,hmix);gl.uniform1f(pS.U.lim,feedOn&&!warm?1:0);gl.activeTexture(gl.TEXTURE0);gl.uniform1f(pS.U.rise,clip.rise);
     gl.uniform3f(pS.U.skyTop,SK[1],SK[2],SK[3]);gl.uniform3f(pS.U.skyMid,SK[4],SK[5],SK[6]);gl.uniform3f(pS.U.skyLow,SK[7],SK[8],SK[9]);
@@ -1735,7 +1973,7 @@ addEventListener("resize",killTracers);   // a traced canvas is fixed where it w
    short fade-in instead. ---------- */
 let timers=[],introOn=false;
 function at(ms,fn){timers.push(setTimeout(fn,ms));}
-function home(){stage.classList.add("home");if(innerWidth>=1100)setSide(true);relayout();}
+function home(){stage.classList.add("home");relayout();}
 function landed(){introOn=false;removeEventListener("pointerdown",skipIntro,true);removeEventListener("keydown",skipIntro,true);
   at(1400,()=>$("#bigmark").classList.add("gone"));}
 function skipIntro(e){if(!introOn)return;if(e&&e.type==="keydown"&&(e.key==="Tab"||e.metaKey||e.ctrlKey||e.altKey))return;
@@ -1750,7 +1988,7 @@ function run(){
     at(200,()=>{stage.classList.add("markin");traceIn($("#bigword"),{margin:40,speed:900,spread:.45}).then(()=>{if(introOn)$("#bigword").classList.add("shown");});});
     at(2700,()=>stage.classList.add("markout"));
     at(3000,()=>{stage.classList.add("home");relayout();});
-    at(3200,()=>{if(innerWidth>=1100)setSide(true);landed();});
+    at(3200,()=>{landed();});
     // the column has finished moving beside the sidebar (.6 s); wait out the twist too (at most 0.9 s more), then trace
     at(3900,()=>at(Sky?Math.min(900,Sky.twistLeft()):0,playHeadline));
     return;}
@@ -1758,13 +1996,13 @@ function run(){
     at(200,()=>{stage.classList.add("markin");$("#bigword").classList.add("shown");});
     at(1700,()=>stage.classList.add("markout"));
     at(1900,()=>{stage.classList.add("home");greetShow();relayout();});
-    at(2100,()=>{if(innerWidth>=1100)setSide(true);landed();});
+    at(2100,()=>{landed();});
     document.querySelectorAll(".rig").forEach(r=>at(2300,()=>r.classList.add("on")));
     return;}
   at(300,()=>{stage.classList.add("markin");traceIn($("#bigword"),{margin:40,speed:520,spread:.7}).then(()=>{if(!introOn)return;$("#bigword").classList.add("shown");stage.classList.add("lit-mark");});});
   at(1500,()=>{void $("#wash").offsetWidth;$("#wash").classList.add("go");});
   at(6200,()=>stage.classList.add("markout"));
-  at(6800,()=>{stage.classList.add("home");if(innerWidth>=1100)setSide(true);relayout();});
+  at(6800,()=>{stage.classList.add("home");relayout();});
   at(7500,()=>{playHeadline();landed();});   // the column has finished moving beside the sidebar (.6 s) before the greeting is traced
   document.querySelectorAll(".rig").forEach((r,i)=>at(7500+i*170,()=>r.classList.add("on")));
 }
@@ -1991,8 +2229,11 @@ function liftComposer(cb){if(!cb.animate)return;
    fades the lot over 800 ms. Calm and reduced motion: none. All compositor work (transform and opacity). */
 const motes=$("#motes"),MOTEC=["#ffffff","#eef3ff","#dce8ff","#c6d8ff","#ffffff","#e6efff","#d9d4ff","#ffffff","#eef3ff","#dce8ff","#ffffff","#e6efff"];   // white, ice-blue, violet; gold one in twelve
 let moteI=0,moteK=0,moteOutT=0;
-function moteSpawn(){if(!stage.classList.contains("ultra")||FX()==="calm"||reduce||document.hidden||motes.querySelectorAll(".mote").length>=40)return;
+let moteOdd=false;
+function moteSpawn(){const chat=stage.classList.contains("chat");if(!stage.classList.contains("ultra")||FX()==="calm"||reduce||document.hidden||motes.querySelectorAll(".mote").length>=(chat?20:40))return;
+  if(chat&&(moteOdd=!moteOdd))return;   /* a conversation: half as many */
   const r=$(".cbox").getBoundingClientRect();if(!r.width)return;
+  if(chat){moteChat(r);return;}
   const m=document.createElement("i");m.className="mote";m.style.setProperty("--c",MOTEC[moteK++%MOTEC.length]);
   const side=Math.random(),onTop=side<.6,left=side<.8;   // the top edge's outer thirds mostly (sparse at the centre), sometimes a side
   const x=onTop?(Math.random()<.5?r.left+24+Math.random()*r.width*.3:r.right-24-Math.random()*r.width*.3):left?r.left-6-Math.random()*20:r.right+6+Math.random()*20,y=onTop?r.top+1:r.top+8+Math.random()*(r.height-16),
@@ -2002,6 +2243,13 @@ function moteSpawn(){if(!stage.classList.contains("ultra")||FX()==="calm"||reduc
   if(!m.animate){m.remove();return;}
   m.style.setProperty("--g",(Math.random()<.2?10+Math.random()*3:5+Math.random()*4).toFixed(1)+"px");   // a calm twinkle as it drifts: never a flash
   const a=m.animate([{transform:tr(0,0,sc),opacity:0},{opacity:.9,transform:tr(dx*.14,-rise*.14,sc),offset:.14},{opacity:.4,transform:tr(dx*.3,-rise*.3,sc*.6),offset:.3},{opacity:.85,transform:tr(dx*.46,-rise*.46,sc*1.05),offset:.46},{opacity:.35,transform:tr(dx*.62,-rise*.62,sc*.6),offset:.62},{opacity:.7,transform:tr(dx*.78,-rise*.78,sc*.9),offset:.78},{transform:tr(dx,-rise,sc*.7),opacity:0}],{duration:dur,easing:"cubic-bezier(.3,.1,.4,1)",fill:"forwards"});
+  const done=()=>m.remove();a.onfinish=done;setTimeout(done,dur+200);}
+function moteChat(r){   /* a conversation: centred over the box's top edge, short-lived */
+  const m=document.createElement("i");m.className="mote";m.style.setProperty("--c",MOTEC[moteK++%MOTEC.length]);
+  const x=r.left+r.width*(.2+.6*Math.random()),y=r.top+1,rise=10+Math.random()*14,dx=(Math.random()-.5)*16,dur=1800+Math.random()*1200,sc=.6+Math.random()*.4;
+  const tr=(ox,oy,k)=>"translate("+(x+ox).toFixed(1)+"px,"+(y+oy).toFixed(1)+"px) scale("+k.toFixed(2)+")";m.style.transform=tr(0,0,sc);motes.appendChild(m);
+  if(!m.animate){m.remove();return;}m.style.setProperty("--g",(5+Math.random()*3).toFixed(1)+"px");
+  const a=m.animate([{transform:tr(0,0,sc),opacity:0},{opacity:.75,transform:tr(dx*.3,-rise*.3,sc),offset:.3},{opacity:.5,transform:tr(dx*.7,-rise*.7,sc*.8),offset:.7},{transform:tr(dx,-rise,sc*.6),opacity:0}],{duration:dur,easing:"cubic-bezier(.3,.1,.4,1)",fill:"forwards"});
   const done=()=>m.remove();a.onfinish=done;setTimeout(done,dur+200);}
 function motesOn(on){clearInterval(moteI);clearTimeout(moteOutT);
   if(on){motes.classList.remove("out");if(reduce)return;moteI=setInterval(moteSpawn,170);setTimeout(moteSpawn,500);}
@@ -2022,7 +2270,7 @@ setMode(1);paint();
 
 /* ---------- the sidebar: a new question arcs out of the composer into the top of your chats ---------- */
 const side=$("#side"),sidetog=$("#sidetog");
-function setSide(on){stage.classList.toggle("side-open",on);sidetog.setAttribute("aria-expanded",String(on));killTracers();}
+function setSide(on){stage.classList.toggle("side-open",on);sidetog.setAttribute("aria-expanded",String(on));killTracers();flowFit();setTimeout(()=>{scrimFit();headerFit();},650);}
 sidetog.addEventListener("click",()=>setSide(!stage.classList.contains("side-open")));
 function popToSide(text,v){
   const ta=$("#ask").getBoundingClientRect(), list=$("#today");
@@ -2047,7 +2295,7 @@ function popToSide(text,v){
   return row;}
 function selectRow(row){$("#hist").querySelectorAll(".hrow").forEach(r=>{const on=r===row;r.classList.toggle("on",on);if(on)r.setAttribute("aria-current","true");else r.removeAttribute("aria-current");});}
 function finishRow(row,title){row.classList.remove("live");const t=row.querySelector(".t");t.style.opacity=0;setTimeout(()=>{t.textContent=title;t.style.opacity="";},260);}
-function goHome(){if(asking)return;starShow(false);stage.classList.remove("chat","busy");$("#convo").hidden=true;$("#form").style.transform="";setTimeout(relayout,0);
+function goHome(){if(asking)return;setTitle("");starShow(false);stage.classList.remove("chat","busy");$("#convo").hidden=true;$("#form").style.transform="";setTimeout(relayout,0);
   selectRow(null);if(innerWidth<1100)setSide(false);$("#ask").focus();}
 $("#newchat").addEventListener("click",()=>{laneUI("chat");goHome();});
 /* the lanes: Chat (home), Code and Funnels (a sample view each); arrow keys move along the group */
@@ -2056,17 +2304,36 @@ function laneUI(l){lanes.dataset.lane=l;laneTabs.forEach(b=>{const on=b.dataset.
   const lv=$("#laneview");["code","funnels"].forEach(k=>{$("#v-"+k).hidden=k!==l;});lv.hidden=l==="chat";stage.classList.toggle("lane",l!=="chat");}
 function setLane(l){if(asking)return;laneUI(l);
   if(l==="chat"){goHome();return;}
-  starShow(false);fx.cancel();closeMenu();selectRow(null);stage.classList.remove("busy");stage.classList.add("chat");$("#convo").hidden=true;$("#laneview").scrollTop=0;relayout();}
+  starShow(false);fx.cancel();closeMenu();selectRow(null);stage.classList.remove("busy");stage.classList.add("chat");$("#convo").hidden=true;$("#laneview").scrollTop=0;relayout();
+  setTitle(l==="code"?"Free up disk space on the server":"What to cook for six on Saturday");if(l==="funnels")funnelPlay();else codePlay();}
+/* Funnels and Code play as they happen: each step slides and fades in; the current step shimmers silver, done steps
+   carry a crisp check; the chosen option flies into the trail; a run shimmers "Running" until its output arrives */
+let funT=[],codeT=[];
+function funnelPlay(){funT.forEach(clearTimeout);funT=[];const v=$("#v-funnels"),lis=[...v.querySelectorAll(".stages>li")],tr=$("#ftrail"),vd=v.querySelector(".verdict");
+  tr.innerHTML="";lis.forEach(li=>li.classList.remove("done","cur","shown"));vd.classList.remove("shown");
+  const pick=(li,anim)=>{const o=li.querySelector(".op.on"),c=document.createElement("span");c.className="ftc";c.textContent=o.textContent;tr.appendChild(c);li.classList.remove("cur");li.classList.add("done");
+    if(!anim||!c.animate)return;const a=o.getBoundingClientRect(),b=c.getBoundingClientRect();
+    c.animate([{transform:`translate(${Math.round(a.left-b.left)}px,${Math.round(a.top-b.top)}px)`,opacity:.5},{transform:"none",opacity:1}],{duration:520,easing:"cubic-bezier(.2,.7,.2,1)"});};
+  if(reduce||FX()==="calm"){lis.forEach(li=>{li.classList.add("shown");pick(li,false);});vd.classList.add("shown");return;}
+  let t=250;lis.forEach(li=>{funT.push(setTimeout(()=>li.classList.add("shown","cur"),t));t+=1200;funT.push(setTimeout(()=>pick(li,true),t));t+=450;});
+  funT.push(setTimeout(()=>vd.classList.add("shown"),t+150));}
+function codePlay(){codeT.forEach(clearTimeout);codeT=[];const v=$("#v-code"),lis=[...v.querySelectorAll(".runs>li")],ap=$("#approve");
+  lis.forEach(li=>{let r=li.querySelector(".rst");if(!r){r=document.createElement("span");r.className="rst";li.querySelector("code").after(r);}r.textContent="Running";li.classList.remove("shown","ran");});ap.classList.remove("shown");
+  const ran=li=>{li.classList.add("ran");li.querySelector(".rst").textContent="Done";};
+  if(reduce||FX()==="calm"){lis.forEach(li=>{li.classList.add("shown");ran(li);});ap.classList.add("shown");return;}
+  let t=250;lis.forEach(li=>{codeT.push(setTimeout(()=>li.classList.add("shown"),t));t+=1300;codeT.push(setTimeout(()=>ran(li),t));t+=350;});
+  codeT.push(setTimeout(()=>ap.classList.add("shown"),t+100));}
+
 laneTabs.forEach(b=>b.addEventListener("click",()=>setLane(b.dataset.lane)));
 lanes.addEventListener("keydown",e=>{const k=laneTabs.indexOf(document.activeElement);if(k<0)return;let n=null;
   if(e.key==="ArrowRight")n=(k+1)%3;else if(e.key==="ArrowLeft")n=(k+2)%3;else if(e.key==="Home")n=0;else if(e.key==="End")n=2;if(n===null)return;
   e.preventDefault();laneTabs[n].focus();setLane(laneTabs[n].dataset.lane);});
 $("#approve").addEventListener("click",e=>{const b=e.target.closest(".apbtn");if(!b)return;const ap=$("#approve");ap.classList.add("done");
   ap.querySelector(".apdone").textContent=b.classList.contains("ok")?"Approved. In the app the agent runs it, reads the result and carries on. This preview runs nothing.":"Skipped. In the app the agent looks for another way, or stops and tells you.";});
-$("#details").addEventListener("click",()=>{const ai=$("#ai"),on=!ai.classList.contains("open");ai.classList.toggle("open",on);$("#details").setAttribute("aria-expanded",String(on));});
 
 /* ---------- Effects: Calm, Balanced (the default) or Full, remembered ---------- */
 const fxpop=$("#fxpop"),fxtog=$("#fxtog");
+addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key===","){e.preventDefault();fxtog.click();}});   /* Settings (⌘,) */
 function setFx(mode){const full=mode==="full";fxClass(mode);try{localStorage.setItem("concorde.beta.fx",mode==="bal"?"balanced":mode);}catch(e){}
   fxpop.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.fx===mode)));
   Sky&&Sky.mode(mode);clipRate();fx.cancel();
@@ -2080,6 +2347,7 @@ fxpop.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String
 
 /* ---------- the sample questions and their answers ---------- */
 const CANNED=[
+ {q:"hi",title:"Hello",key:/^\s*(hi|hello|hey|hiya)\b[\s!.?]*$/i,one:true,src:[],html:"<p>Hi. What would you like to work on?</p>"},
  {q:"Why are there two high tides a day?",edits:[["The water on the side facing the Moon is pulled toward it a little more than the Earth's centre is, so it piles up.", "The water facing the Moon is pulled toward it more strongly than the Earth's centre, so it piles up."], ["so each high tide arrives roughly 50 minutes later than it did the day before.", "so the high tides come about 50 minutes later each day."], ["The shape of a coastline changes the pattern a lot:", "Coastlines change the pattern:"]],
   title:"Two high tides a day",key:/tide/i,
   src:["oceanservice.noaa.gov","tidesandcurrents.noaa.gov","rmg.co.uk","britannica.com"],
@@ -2198,31 +2466,77 @@ const CHATS={
    `<li><b>A slow last day.</b> Tram 28 early, before the queues, a long lunch, and sunset at the Senhora do Monte viewpoint.</li></ol>`+
    `<p>Buy a Viva Viagem card at any metro station and load it with credit; it covers the metro, trams, buses and the trains to Sintra and Cascais. Check the closing days against your dates and swap days around if one falls badly.</p>`},
  nas:{m:1,secs:10.3,src:CANNED[2].src,q:CANNED[2].q,html:CANNED[2].html}};
-const RATE={mlx:"38 tok/s",nvidia:"71 tok/s",cloud:"54 tok/s"};
 const rowChat=new WeakMap();   // chats asked here, by their row
-function srcFill(list){const sr=$("#srcs");sr.innerHTML="";list.forEach((s,k)=>{const c=document.createElement("span");c.className="srcchip";const n=document.createElement("span");n.className="sn";n.textContent=k+1;c.append(n,document.createTextNode(s));sr.appendChild(c);});sr.classList.toggle("on",list.length>0);}
+/* ---------- THE ANSWER'S LINE (per the owner, beta 3): under each finished answer, one quiet row of source links,
+   then one line of silver hairline chips (where it was made, how many drafts, and a shield only when nothing left
+   your machines) ending in a quiet "Details". The line opens a card in place: the journey on one hairline, the total
+   time, the sources with titles, and "Show the numbers" (tokens, tok/s, per-step figures). No token counts by
+   default; the byline names the machine, never an id. ---------- */
+const MSHORT={mlx:"this Mac",nvidia:"Ollama1",cloud:"the cloud"};
+const SRCN={"oceanservice.noaa.gov":"NOAA","tidesandcurrents.noaa.gov":"NOAA Tides","rmg.co.uk":"RMG","britannica.com":"Britannica","kingarthurbaking.com":"King Arthur","theperfectloaf.com":"The Perfect Loaf","man.openbsd.org":"OpenBSD","learn.microsoft.com":"Microsoft Learn","synology.com":"Synology","ugreen.com":"UGREEN","backblaze.com":"Backblaze","visitlisboa.com":"Visit Lisboa","parquesdesintra.pt":"Parques de Sintra","cp.pt":"CP"};
+const SRCT={"oceanservice.noaa.gov":"What causes tides?","tidesandcurrents.noaa.gov":"Tides and water levels","rmg.co.uk":"What causes tides, and why are there two a day?","britannica.com":"Tide","kingarthurbaking.com":"Sourdough baking guide","theperfectloaf.com":"A sourdough baking schedule","man.openbsd.org":"ssh-keygen(1) manual","learn.microsoft.com":"Key-based authentication in OpenSSH","synology.com":"DiskStation products","ugreen.com":"NASync series","backblaze.com":"The 3-2-1 backup strategy","visitlisboa.com":"Visit Lisboa","parquesdesintra.pt":"Parques de Sintra","cp.pt":"Trains from Lisbon to Sintra"};
+const escH=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NUMW=["no","one","two","three","four","five","six","seven"];
+const CHECK='<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.4 6.4l2.4 2.3 4.8-5"/></svg>';
+const SHIELD='<svg width="11" height="12" viewBox="0 0 12 13" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.2l4.2 1.6v3.4c0 2.7-1.8 4.7-4.2 5.6-2.4-.9-4.2-2.9-4.2-5.6V2.8z"/></svg>';
+function whereChip(ms){if(ms.includes("cloud"))return "Your machines and the cloud";const l=[...new Set(ms)];if(l.length>1)return "Your machines";return l[0]==="mlx"?"On this Mac":"Made on "+MSHORT[l[0]];}
+function passChip(m){if(m.one)return "One pass";if(m.drafts>1)return m.drafts+" drafts"+(m.reviewed?", reviewed":"");return "One draft, polished";}
+function stepWhere(st){return st.v?MSHORT[st.v]:st.k==="Searched"?"the web":"your machines";}
+function bylineSet(m){const by=$("#by");by.className="";by.textContent="Concorde "+MODES[m.mode].n;
+  if(m.ultra){const u=document.createElement("span");u.className="lum";u.textContent="Ultra";by.append(" · ",u);}   // the effort, a still gradient once landed
+  by.append(" · "+MSHORT[m.final]);}
+function metaFor(c){if(c.meta)return c.meta;   // a sample chat: the steps its mode would have taken
+  const used=MODELS.filter(x=>x.from<=c.m),mach=[...new Set(used.map(x=>x.v))],multi=c.m>=2,words=c.html.replace(/<[^>]+>/g," ").split(/\s+/).filter(Boolean).length;
+  const final=(used.length>1?used[1]:used[0]).v,parts=[];
+  if(c.src.length)parts.push({k:"Searched",v:null,w:.14,toks:0});
+  parts.push({k:multi?"Drafted ×"+used.length:"Drafted",v:multi?null:used[0].v,w:multi?.34:.42,toks:Math.round(words*1.35*(multi?used.length:1))});
+  if(multi)parts.push({k:"Reviewed",v:final,w:.16,toks:Math.round(words*.4)});
+  parts.push({k:"Polished",v:final,w:.3,toks:Math.round(words*1.4)});
+  if(c.m>=3)parts.push({k:"Checked",v:"cloud",w:.1,toks:Math.round(words*.2)});
+  const W=parts.reduce((x,p)=>x+p.w,0);parts.forEach(p=>{p.secs=c.secs*p.w/W;delete p.w;});
+  return {mode:c.m,ultra:false,machines:mach,final,drafts:multi?used.length:1,reviewed:multi,one:false,src:c.src,secs:c.secs,steps:parts};}
+function renderAnswerFoot(m){
+  const sl=$("#srcline");
+  if(m.src.length){sl.innerHTML='<span class="slk">Sources</span>'+m.src.map(d=>'<a href="https://'+escH(d)+'/" target="_blank" rel="noopener">'+escH(SRCN[d]||d)+'</a>').join('<span class="sd" aria-hidden="true">·</span>');sl.hidden=false;}
+  else{sl.innerHTML="";sl.hidden=true;}
+  const tr=$("#trail");
+  tr.innerHTML='<span class="tchip">'+escH(whereChip(m.machines))+'</span><span class="tchip">'+escH(passChip(m))+'</span>'+
+    (m.machines.includes("cloud")?"":'<span class="tchip safe">'+SHIELD+'Stayed on your machines</span>')+'<span class="tmore">Details</span>';
+  tr.setAttribute("aria-expanded","false");tr.hidden=false;
+  const tot=m.steps.reduce((x,st)=>x+(st.toks||0),0);
+  $("#tcard").innerHTML='<ol class="journey" aria-label="How this answer was made">'+m.steps.map(st=>'<li><span class="jc">'+CHECK+escH(st.k)+'</span></li>').join("")+'</ol>'+
+    '<p class="ttime">'+m.secs.toFixed(1)+' s in all</p>'+
+    (m.src.length?'<ol class="tsrc" aria-label="Sources">'+m.src.map((d,k)=>'<li><span class="sn">'+(k+1)+'</span><a href="https://'+escH(d)+'/" target="_blank" rel="noopener">'+escH(SRCT[d]||d)+'</a><span class="td">'+escH(d)+'</span></li>').join("")+'</ol>':"")+
+    '<details class="tnums"><summary>Show the numbers</summary><table><thead><tr><th>Step</th><th class="wh">Where</th><th class="num">Tokens</th><th class="num">tok/s</th><th class="num">Time</th></tr></thead><tbody>'+
+    m.steps.map(st=>'<tr><td>'+escH(st.k)+'</td><td class="wh">'+escH(stepWhere(st))+'</td><td class="num">'+(st.toks?st.toks.toLocaleString():"–")+'</td><td class="num">'+(st.toks&&st.secs>.05?Math.round(st.toks/st.secs):"–")+'</td><td class="num">'+st.secs.toFixed(1)+' s</td></tr>').join("")+
+    '</tbody><tfoot><tr><td>In all</td><td class="wh"></td><td class="num">'+tot.toLocaleString()+'</td><td class="num">'+Math.round(tot/Math.max(m.secs,.1))+'</td><td class="num">'+m.secs.toFixed(1)+' s</td></tr></tfoot></table></details>';
+  $("#tcard").hidden=true;}
+function clearAnswerFoot(){["#srcline","#trail","#tcard"].forEach(q=>{$(q).hidden=true;});$("#trail").setAttribute("aria-expanded","false");}
+$("#trail").addEventListener("click",()=>{const tr=$("#trail"),on=tr.getAttribute("aria-expanded")!=="true";tr.setAttribute("aria-expanded",String(on));$("#tcard").hidden=!on;});
+/* the header: the conversation's title after a hairline; as the width shrinks, the title goes, then the wordmark
+   becomes the mark, then the lanes go compact. Nothing ever overlaps. */
+function setTitle(t){$("#ctitle").textContent=t||"";headerFit();}
+function headerFit(){const h=$("header");if(!h)return;h.classList.remove("h-notitle","h-mark","h-compact");
+  const L=h.querySelector(".hgl"),R=h.querySelector(".hgr"),over=()=>L.scrollWidth>L.clientWidth+1||R.scrollWidth>R.clientWidth+1,t=$("#ctitle");
+  if(t.textContent&&stage.classList.contains("chat")&&t.offsetWidth<Math.min(96,t.scrollWidth))h.classList.add("h-notitle");
+  if(over())h.classList.add("h-notitle");if(over())h.classList.add("h-mark");if(over())h.classList.add("h-compact");}
+/* the reading scrim: a soft, wide band of dark behind the conversation column, feathered at its sides */
+function scrimFit(){const c=$("#convo"),sc=$("#scrim");if(!c||!sc||c.hidden)return;const r=c.getBoundingClientRect();if(!r.width)return;
+  sc.style.setProperty("--cx",Math.round(r.left+r.width/2)+"px");sc.style.setProperty("--hw",Math.round(r.width/2+24)+"px");}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(headerFit);
+if(/[?&]update=1\b/.test(location.search))$("#upd").hidden=false;   // the demo shows the pill only when asked
 function showChat(c,row){
   if(asking||lis)return;laneUI("chat");
   const cv=$("#convo"),ai=$("#ai"),q=$("#q");cv.setAttribute("aria-live","off");   // focus carries the reader to the question; the region does not read the whole answer out
   starShow(false);fx.cancel();closeMenu();stage.classList.remove("busy");stage.classList.add("chat");cv.hidden=false;
   q.textContent=c.q;[q,ai].forEach(x=>{x.style.animation="none";void x.offsetWidth;x.style.animation="";});
-  ai.classList.remove("live","open");$("#details").setAttribute("aria-expanded","false");setBy("");
-  const ans=$("#ans");ans.className="body";ans.style.minHeight="";ans.innerHTML=c.html;srcFill(c.src);
-  const by=$("#by");
-  if(c.snap){by.innerHTML=c.snap.by;by.className=c.snap.byClass;$("#step").innerHTML=c.snap.step;$("#stats").innerHTML=c.snap.stats;$("#bt").textContent=c.snap.bt;$("#spine").innerHTML=c.snap.spine;$("#machines").innerHTML=c.snap.machines;}
-  else{   // the steps the mode would have taken, the same as a live answer's
-    const used=MODELS.filter(x=>x.from<=c.m),mach=[...new Set(used.map(x=>x.v))],words=ans.textContent.split(/\s+/).filter(Boolean).length,toks=Math.round(words*2.6+c.src.length*90);
-    by.className="";by.textContent="Concorde "+MODES[c.m].n;
-    setStep("Done in "+c.secs.toFixed(1)+" s",mach);
-    const st=$("#stats");st.innerHTML="";[toks.toLocaleString()+" tokens",Math.round(toks/c.secs)+" tok/s",c.secs.toFixed(1)+" s"].forEach(t=>{const x=document.createElement("span");x.textContent=t;st.appendChild(x);});
-    $("#bt").textContent=c.secs.toFixed(1)+" s";$("#spine").innerHTML="";$("#machines").innerHTML="";
-    if(c.src.length)spineDone(spineAdd("Reading "+c.src.length+" sources",null,""),c.src.length+" pages");
-    spineDone(spineAdd(used.length>1&&c.m>=2?"Drafting, "+used.length+" models":"Writing a first draft",c.m>=2?mach:used[0].v,""),Math.round(words*.9)+" tokens");
-    spineDone(spineAdd("Polishing",(used.length>1?used[1]:used[0]).v,""),Math.round(words*1.4)+" tokens");
-    mach.forEach(v=>machineRow(v,RATE[v]));}
-  $("#live").classList.add("done");$("#behind").classList.add("on");
+  ai.classList.remove("live");
+  const ans=$("#ans");ans.className="body";ans.style.minHeight="";ans.innerHTML=c.html;
+  const m=metaFor(c);bylineSet(m);
+  $("#live").classList.add("done");setStep("");$("#byclk").textContent="";
+  renderAnswerFoot(m);flowRest(m);
   const fine=$("#fine");fine.textContent=c.fine||FINE_CHAT;fine.classList.add("on");
-  selectRow(row);cv.scrollTop=0;relayout();
+  selectRow(row);const rt=row&&row.querySelector(".t");setTitle(c.title||(rt?rt.textContent:""));cv.scrollTop=0;relayout();
   if(innerWidth<1100)setSide(false);
   q.focus({preventScroll:true});setTimeout(()=>cv.setAttribute("aria-live","polite"),300);
 }
@@ -2236,18 +2550,20 @@ function draftOf(c){let h=c.html;(c.edits||[]).forEach(([a,b])=>{h=h.replace(a,b
    or a list item's space opens in 120 ms, headings rise in, code and tables fade in whole. The answer's height grows
    smoothly and the reading column follows gently (until the reader scrolls away). Calm: a plain per-word fade.
    Reduced motion: the words, no animation. ---------- */
-const INK={rate:30,rateHi:36,breath:.09,settle:420,blocks:/^(P|LI|H2|H3|BLOCKQUOTE)$/,whole:/^(PRE|TABLE)$/};
+const INK={rate:32,rateHi:38,min:25,max:45,breath:.12,settle:240,blocks:/^(P|LI|H2|H3|BLOCKQUOTE)$/,whole:/^(PRE|TABLE)$/};
 function inkOps(html){const t=document.createElement("template");t.innerHTML=html;const ops=[];
   (function walk(n){for(const c of [...n.childNodes]){
     if(c.nodeType===3){const s=c.textContent;const lead=s.match(/^\s+/);if(lead)ops.push({k:"sp",t:lead[0]});(s.slice(lead?lead[0].length:0).match(/[^\s-]+-+(?=[^\s-])|\S+\s*/g)||[]).forEach(w=>ops.push({k:"w",t:w}));/* split at hyphens: text may break there, so the stream must too */}
-    else if(c.nodeType===1){if(INK.whole.test(c.tagName)||c.classList.contains("cap")){ops.push({k:"blk",n:c,cost:c.tagName==="TABLE"?8:Math.max(4,c.textContent.split("\n").length*2)});continue;}
+    else if(c.nodeType===1){if(c.tagName==="PRE"){const code=c.querySelector("code"),src=(code||c).textContent.replace(/\n$/,"").split("\n");   /* code arrives line by line */
+        ops.push({k:"open",n:c});if(code)ops.push({k:"open",n:code});src.forEach((ln,j)=>ops.push({k:"ln",t:ln+(j<src.length-1?"\n":"")}));if(code)ops.push({k:"close"});ops.push({k:"close"});continue;}
+      if(INK.whole.test(c.tagName)||c.classList.contains("cap")){ops.push({k:"blk",n:c,cost:c.tagName==="TABLE"?8:Math.max(4,c.textContent.split("\n").length*2)});continue;}
       ops.push({k:"open",n:c});walk(c);ops.push({k:"close"});}}})(t.content);
   return ops;}
 function inkStream(box,html,o){return new Promise(done=>{
   const ops=inkOps(html),mode=o.mode,calm=mode==="calm",still=reduce;let i=0,arrived=0,credit=0,last=0,fin=false;const stack=[box],live=[],cv=$("#convo");
   let follow=true;const away=()=>{if(cv.scrollHeight-cv.scrollTop-cv.clientHeight>140)follow=false;};cv.addEventListener("wheel",away,{passive:true});cv.addEventListener("touchmove",away,{passive:true});
   // the network: tokens land in bursts of 1 to 8 words, 30 to 170 ms apart, after a short first wait
-  const words=ops.filter(x=>x.k==="w"||x.k==="blk").length;let tArr=0;
+  const words=ops.filter(x=>x.k==="w"||x.k==="blk"||x.k==="ln").length;let rateNow=o.rate,lastTop=-1;let tArr=0;
   const arrive=()=>{if(fin)return;arrived=Math.min(words,arrived+1+Math.floor(Math.random()*8));if(arrived<words)tArr=setTimeout(arrive,30+Math.random()*140);};tArr=setTimeout(arrive,still?0:120);
   let released=0,newest=null,hT=0;
   const grow=()=>{if(still)return;const h=box.scrollHeight;if(h>hT+.5){hT=h;box.style.height=h+"px";}};
@@ -2260,22 +2576,23 @@ function inkStream(box,html,o){return new Promise(done=>{
         if(!still&&blk&&after)el.classList.add(calm?"ink-in-c":"ink-in");if(!still&&/^H[23]$/.test(el.tagName))el.classList.add("ink-head");top.appendChild(el);stack.push(el);
         if(!still&&blk&&after){credit-=.17*o.rate;return "pause";}continue;}   // the space opens before its first word arrives, so nothing on screen moves
       if(op.k==="close"){flushSp();stack.pop();continue;}
+      if(op.k==="ln"){flushSp();if(still){top.appendChild(document.createTextNode(op.t));released++;return op;}const s=document.createElement("span");s.className=calm?"inkln c":"inkln";s.textContent=op.t;top.appendChild(s);live.push([s,performance.now()]);released++;newest=s;return op;}
       if(op.k==="blk"){flushSp();const el=op.n.cloneNode(true);if(!still)el.classList.add("ink-block");top.appendChild(el);released++;credit-=op.cost-1;newest=el;return op;}
       // a word: its trailing space stays outside the span, so lines break exactly as the settled text will
       const w=op.t.replace(/\s+$/,""),sp=op.t.slice(w.length);
       if(still){flushSp();top.appendChild(document.createTextNode(op.t));released++;return op;}
       // a word's trailing space is laid down just before the next word, so a space never lands alone at a line's start and moves
-      flushSp();const s=document.createElement("span");s.className=calm?"ink c":"ink hold";s.textContent=w;top.appendChild(s);if(sp)pendSp=[top,sp];
-      if(!calm){   // the weight settles from lighter (ink spreading into the page); its width is held at the rest weight, so the line never reflows
-        const fw=+getComputedStyle(top).fontWeight||400,code=!!top.closest("code,pre");if(code)s.className="ink nw";else{s.style.width=s.getBoundingClientRect().width+"px";s.style.setProperty("--w1",fw);s.style.setProperty("--w0",Math.max(300,fw>=550?fw-150:fw-80));s.className="ink";}}
+      flushSp();const s=document.createElement("span");s.className=calm?"ink c":"ink";s.textContent=w;top.appendChild(s);if(sp)pendSp=[top,sp];
+      if(!calm){const tp=s.offsetTop;if(lastTop>=0&&tp>lastTop+2)s.classList.add("nl");lastTop=tp;}   /* a word that opens a new line rises 4 px; the rest only fade */
       live.push([s,performance.now()]);released++;newest=s;if(/[.!?:]["”)]?$/.test(w))credit-=INK.breath*o.rate;return op;}
     return null;}
   function settle(now,all){while(live.length&&(all||now-live[0][1]>INK.settle)){const [s]=live.shift();if(s.parentNode)s.replaceWith(s.textContent);}}
   function tick(now){if(fin)return;const dt=last?Math.min(.1,(now-last)/1000):0;last=now;
-    const buf=arrived-released,rate=o.rate*(buf<6?.82:buf>30?1.12:1);   // even: a touch slower when the buffer is thin, a touch quicker when it is deep
-    if(still)credit=buf;else credit=Math.min(credit+dt*rate,3);
+    const buf=arrived-released,want=Math.max(INK.min,Math.min(INK.max,o.rate*(buf<4?.8:buf>24?1.25:.8+.45*(buf-4)/20)));   // steady and adaptive: 25-45 words a second, eased toward, never a catch-up burst
+    rateNow+=(want-rateNow)*Math.min(1,dt*2.5);
+    if(still)credit=buf;else credit=Math.min(credit+dt*rateNow,1.2);
     let n=0;while(credit>=1&&released<arrived){const op=emit();if(!op||op==="pause")break;credit-=1;n++;if(o.onWord)o.onWord(op);}
-    if(n){grow();if(o.star&&newest&&newest.classList&&newest.classList.contains("ink")){starAfter(newest);starShow(true);}}
+    if(n){grow();if(o.star&&newest&&newest.classList&&(newest.classList.contains("ink")||newest.classList.contains("inkln"))){starAfter(newest);starShow(true);}}
     settle(now,false);
     if(follow&&newest&&!still){const r=newest.getBoundingClientRect(),cr=cv.getBoundingClientRect(),over=r.bottom-(cr.bottom-72);if(over>0)cv.scrollTop+=over*Math.min(1,dt*9);}   // the column follows gently
     if(released>=words){flushSp();fin=true;clearTimeout(tArr);cv.removeEventListener("wheel",away);cv.removeEventListener("touchmove",away);
@@ -2302,15 +2619,14 @@ function inkDissolve(box,fromHtml,toHtml,o){return new Promise(async done=>{
   const keepsA=[],keepsB=[];A.tn.forEach((tn,j)=>{const a=tn.textContent.split(/\s+/).filter(Boolean),b=B.tn[j].textContent.split(/\s+/).filter(Boolean);const [ka,kb]=inkDiff(a,b);keepsA.push(ka);keepsB.push(kb);});
   wrap(A.tn,keepsA,"ink-old");wrap(B.tn,keepsB,calm?"ink-new c":"ink-new");
   box.style.height=h0+"px";box.innerHTML="";box.appendChild(A.t.content);   // the draft again, the same words, its changes now marked
-  void box.offsetWidth;box.classList.add("dissolving");await wait(calm?160:220);
+  void box.offsetWidth;box.classList.add("dissolving");await wait(calm?120:130);
   box.innerHTML="";box.appendChild(B.t.content);box.classList.remove("inking");
-  box.querySelectorAll(".ink-new").forEach((s,k)=>s.style.animationDelay=Math.min(k*45,480)+"ms");
+  box.querySelectorAll(".ink-new").forEach((s,k)=>s.style.animationDelay=Math.min(k*10,100)+"ms");
   box.style.height=box.scrollHeight+"px";box.classList.remove("dissolving");
-  await wait(calm?420:1100);
+  await wait(calm?300:380);
   box.querySelectorAll(".ink-new").forEach(s=>s.replaceWith(...s.childNodes));box.normalize();box.style.height="";done();});}
 let cannedNext=0;
-function pickCanned(text){const hit=CANNED.find(c=>c.key.test(text));if(hit)return hit;return CANNED[(cannedNext++)%CANNED.length];}
-CANNED.slice(0,3).forEach(c=>{const b=document.createElement("button");b.type="button";b.className="sugg";b.textContent=c.q;b.addEventListener("click",()=>{strike();ask(c.q);});$("#suggs").appendChild(b);});
+function pickCanned(text){const hit=CANNED.find(c=>c.key.test(text));if(hit)return hit;const rest=CANNED.filter(c=>!c.one);return rest[(cannedNext++)%rest.length];}
 
 const wait=ms=>new Promise(r=>setTimeout(r,reduce?Math.min(ms,40):ms));
 /* the writing star */
@@ -2333,84 +2649,102 @@ function starToEnd(box){const cr=$("#convo").getBoundingClientRect(),g=lastGlyph
 async function starLand(dot){const r=dot.getBoundingClientRect();await starGlide(r.left+r.width/2,r.top+r.height/2,400);starShow(false);dot.classList.add("lit");setTimeout(()=>dot.classList.remove("lit"),700);}
 
 /* ---------- asking ---------- */
-function setStep(text,v){const st=$("#step");st.innerHTML="";
-  (Array.isArray(v)?v:v?[v]:[]).forEach(x=>st.appendChild(dieEl(x)));
-  const em=document.createElement("em");em.textContent=text;st.appendChild(em);}
-function setBy(st){$("#byst").textContent=st||"";}
+/* the working line while an answer streams (per the owner, beta 3): one phrase that updates ("Asking Ollama1",
+   "Comparing three drafts", "Polishing") in a silver sweep, and a clock after 3 s; no token counts */
+function setStep(text){$("#byst").textContent=text||"";}   /* the phrase sits in the byline row, so on landing it becomes the byline: nothing moves */
+function setBy(){}
 let t0q=0,toks=0,statT=0;
-function stats(){const el=$("#stats"),s=((performance.now()-t0q)/1000);el.innerHTML="";
-  [toks.toLocaleString()+" tokens",(toks/Math.max(s,.1)).toFixed(0)+" tok/s",s.toFixed(1)+" s"].forEach(t=>{const x=document.createElement("span");x.textContent=t;el.appendChild(x);});
-  $("#bt").textContent=s.toFixed(1)+" s";}
-function spineAdd(what,v,nums){const li=document.createElement("li");li.className="live";
-  const node=document.createElement("i");node.className="node";const w=document.createElement("span");w.className="what";w.textContent=what;li.append(node,w);
-  if(v){const who=document.createElement("span");who.className="who2";(Array.isArray(v)?v:[v]).forEach(x=>who.appendChild(dieEl(x)));who.appendChild(document.createTextNode((Array.isArray(v)?v:[v]).map(x=>MACH[x].name).join(", ")));li.appendChild(who);}
-  const n=document.createElement("span");n.className="nums";n.textContent=nums||"";li.appendChild(n);
-  $("#spine").querySelectorAll("li.live").forEach(x=>x.classList.remove("live"));$("#spine").appendChild(li);return li;}
-function spineDone(li,nums){li.classList.remove("live");if(nums!=null)li.querySelector(".nums").textContent=nums;}
-function machineRow(v,rate){const r=document.createElement("div");r.className="mrow";const a=document.createElement("span");a.appendChild(dieEl(v));a.appendChild(document.createTextNode(MACH[v].name));
-  const m=document.createElement("span");m.className="mono";m.textContent=rate;r.append(a,m);$("#machines").appendChild(r);}
+function stats(){const s=(performance.now()-t0q)/1000;$("#byclk").textContent=s>=3?Math.floor(s)+" s":"";}
+/* ---------- THE FLOW (per the owner: "not just a list of information; a cool flow showing what's going on"). A slim
+   right column (240 px, only where there is room; narrower, the chip line under the answer stands in): one vertical
+   hairline, a rounded-square node per stage, its machine as a tiny tag. While it runs, a soft silver light travels the
+   hairline into the active node, which shimmers and counts (words as they grow, or seconds); sources slide in as
+   chips; a finished node takes a crisp check and settles. On landing one gentle pass runs down the line, then the
+   foot: the shield when nothing left your machines, the total time, and "Show the numbers". A past answer opens at
+   rest. Silver only (ice at Ultra), no glow, no circles. ---------- */
+const FLOWN={Searched:"Sources",Drafted:"First draft",Reviewed:"Review",Polished:"Polish",Checked:"Fact check",Answered:"One pass",Answer:"Answer"};
+const MTAG={mlx:"This Mac",nvidia:"Ollama1",cloud:"Cloud"};
+let flowT=0,flowCur=null;
+function flowLabel(k){return k.indexOf("Drafted ×")===0?"Drafts "+k.slice(8):FLOWN[k]||k;}
+function flowTag(k,v){return k==="Answer"||k==="Searched"?"":v?MTAG[v]:"Your machines";}   /* the source chips say where Sources came from */
+function flowPlanFor(can,i,used,multi){const p=[];
+  if(can.one)p.push({k:"Answered",v:used[0].v});
+  else{if(can.src.length)p.push({k:"Searched",v:null});p.push({k:multi?"Drafted ×"+used.length:"Drafted",v:multi?null:used[0].v});if(multi)p.push({k:"Reviewed",v:used[1].v});
+    p.push({k:"Polished",v:(used.length>1?used[1]:used[0]).v});if(i>=3)p.push({k:"Checked",v:used[3].v});}
+  p.push({k:"Answer",v:null});return p;}
+function flowPlan(plan){const f=$("#flow");if(!f)return;clearInterval(flowT);flowCur=null;
+  f.innerHTML='<ol class="fl">'+plan.map(n=>{const tg=flowTag(n.k,n.v);return '<li class="fn wait" data-k="'+escH(n.k)+'"><i class="nd"></i><div class="fx"><b>'+escH(flowLabel(n.k))+'</b>'+(tg?'<span class="tag">'+escH(tg)+'</span>':"")+(n.k==="Searched"?'<div class="fchips"></div>':"")+'</div></li>';}).join("")+
+    '</ol><i class="fbeam" aria-hidden="true"></i><div class="ffoot" hidden></div>';}
+function flowNode(k){const f=$("#flow");return f?[...f.querySelectorAll(".fn")].find(n=>n.dataset.k===k):null;}
+function flowBeam(fromY,toY,ms){const b=$("#flow .fbeam");if(!b||!b.animate||reduce||FX()==="calm")return;
+  b.animate([{transform:`translateY(${Math.round(fromY)}px)`,opacity:0},{opacity:1,offset:.25},{opacity:1,offset:.75},{transform:`translateY(${Math.round(toY)}px)`,opacity:0}],{duration:ms,easing:"cubic-bezier(.2,.7,.2,1)"});}
+function flowGo(k){const n=flowNode(k);if(!n)return;const prev=flowCur?flowCur.n:[...$("#flow").querySelectorAll(".fn.done")].pop();flowCur={n,t:performance.now(),t0:toks};
+  n.classList.remove("wait");n.classList.add("on");flowBeam(prev?prev.offsetTop:0,n.offsetTop-8,560);
+  clearInterval(flowT);const tick=()=>{const c=flowCur;if(!c)return;const w=Math.round((toks-c.t0)/2),s=(performance.now()-c.t)/1000;c.n.querySelector(".nd").textContent=w>0?String(w):s>=1?Math.floor(s)+"s":"";};tick();flowT=setInterval(tick,200);}
+function flowDone(k,st){const n=flowNode(k);if(!n)return;n.classList.remove("on","wait");n.classList.add("done");n.querySelector(".nd").innerHTML=CHECK;if(flowCur&&flowCur.n===n){flowCur=null;clearInterval(flowT);}}
+function flowSrc(d,still){const c=$("#flow .fchips");if(!c)return;const x=document.createElement("span");x.className="fchip"+(still?" still":"");x.textContent=SRCN[d]||d;c.appendChild(x);}
+function flowFoot(m){const f=$("#flow .ffoot");if(!f)return;const tot=m.steps.reduce((x,s)=>x+(s.toks||0),0);
+  f.innerHTML=(m.machines.includes("cloud")?"":'<span class="safe">'+SHIELD+'Stayed on your machines</span>')+'<span class="ftime">'+m.secs.toFixed(1)+' s</span>';f.hidden=false;
+  f.insertAdjacentHTML("afterend",'<details class="tnums fnums"><summary>Show the numbers</summary><table><thead><tr><th>Step</th><th class="num">Tokens</th><th class="num">tok/s</th></tr></thead><tbody>'+
+    m.steps.map(s=>'<tr><td>'+escH(flowLabel(s.k))+'</td><td class="num">'+(s.toks?s.toks.toLocaleString():"–")+'</td><td class="num">'+(s.toks&&s.secs>.05?Math.round(s.toks/s.secs):"–")+'</td></tr>').join("")+
+    '</tbody><tfoot><tr><td>In all</td><td class="num">'+tot.toLocaleString()+'</td><td class="num">'+Math.round(tot/Math.max(m.secs,.1))+'</td></tr></tfoot></table></details>');}
+function flowLand(m){flowDone("Answer");const l=$("#flow .fl");if(l)flowBeam(0,l.offsetHeight,1100);flowFoot(m);}   // one gentle pass down the line, then rest
+function flowRest(m){flowPlan([...m.steps.map(s=>({k:s.k,v:s.v})),{k:"Answer",v:null}]);m.steps.forEach(s=>flowDone(s.k,s));m.src.forEach(d=>flowSrc(d,true));flowDone("Answer");flowFoot(m);}   // a past answer: the finished flow, at rest
+function flowFit(){const side=stage.classList.contains("side-open")&&innerWidth>=1100?282:0;stage.classList.toggle("flowon",innerWidth>=1100&&innerWidth-side-64>=920);}
 async function ask(text){
   if(asking||!text)return;if(stage.classList.contains("lane"))laneUI("chat");asking=true;
-  const i=mode, e=+eff.value, used=MODELS.filter(x=>x.from<=i), machines=[...new Set(used.map(m=>m.v))], can=pickCanned(text);
-  const row=popToSide(text,machines[machines.length-1]);
+  const can=pickCanned(text),i=mode,e=+eff.value,used=can.one?[MODELS[0]]:MODELS.filter(x=>x.from<=i),machines=[...new Set(used.map(m=>m.v))],multi=!can.one&&i>=2;
+  const row=popToSide(text,machines[machines.length-1]);setTitle(text);
   const form=$("#form"),r0=form.getBoundingClientRect();
   fx.cancel();closeMenu();const full=FULL(),anim=!reduce&&FX()!=="calm";   // the star writes in Full and Balanced; Calm fades
-  stage.classList.add("chat");if(full)stage.classList.add("busy");$("#convo").hidden=false;if(full&&Sky)Sky.busy(true);footFit();
+  stage.classList.add("chat");if(full)stage.classList.add("busy");$("#convo").hidden=false;if(full&&Sky)Sky.busy(true);footFit();scrimFit();
   if(full){const r1=form.getBoundingClientRect();form.style.transition="none";form.style.transform=`translateY(${r0.top-r1.top}px)`;void form.offsetWidth;
   form.style.transition="transform .9s var(--ease)";form.style.transform="none";}
   $("#q").textContent=text;const by=$("#by");by.textContent="Concorde "+MODES[i].n;by.className=full&&e===3?"shim soft":"";
   if(e===4){const u=document.createElement("span");u.className="lum go";u.textContent="Ultra";by.append(" · ",u);}   // the effort, its light gliding while it writes
-  setBy("thinking");
   const ai=$("#ai");ai.classList.add("live");ai.style.animation="none";void ai.offsetWidth;ai.style.animation="";
-  const ans=$("#ans");ans.innerHTML="";ans.className="body";ans.style.minHeight="";$("#srcs").innerHTML="";$("#srcs").classList.remove("on");$("#fine").classList.remove("on");$("#fine").textContent=FINE_ANSWER;
-  $("#spine").innerHTML="";$("#machines").innerHTML="";$("#behind").classList.remove("on");$("#live").classList.remove("done");$("#bt").textContent="";ai.classList.remove("open");$("#details").setAttribute("aria-expanded","false");
+  const ans=$("#ans");ans.innerHTML="";ans.className="body";ans.style.minHeight="";clearAnswerFoot();$("#fine").classList.remove("on");$("#fine").textContent=FINE_ANSWER;$("#live").classList.remove("done");
   // at Ultra a bright star streaks from the send key to where the answer will start, leaving tiny stars; the writing star is born there
-  if(e===4&&anim){const sb=sendBtn.getBoundingClientRect(),ar=ans.getBoundingClientRect();if(sb.width&&ar.width){const tx=ar.left+4,ty=ar.top+14;
+  if(e===4&&anim&&!can.one){const sb=sendBtn.getBoundingClientRect(),ar=ans.getBoundingClientRect();if(sb.width&&ar.width){const tx=ar.left+4,ty=ar.top+14;
     ultraStreak(sb.left+sb.width/2,sb.top+sb.height/2,tx,ty).then(()=>{if(!asking)return;star.style.transition="none";starAt(tx,ty);void star.offsetWidth;star.style.transition="";starPrism(true);starShow(true);});}}
-  toks=0;t0q=performance.now();statT=setInterval(stats,100);stats();
-  await wait(400);$("#behind").classList.add("on");
-  const working=v=>document.querySelectorAll(".rig").forEach(r=>r.classList.toggle("working",!!v&&r.classList.contains(v)));
-  // reading, when the question needs the web
-  if(can.src.length){setStep("Reading "+can.src.length+" sources",null);setBy("searching the web");const li=spineAdd("Reading "+can.src.length+" sources",null,"");await wait(1000);toks+=90*can.src.length;spineDone(li,can.src.length+" pages");}
-  // the first draft
-  const drafter=used[0];
-  setStep("Writing a first draft…",drafter.v);setBy("writing a first draft");working(drafter.v);
-  const liD=spineAdd(used.length>1&&i>=2?"Drafting, "+used.length+" models":"Writing a first draft",i>=2?machines:drafter.v,"");
-  if(i>=2){
-    for(const m of used){working(m.v);toks+=120+Math.round(Math.random()*60);await wait(260);}
-    setStep("Merging "+used.length+" drafts",machines);setBy("merging the drafts");await wait(700);
-    setStep("Writing a first draft…",drafter.v);setBy("writing a first draft");working(drafter.v);
-  } else await wait(600);
-  // the draft streams in ink; the star rides the newest word (at Ultra a prism, with a short spectral tail)
-  const draftHtml=draftOf(can),dw=draftHtml.replace(/<[^>]+>/g," ").split(/\s+/).filter(Boolean).length;
-  starPrism(anim&&e===4);
-  await inkStream(ans,draftHtml,{rate:e>=3?INK.rateHi:INK.rate,mode:FX(),star:anim,onWord:()=>{toks+=2;}});
-  starPrism(false);
-  spineDone(liD,Math.round(dw*1.4)+" tokens");
-  if(i>=3){setStep("Reviewing the draft",used[1].v);setBy("reviewing the draft");working(used[1].v);const li=spineAdd("Reviewing the draft",used[1].v,"");await wait(1100);spineDone(li,"2 notes");}
-  // the polish: a calm dissolve (unchanged words stay, changed passages shimmer into their new words) while the star runs down the left edge
-  const polisher=used.length>1?used[1]:used[0];
-  setStep("Polishing…",polisher.v);setBy("polishing");working(polisher.v);
-  const liP=spineAdd("Polishing",polisher.v,"");
-  ans.classList.add("swapwait");
-  await wait(900);
-  ans.classList.remove("swapwait");const pass=anim?starPass(ans):Promise.resolve();
-  const dis=inkDissolve(ans,draftHtml,can.html,{mode:FX()});toks+=Math.round(can.html.replace(/<[^>]+>/g," ").split(/\s+/).length*1.4);
-  await pass;if(anim)await starToEnd(ans);await dis;
-  await wait(400);spineDone(liP,Math.round(ans.textContent.split(/\s+/).length*1.4)+" tokens");
-  if(i>=3){setStep("Checking the facts",used[3].v);setBy("checking the facts");working(null);const li=spineAdd("Checking the facts",used[3].v,"");await wait(1000);spineDone(li,"all held");}
-  // the answer landed: the star becomes the byline's dot, then sources, Details and the fine print follow
-  working(null);clearInterval(statT);stats();
-  const secs=((performance.now()-t0q)/1000).toFixed(1);
-  setStep("Done in "+secs+" s",machines);$("#live").classList.add("done");setBy("");
-  machines.forEach(v=>machineRow(v,v==="mlx"?"38 tok/s":v==="nvidia"?"71 tok/s":"54 tok/s"));
-  finishRow(row,can.title);
-  if(anim)await starLand(ai.querySelector(".who .dot"));
-  $("#by").querySelectorAll(".lum").forEach(x=>x.classList.remove("go"));   // landed: the byline's light settles, a still gradient
+  toks=0;t0q=performance.now();statT=setInterval(stats,250);stats();flowPlan(flowPlanFor(can,i,used,multi));
+  const steps=[];let mark=0;const begin=(k,v)=>{const st={k,v,t:performance.now(),toks:0};steps.push(st);mark=toks;flowGo(k);return st;},end=st=>{st.secs=(performance.now()-st.t)/1000;st.toks=toks-mark;delete st.t;flowDone(st.k,st);};
+  if(can.one){   // a greeting: answered at once, in one pass
+    setStep("Answering");const st=begin("Answered",machines[0]);
+    await inkStream(ans,can.html,{rate:INK.rateHi*2,mode:FX(),star:false,onWord:()=>{toks+=2;}});end(st);}
+  else{
+    await wait(400);
+    if(can.src.length){setStep("Searching the web");const st=begin("Searched",null);for(const d of can.src){await wait(1000/can.src.length);flowSrc(d);}end(st);}
+    const drafter=used[0],sD=begin(multi?"Drafted ×"+used.length:"Drafted",multi?null:drafter.v);let sR=null;
+    setStep("Asking "+(multi?NUMW[used.length]+" models":MSHORT[drafter.v]));
+    if(multi){for(const m of used){toks+=120+Math.round(Math.random()*60);await wait(260);}end(sD);
+      sR=begin("Reviewed",used[1].v);setStep("Comparing "+NUMW[used.length]+" drafts");await wait(700);}
+    else await wait(600);
+    // the draft streams in ink; the star rides the newest word (at Ultra a prism, with a short spectral tail)
+    const draftHtml=draftOf(can);starPrism(anim&&e===4);
+    await inkStream(ans,draftHtml,{rate:e>=3?INK.rateHi:INK.rate,mode:FX(),star:anim,onWord:()=>{toks+=2;}});
+    starPrism(false);
+    if(multi){if(i>=3){setStep("Reviewing the draft");await wait(1100);}end(sR);}else end(sD);
+    // the polish: a calm dissolve (unchanged words stay, changed passages shimmer into their new words) while the star runs down the left edge
+    const polisher=used.length>1?used[1]:used[0];
+    setStep("Polishing");const sP=begin("Polished",polisher.v);
+    ans.classList.add("swapwait");await wait(900);
+    ans.classList.remove("swapwait");const pass=Promise.resolve();starShow(false);
+    const dis=inkDissolve(ans,draftHtml,can.html,{mode:FX()});toks+=Math.round(can.html.replace(/<[^>]+>/g," ").split(/\s+/).length*1.4);
+    await pass;await dis;await wait(400);end(sP);
+    if(i>=3){setStep("Checking the facts");const st=begin("Checked",used[3].v);await wait(1000);toks+=60;end(st);}
+  }
+  // landed: the working line goes, the star becomes the byline's dot, then the line of chips and the fine print follow
+  clearInterval(statT);
+  const secs=(performance.now()-t0q)/1000,final=can.one?machines[0]:(used.length>1?used[1]:used[0]).v;
+  const meta={mode:i,ultra:e===4,machines,final,drafts:multi?used.length:1,reviewed:multi,one:!!can.one,src:can.src,secs,steps};
+  $("#live").classList.add("done");setStep("");$("#byclk").textContent="";
+  finishRow(row,can.title);setTitle(can.title);
+  starShow(false);   /* the end dot fades on landing */
+  bylineSet(meta);   // "Concorde Thinking · Ollama1": the machine by name, never an id
   ai.classList.remove("live");
-  srcFill(can.src);
-  $("#fine").classList.add("on");
-  rowChat.set(row,{q:text,html:can.html,src:can.src,fine:FINE_ANSWER,snap:{by:$("#by").innerHTML,byClass:$("#by").className,step:$("#step").innerHTML,stats:$("#stats").innerHTML,bt:$("#bt").textContent,spine:$("#spine").innerHTML,machines:$("#machines").innerHTML}});
+  renderAnswerFoot(meta);$("#fine").classList.add("on");flowLand(meta);
+  rowChat.set(row,{q:text,html:can.html,src:can.src,fine:FINE_ANSWER,meta,title:can.title});
   stage.classList.remove("busy");Sky&&Sky.busy(false);asking=false;
 }
 /* ---------- DICTATION. It starts the instant the button is pressed (or Space is held in an empty composer): the
@@ -2434,10 +2768,10 @@ function strike(){const st=$("#strike");if(reduce||!st.animate)return;const a=st
   const tm=setTimeout(()=>{try{a.cancel();}catch(e){}},400);a.onfinish=()=>clearTimeout(tm);}
 /* the composer's centre sits at the golden point of the free height below the header (61.8 % down) */
 function placeComposer(){const main=$("main");if(stage.classList.contains("chat")){main.style.removeProperty("--under");return;}
-  const hb=$("header").getBoundingClientRect().bottom,free=innerHeight-hb,ch=$("#form").getBoundingClientRect().height,sg=$("#suggs"),sh=sg.getBoundingClientRect().height+parseFloat(getComputedStyle(sg).marginTop||0);
-  const under=Math.max(8,Math.round(innerHeight-(hb+.618*free)-ch/2-sh));main.style.setProperty("--under",under+"px");}
+  const hb=$("header").getBoundingClientRect().bottom,free=innerHeight-hb,ch=$("#form").getBoundingClientRect().height;   /* the composer's centre on the golden point of the space under the header */
+  const under=Math.max(8,Math.round(innerHeight-(hb+.618*free)-ch/2));main.style.setProperty("--under",under+"px");}
 function footFit(){const f=$("#foot");document.documentElement.style.setProperty("--foot",(f.offsetHeight||0)+"px");}   // the sidebar stops 16 px above the credit
-function relayout(){footFit();placeComposer();}
+function relayout(){footFit();placeComposer();flowFit();headerFit();scrimFit();}
 addEventListener("resize",relayout);addEventListener("load",relayout);
 try{document.fonts.ready.then(relayout);document.fonts.addEventListener("loadingdone",relayout);}catch(e){}
 relayout();

@@ -608,3 +608,88 @@ pauses while the page is hidden or not in front.
 - A loop watchdog checks every 400 ms: a clip stalled within 0.6 s of its end for two checks is sent back to 0 and played.
 - The sky draws from its first frame with a one-texel black footage texture; the footage is uploaded only once a frame
   has been decoded (`requestVideoFrameCallback`, else `loadeddata`), and fades in. No stall at the opening.
+
+## THE GOVERNING RULE: Claude-sharp chrome, GPT-grade motion (PINNED, per the owner: "super GPT smooth and beautiful, but at the same time Claude very tight and to the point")
+The working views (the conversation, Code, Funnels and the sidebar) are flat and exact; the motion in them is rich,
+smooth and purposeful. The full sky show belongs to the home and to the Ultra moment.
+- **Surfaces:** flat neutral near-black, no gradients and no glow: the working ground `#0e0e10`, the sidebar `#141416`,
+  the composer and cards `#151517`, the question bubble and the selected row `#1f1f22`. Separated by hairlines of white
+  at 8 % that are one device pixel (`--hl`: 1 px, 0.5 px at 2×). No soft outer shadows on panels, chips or keys.
+- **Radii:** tags 4, chips 6, keys and rows 8, option and approval cards 10, the composer and the question bubble 14.
+- **Type:** Inter for all UI and reading text (Google Fonts, variable `opsz,wght`, `display=swap`); Space Grotesk only
+  for the greeting; the wordmark keeps Michroma; Plex Mono only for code. `-webkit-font-smoothing: antialiased`.
+  - UI 13 px at 450–500, letter-spacing −0.005em; chips and metadata 12 px; labels 11 px caps at 0.06em, 50 % ink.
+  - Reading 15 px on 1.6, weight 400, ink 88 % (`#e0e0e2`), −0.01em, about 66 characters; bold 600; headings 17 and 15
+    at 600; paragraphs 0.8 em apart.
+  - Metadata 12 px at 55 % ink. Times and figures in tabular numbers. No text-shadow anywhere in the conversation.
+  - `cv11`/`ss01` are not applied: the default Inter forms are already the sharper read at these sizes.
+- **Spacing:** every gap on the 8 px grid; byline to text 12; question to answer 24; 64 below the last answer.
+- **The sky in the working views** recedes to 30 % of its home strength (60 % at Ultra) over 1.2 s, and its footage to
+  12 %, so no out-of-focus city light reads as a round blob. Behind the conversation a near-solid flat band
+  (`#0e0e10` at 93 %, feathered over 160 px at its sides, a gradient, not a blur) carries the reading column and the
+  flow: the sky shows through at most faintly and no star sits behind text. No constellation lines, shooting stars or
+  showers while a conversation is open (one that is showing fades). Ultra's resting field in a conversation is the
+  short, light version: half the stars, centred over the composer's top edge, each living 2–4 s; motes half as many,
+  centred, rising 10–24 px over 1.8–3 s.
+- **Motion:** one easing family, `--e: cubic-bezier(.2,.7,.2,1)`, 150–300 ms for interface motion (400 ms for a step
+  arriving, 1.2 s for the sky). New turns rise 6 px; steps slide and fade in 6 px; the lanes highlight slides 320 ms;
+  hover reveals 150 ms; the silver "Thinking" sweep (2.4 s a pass). 120 Hz, no flashes.
+
+## The header (beta 3)
+One row in three columns, `minmax(0,1fr) auto minmax(0,1fr)`, so the lanes sit at the exact centre and a title's
+length never moves them (no layout shift when it changes). Left: the chats button, the wordmark (the 7.0 beta tag on
+the home), and in a conversation a one-device-pixel hairline then its title, 13 px at 450, ellipsis. Right: the status
+dot (its card: "Your machines", This Mac · MLX · Ready, Ollama1 · NVIDIA · Ready; no MLX/NVIDIA chips in the header), a
+quiet "Update ready" pill (24 px, hairline; in the demo only with `?update=1`), and the 32 px Settings gear (flat
+glass, hairline, radius 8; tooltip "Settings (⌘,)" after 400 ms; ⌘, opens it). As the width shrinks: the title goes
+first (once it would show under 96 px), then the wordmark becomes the mark, then the lanes go compact. The lanes are a
+flat segmented control: track `#1a1a1d`, selected `#26262a`, no glow. Checked: no overlap and no sideways scroll at
+1440, 760 and 390.
+
+## The home (beta 3)
+The greeting, the composer and the sky; nothing else. No recent chats (the sidebar opens from the chats button) and no
+suggestion chips. The composer's centre sits on the golden point of the space under the header.
+
+## The answer (beta 3, and the live flow)
+- **The working line** sits in the byline's row: one phrase in a silver sweep ("Searching the web", "Asking Ollama1",
+  "Asking three models", "Comparing three drafts", "Polishing", "Checking the facts"), and after 3 s a clock (12 px,
+  tabular). On landing it becomes the byline, "Concorde Thinking · Ollama1" (the machine by name, never an id; "· Ultra"
+  in its still gradient when the effort was Ultra). Nothing moves when it does. No "Done in" line and no token counts.
+- **Under the answer:** one quiet line of sources as text links ("Sources NOAA · NOAA Tides · RMG · Britannica"), then,
+  where the flow column does not fit, one line of hairline chips ("Your machines" or "On this Mac" or "Made on
+  Ollama1"; "3 drafts, reviewed" or "One draft, polished" or "One pass"; the shield "Stayed on your machines" only when
+  nothing left them) ending in a quiet "Details" that opens a card in place: the journey (3–5 step chips on one
+  hairline, each with a crisp check), the total time, the sources numbered with their titles, and "Show the numbers".
+  The sample note: 11 px at 50 % ink (the requested 40 % fails AA at 11 px).
+- **The flow** (the right column, 240 px beside the 640 reading column, where the window has room for 920 px; else the
+  chip line stands in). One vertical hairline; a rounded-square node per stage (28 × 20, radius 6, never a circle):
+  Sources → First draft (or Drafts ×3) → Review → Polish → (Fact check) → Answer, each machine a tiny 11 px tag. While
+  it runs a soft silver light (1 × 36 px) travels the hairline into the active node over 560 ms; the active node
+  shimmers silver (ice at Ultra) and counts inside (the words as they grow, else seconds); sources slide in beside the
+  Sources node as chips (6 px, 350 ms) as they are read; a finished node takes a crisp check and settles. On landing one
+  gentle pass runs the whole line (1.1 s), then the foot: the shield when true, the total time, and "Show the numbers"
+  (tokens and tok/s per node, closed by default). A past answer opens with the finished flow at rest, no motion.
+- **Messages:** the question a quiet right-aligned bubble (`#1f1f22`, radius 14, 14 px, padding 10/14); the answer plain
+  text under a tiny 13 px byline at 55 % ink.
+- **"hi"** (or hello, hey) answers at once, in one pass, on this Mac: the "One pass" chip.
+
+## Streaming v2 (per the owner: "super clean, super smooth")
+- A steady, adaptive cadence: 32 words a second (38 at Extra and Ultra), eased toward 25–45 by how much is buffered
+  (never a catch-up burst: at most 1.2 words of credit); a 0.12 s breath after a sentence, 0.17 s as a paragraph opens.
+- Each word fades in over 180 ms from 1 px of blur to none (the filter ends at exactly none); no weight morph, no glow,
+  no sideways move. A word that opens a new line rises 4 px. Settled words become plain text after 240 ms.
+- Structure renders as it streams, so landing never reflows (measured: no layout shift at landing, 1440 and 390;
+  before: 0.025 at 390). Tables fade in whole; code arrives line by line. The height grows eased (240 ms); the column
+  follows eased and holds when the reader scrolls up.
+- A 4 px silver dot (no flare, no glow) glides at the end of the text and fades on landing. At Ultra the prism star.
+- Draft to final: only the changed words cross: out in 120 ms, in over 250 ms (staggered at most 100 ms). No blur.
+- Calm: a plain fade. Reduced motion: none. Balanced and Full share the same motion.
+
+## Code and Funnels (the middle ground)
+- **Code:** the same flat surfaces; command output and the approval card flat (`#151517`, hairline, radius 8 and 10),
+  mono for commands. Each run slides in, shimmers "Running" in silver, then shows its output and settles to "Done";
+  the approval card arrives last.
+- **Funnels:** a vertical flow on a hairline. Each step slides in; the current question shimmers silver; options are
+  flat cards (`#151517`, hairline, radius 10) that lift 1 px on hover; the chosen one flies (520 ms) into the trail of
+  choices at the top, the step takes a crisp check (12 px, on the hairline) and the others step back to 45 %. The pick
+  arrives last. Calm and reduced motion: the finished state at once.
