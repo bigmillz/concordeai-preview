@@ -693,3 +693,31 @@ suggestion chips. The composer's centre sits on the golden point of the space un
   flat cards (`#151517`, hairline, radius 10) that lift 1 px on hover; the chosen one flies (520 ms) into the trail of
   choices at the top, the step takes a crisp check (12 px, on the hairline) and the others step back to 45 %. The pick
   arrives last. Calm and reduced motion: the finished state at once.
+
+## The aurora, fluid (per the owner: "very static still ... always left biased with a bit of drop in the centre")
+- **Centred, never biased.** The curtain's centre is three slow sines around the middle of the screen, not a random
+  walk: `0.5 + 0.11 sin(2πt/140 + φ1) + 0.07 sin(2πt/210 + φ2) + 0.03 sin(2πt/85 + φ3)`, with new random phases on every
+  visit. It swings at most about ±20 % of the width, turns over every 40–105 s, never jumps, and over any 10 minutes
+  its mean sits within 2 % of the centre by construction (each sine's mean over 10 min is bounded by its period).
+  Balanced: half the swing on the 1.6× slower clock.
+- **No dent.** The local guards behind the greeting (the crest cap and the knee) are gone. Instead the whole curtain
+  dims by up to 30 % in a soft horizontal band at the greeting's height (full width, feathered over 22 % of the
+  height), so nothing reads as a notch; at Ultra the 20 % lean is withheld in that band. In conversations the curtain
+  sits behind the reading surface anyway. Its occasional split now opens its lobes ±10 % (was ±17 %), so the two
+  overlap and it reads as the curtain widening, never a gap in the middle.
+- **Alive at a calm pace,** on a continuous clock (paused when the page is hidden or not in front):
+  - a fold wave travels sideways, `0.06 sin(4x − 0.13t)`, about 30 px/s;
+  - a pulse of brightness travels across the rays, `× (0.6 + 0.4 (½ + ½ sin(3.5x − 0.2t)))`, about 50 px/s;
+  - the whole curtain sways ±1.5 % of the width on a 25 s cycle.
+  - the rays' pattern slides sideways and back, `0.35 sin(0.045t) + 0.2 sin(0.071t + 1.3)` (at most about 15 px/s), so
+    no dark gap parks in one place (measured: Balanced at real speed had a dark gap left of centre for minutes).
+  Balanced: the same motion at 60 % amplitude. Calm and reduced motion: still.
+- **Checks:** `?aurspeed=N` runs the aurora's clocks N times faster; `__beta.aur()` reads the curtain back (its centre
+  of mass and a 32-bin profile across the width).
+- **Measured** (`__beta.aur()` at `?aurspeed=10`, 10 minutes of aurora time each, 74–88 samples a run):
+  - Full: the centre of mass averaged 0.504, 0.503, 0.493, 0.503 and 0.495 (screen centre 0.5; before: 0.556 and
+    0.557), ranging 0.30–0.72; the mean profile is one smooth hump, its centre 1.18–1.31 × its flanks.
+  - Balanced: 0.505 and 0.504, ranging 0.41–0.61; centre 1.17–1.18 × its flanks (before the sliding pattern, at real
+    speed: 0.81, a dark gap left of centre).
+  - In motion: 17 % of the curtain's light moves within 2 s (Full; before 12 %). No flashes (bottom-right spikes 0).
+  - AA under the greeting with the curtain at its lowest reach: 4.88 at rest, 3.36 at Ultra (large text, 3.0).

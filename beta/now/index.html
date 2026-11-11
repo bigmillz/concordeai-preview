@@ -1098,7 +1098,7 @@ sup.cite{font-size:9px;font-weight:500}
 #scrim{background:linear-gradient(90deg,transparent calc(var(--cx,50vw) - var(--hw,344px) - 160px),rgba(14,14,16,.93) calc(var(--cx,50vw) - var(--hw,344px)),rgba(14,14,16,.93) calc(var(--cx,50vw) + var(--hw,344px)),transparent calc(var(--cx,50vw) + var(--hw,344px) + 160px))}
 #convo,#convo *{text-shadow:none!important}
 .flow{display:none}
-#stage.flowon:not(.lane) main{--mw:920px}
+#stage.flowon.chat:not(.lane) main{--mw:920px}
 #stage.flowon .msg.ai{grid-template-columns:minmax(0,640px) 240px;column-gap:40px}
 #stage.flowon .msg.user{margin-right:280px}
 #stage.flowon .flow{display:block;grid-column:2;grid-row:1/span 9;position:sticky;top:0;align-self:start;padding-top:2px}
@@ -1446,7 +1446,7 @@ const Sky=(function(){
     float g=fract(52.9829189*fract(dot(floor(uv*res)+floor(fract(time*7.)*64.)*vec2(5.588238,5.588238),vec2(.06711056,.00583715))))-.5;col+=g*.012;   // a fine blue-noise dither (interleaved gradient noise, 1.2 %): no banding, like a photograph
     gl_FragColor=vec4(clamp(col,0.,1.),1.);
   }`;
-  const AUR=`precision highp float;varying vec2 uv;uniform float time,asp,neon,spd,c2,rich,cool,acx,awd,tph,tam,spl,lt,hb,rch,flo,wam;uniform vec4 grt;
+  const AUR=`precision highp float;varying vec2 uv;uniform float time,asp,neon,spd,c2,rich,cool,acx,awd,tph,tam,spl,lt,hb,rch,flo,wam,ft,fa;uniform vec4 grt;
   float h1(float n){return fract(sin(n)*43758.5453123);}
   float nz(vec2 x){vec2 p=floor(x),f=fract(x);f=f*f*(3.-2.*f);float n=p.x+p.y*57.;return mix(mix(h1(n),h1(n+1.),f.x),mix(h1(n+57.),h1(n+58.),f.x),f.y);}
   float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*nz(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
@@ -1456,33 +1456,32 @@ const Sky=(function(){
     vec2 p=vec2(uv.x*asp,uv.y);float t=time;vec3 col=vec3(0.);   // time is the flow phase, integrated on the CPU (speed can change smoothly)
     for(int k=0;k<2;k++){if(k==1&&c2<.005)break;float fk=float(k);
       // the folded ribbon: fold lines drift and roll along x (a travelling phase), so sections twist over and back
-      float x=p.x+tam*(.12*sin(p.x*2.2-tph)+.05*sin(p.x*5.1+tph*1.7+fk));
-      float wave=fbm(vec2(x*.9+t*.6+fk*3.7,t*.2+fk))*2.-1.;
+      float x=p.x+tam*(.12*sin(p.x*2.2-tph)+.05*sin(p.x*5.1+tph*1.7+fk))+fa*.06*sin(p.x*4.-ft*.13+fk*1.3);
+      float xn=x+fa*(.35*sin(ft*.045)+.2*sin(ft*.071+1.3+fk));   // the rays' pattern itself slides sideways and back, so no dark gap ever parks in one place   // FLUID (per the owner: "more fluid"): a fold wave travels sideways, about 30 px/s
+      float wave=fbm(vec2(xn*.9+t*.6+fk*3.7,t*.2+fk))*2.-1.;
       // THE LOWER EDGE UNDULATES (per the owner: "it always stops at a certain horizontal point"): long, soft waves along
       // x (about +-10 % of the height) that drift with the folds; now and then a section reaches lower (rch, a 30-60 s
       // breath) and retreats; never into the composer's band (flo). Level overall: the waves are symmetric, never a slant.
       float wav=wam*(.07*sin(x*4.2+lt*1.2+fk*1.7)+.03*sin(x*7.3-lt*.35+fk));   // on the flow clock only (the fold phase wraps)
       float reach=rch*.08*smoothstep(.45,.95,nz(vec2(x*1.6+fk*3.,lt*.18)));
       float b0=.6+.1*fk+.035*wave+.012*sin(x*3.1+t*2.+fk)+.03*(nz(vec2(x*.8+fk*4.,lt*.7))-.5)+wav-reach,fl=flo+.1;
-      float gx=grt.z>grt.x&&k==0?1.-smoothstep(0.,.1,max(max(grt.x-uv.x,uv.x-grt.z),0.)):0.,cl=mix(2.,grt.y-.025,gx),hc=clamp(.5+.5*(cl-b0)/.06,0.,1.);
-      b0=mix(cl,b0,hc)-.06*hc*(1.-hc);   // under the greeting the crests round off just below it (a smooth min), so the bright edge never crosses the text
       float hs=clamp(.5+.5*(b0-fl)/.08,0.,1.),base=mix(fl,b0,hs)+.08*hs*(1.-hs);   // a smooth floor one ray-tail above the composer's band: the edge rounds off, never a flat ruler
       float d=p.y-base;
-      float rays=smoothstep(.25,.95,fbm(vec2(x*(18.+fk*7.)+wave*2.+t*(1.2+fk*.5),d*.9+t*.2)));
+      float rays=smoothstep(.25,.95,fbm(vec2(xn*(18.+fk*7.)+wave*2.+t*(1.2+fk*.5),d*.9+t*.2)));
       float body=smoothstep(-(.014+.085*rays),0.,d)*smoothstep(flo-.01,flo+.03,p.y)*exp(-max(d,0.)*(4.+fk*2.)/hb), fringe=exp(-abs(d)*55.)*1.;   // each ray ends at its own depth (the brightest reach lowest, fading out softly); the crisp luminous edge follows the wave; the height breathes (hb)
-      float a=(body*(.25+rays*1.4)+fringe*rays*.6)*(.55-.15*fk)*(.7+.3*nz(vec2(x*1.3+fk*5.,lt)))*(.72+.28*nz(vec2(x*16.+fk*9.,d*5.-lt*1.4)));   // rays brighten in one place and fade in another, and rise and fall along their length
+      float a=(body*(.25+rays*1.4)+fringe*rays*.6)*(.55-.15*fk)*(.7+.3*nz(vec2(xn*1.3+fk*5.,lt)))*(.72+.28*nz(vec2(xn*16.+fk*9.,d*5.-lt*1.4)))*(1.-.4*fa+.4*fa*(.5+.5*sin(x*3.5-ft*.2+fk*2.)));   // a slow pulse of brightness travels across the rays, about 50 px/s   // rays brighten in one place and fade in another, and rise and fall along their length
       vec3 c=mix(vec3(.62,.78,1.),vec3(.7,.6,1.),smoothstep(0.,.3,d));   // blue at the lower edge, violet towards the tips
       c=mix(c,pal(x*.35+t*.15+fk*.3),.18);
       col+=c*a*(k==1?c2:1.);}
     // the curtain wanders: its centre and width come from the CPU; now and then it splits in two and merges back
-    float o=spl*.17,env=max(smoothstep(awd,awd*.3,abs(uv.x-acx+o)),smoothstep(awd,awd*.3,abs(uv.x-acx-o)));
+    float o=spl*.1,env=max(smoothstep(awd,awd*.3,abs(uv.x-acx+o)),smoothstep(awd,awd*.3,abs(uv.x-acx-o)));
     col*=env*smoothstep(0.,.05,uv.x)*smoothstep(1.,.95,uv.x)*smoothstep(.99,.8,uv.y);
     float lu=dot(col,vec3(.299,.587,.114));col=max(mix(vec3(lu),col,1.+.45*rich),0.);   // richer at Ultra: more colour, not more white
     vec3 bv=mix(vec3(.56,.72,1.),vec3(.65,.55,1.),clamp(smoothstep(.45,.85,uv.y)+.25*cool,0.,1.));   // at Ultra it leans violet
     vec3 lw=vec3(.2126,.7152,.0722);float l0=dot(col,lw);vec3 lean=mix(col,bv*lu,cool*.7);
-    vec2 gq=max(max(grt.xy-uv,uv-grt.zw),0.)/vec2(.07,.1);float gm=grt.z>grt.x?1.-smoothstep(0.,1.,length(gq)):0.,cu=min(cool,1.);   // behind the greeting (a 7 % / 10 % feather) the Ultra light keeps under its resting strength, for AA
-    col=lean*(l0*(1.+.2*cu*(1.-gm)-.25*cu*gm)/max(dot(lean,lw),1e-4));   // at resting Ultra the light leans blue-violet and is exactly 20 % stronger (measured luminance), never more
-    float lk=dot(col,lw)*neon;col*=mix(1.,1./(1.+lk/.06),gm);   // behind the greeting the brightest light rolls off softly (a knee at .06), at rest, at Ultra and through the arrival's surge
+    float gc=(grt.y+grt.w)*.5,gh=(grt.w-grt.y)*.5,gb=grt.z>grt.x?1.-smoothstep(gh,gh+.22,abs(uv.y-gc)):0.,cu=min(cool,1.);   // the greeting's band, across the whole width: a soft dimming, never a local notch
+    col=lean*(l0*(1.+.2*cu*(1.-gb))/max(dot(lean,lw),1e-4));   // at resting Ultra the light leans blue-violet and is exactly 20 % stronger (measured luminance), never more
+    col*=1.-.3*gb;
     gl_FragColor=vec4(col*neon,1.);
   }`;
   const pF=glProgram(gl,FEED),pS=glProgram(gl,SHOW),pA=glProgram(gl,AUR),pB=glProgram(gl,BLUR_FS);
@@ -1624,18 +1623,20 @@ const Sky=(function(){
      Calm and reduced motion: still, centred. Paused while the page is hidden or not in front. ?aur=0.2 pins the centre. */
   const arnd=(()=>{let a=(Math.random()*4294967296)>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};})();
   const aurPin=parseFloat(new URLSearchParams(location.search).get("aur")),aurLow=new URLSearchParams(location.search).get("aurlow")==="1",aurEl=$("#aurora");let aurPx=null,aurFlo=0,aurFloAt=0,aurGr=[0,0,0,0];   // ?aurlow=1 holds the reach at its lowest (for checks)
-  const AW={rf:0,rt:0,rT:0,rD:20,rch:0,hb:1,hbT:0,cx:.5,from:.5,to:.5,legT:0,legD:50,w:.3,wf:.3,wt:.3,wT:0,wD:40,tph:0,tT:30,tam:0,lt:0,spl:0,splT:-1,nextSplit:120+arnd()*120};
+  const AURSPD=Math.max(1,+new URLSearchParams(location.search).get("aurspeed")||1);   // ?aurspeed=N runs the aurora's clocks N times faster (for checks)
+  const AW={wt0:0,ft:0,fa:0,p1:arnd()*6.2832,p2:arnd()*6.2832,p3:arnd()*6.2832,rf:0,rt:0,rT:0,rD:20,rch:0,hb:1,hbT:0,cx:.5,from:.5,to:.5,legT:0,legD:50,w:.3,wf:.3,wt:.3,wT:0,wD:40,tph:0,tT:30,tam:0,lt:0,spl:0,splT:-1,nextSplit:120+arnd()*120};
   const ss5=u=>u*u*u*(u*(u*6-15)+10);
   function aurWander(dt){const still=reduce||skyMode==="calm";const k=skyMode==="bal"?1/1.6:1,A=skyMode==="bal"?.5:1;
-    if(!still&&fxLive()){const d=dt*k;
+    if(!still&&fxLive()){const d=dt*k*AURSPD;AW.wt0+=d;AW.ft+=dt*AURSPD;
       AW.legT+=d;if(AW.legT>=AW.legD){AW.from=AW.to;let n;do{n=.5+(arnd()<.5?-1:1)*(.1+arnd()*.15)*(arnd()<.3?0:1);}while(Math.abs(n-AW.from)<.08);AW.to=n;AW.legD=60+arnd()*60;AW.legT=0;}
       AW.wT+=d;if(AW.wT>=AW.wD){AW.wf=AW.wt;AW.wt=.22+arnd()*.16;AW.wD=30+arnd()*30;AW.wT=0;}
       AW.tph+=d*2*Math.PI/AW.tT;if(AW.tph>2*Math.PI){AW.tph-=2*Math.PI;AW.tT=20+arnd()*20;}
       AW.lt+=d*.05;AW.hbT+=d;AW.rT+=d;if(AW.rT>=AW.rD){AW.rf=AW.rt;AW.rt=arnd()<.45?.35+arnd()*.65:0;AW.rD=30+arnd()*30;AW.rT=0;}
       AW.nextSplit-=d;if(AW.nextSplit<=0&&AW.splT<0){AW.splT=0;AW.nextSplit=120+arnd()*120;}
       if(AW.splT>=0){AW.splT+=d;const u=AW.splT;AW.spl=u<6?ss5(u/6):u<14?1:u<20?1-ss5((u-14)/6):0;if(u>=20){AW.splT=-1;AW.spl=0;}}}
-    const raw=AW.from+(AW.to-AW.from)*ss5(Math.min(1,AW.legT/AW.legD));
-    AW.cx=aurPin>=0&&aurPin<=1?aurPin:still?.5:.5+(raw-.5)*A;AW.w=still?.3:.3+((AW.wf+(AW.wt-AW.wf)*ss5(Math.min(1,AW.wT/AW.wD)))-.3)*A;AW.tam=still?0:.45*A;AW.rch=aurLow?1:still?0:(AW.rf+(AW.rt-AW.rf)*ss5(Math.min(1,AW.rT/AW.rD)))*A;AW.hb=still?1:1+.12*A*Math.sin(AW.hbT*2*Math.PI/26);
+    const wt=AW.wt0,raw=.5+.11*Math.sin(2*Math.PI*wt/140+AW.p1)+.07*Math.sin(2*Math.PI*wt/210+AW.p2)+.03*Math.sin(2*Math.PI*wt/85+AW.p3);   /* three slow sines around the centre (periods 85, 140, 210 s; random phases each visit): never biased, never a jump */
+    AW.fa=still?0:skyMode==="bal"?.6:1;
+    AW.cx=aurPin>=0&&aurPin<=1?aurPin:still?.5:.5+(raw-.5)*A+AW.fa*.015*Math.sin(2*Math.PI*AW.ft/25);   /* and the whole curtain sways, a 25 s cycle */AW.w=still?.3:.3+((AW.wf+(AW.wt-AW.wf)*ss5(Math.min(1,AW.wT/AW.wD)))-.3)*A;AW.tam=still?0:.45*A;AW.rch=aurLow?1:still?0:(AW.rf+(AW.rt-AW.rf)*ss5(Math.min(1,AW.rT/AW.rD)))*A;AW.hb=still?1:1+.12*A*Math.sin(AW.hbT*2*Math.PI/26);
     if(aurEl){const px=Math.round((AW.cx-.5)*innerWidth);if(px!==aurPx){aurPx=px;aurEl.style.transform="translateX("+px+"px)";}}}   // the CSS curtains follow, upright   // the resting show pauses while the page is hidden or not in front
   function drawField(nowT,t,on,dt){if(!field)return;const ue=ultraE;if(ue<.002&&!on){field=null;return;}
     const live=fxLive();if(live)field.clock+=dt;const ft=field.clock,H=field.y1-field.y0,drift=ft*4;   // the field drifts up 4 px/s, wrapping seamlessly
@@ -1773,12 +1774,12 @@ const Sky=(function(){
     const fx_=surgeAt?Math.max(0,(nowT-surgeAt)/1000-.2)/.35:9, flare=fx_<6?fx_*Math.exp(1-fx_):0;flareNow=flare;   // the stars' brief flare: x e^(1-x), peak at .35 s, one smooth rise and fall
     rich=Math.min(1,.55*ultraE+.6*surge);starB=1+.3*ultraE+.3*surge+.9*flare*ultraE;
     vg=(.2*surge+.04)*ultraE;   // the vignette blooms with the surge and rests as a faint still tint
-    auT+=dt*spd*(1+2.2*surge)*br[1];   // the flow runs faster for a moment as the aurora erupts
+    auT+=dt*spd*(1+2.2*surge)*br[1]*AURSPD;   // the flow runs faster for a moment as the aurora erupts
     if(waveAt){const wp=(nowT-waveAt)/WAVE_MS;   // the sweep: from the composer's top to above the sky, eased, fading as it rises
       if(wp>=1){waveAt=0;waveA=0;}else{const e=wp<.5?2*wp*wp:1-Math.pow(-2*wp+2,2)/2;waveR=waveY+(-40-waveY)*e;waveA=Math.min(1,wp/.08)*Math.pow(1-wp,1.1)*ultraE;}}
     aurWander(dt);
     if(neon>.002||lastAur>.002){gl.useProgram(pA);quad(pA);gl.bindFramebuffer(gl.FRAMEBUFFER,au.f);gl.viewport(0,0,au.w,au.h);gl.uniform1f(pA.U.time,auT);gl.uniform1f(pA.U.asp,W/H);gl.uniform1f(pA.U.neon,neon);gl.uniform1f(pA.U.c2,Math.max(c2E,skyMode==="bal"?rich:0));gl.uniform1f(pA.U.rich,rich);gl.uniform1f(pA.U.cool,Math.min(1.3,ultraE*(1+.3*surgeNow)));
-      gl.uniform1f(pA.U.acx,AW.cx);gl.uniform1f(pA.U.awd,AW.w);gl.uniform1f(pA.U.tph,AW.tph);gl.uniform1f(pA.U.tam,AW.tam);gl.uniform1f(pA.U.spl,AW.spl);gl.uniform1f(pA.U.lt,AW.lt);gl.uniform1f(pA.U.hb,AW.hb*(1+.22*surgeNow));gl.uniform1f(pA.U.rch,AW.rch);gl.uniform1f(pA.U.wam,skyMode==="full"&&!reduce?1:.5);
+      gl.uniform1f(pA.U.acx,AW.cx);gl.uniform1f(pA.U.awd,AW.w);gl.uniform1f(pA.U.tph,AW.tph);gl.uniform1f(pA.U.tam,AW.tam);gl.uniform1f(pA.U.spl,AW.spl);gl.uniform1f(pA.U.lt,AW.lt);gl.uniform1f(pA.U.hb,AW.hb*(1+.22*surgeNow));gl.uniform1f(pA.U.rch,AW.rch);gl.uniform1f(pA.U.ft,AW.ft);gl.uniform1f(pA.U.fa,AW.fa);gl.uniform1f(pA.U.wam,skyMode==="full"&&!reduce?1:.5);
       if(nowT-aurFloAt>1000){aurFloAt=nowT;const cb=$(".cbox").getBoundingClientRect();aurFlo=cb.height?Math.min(.9,1-(cb.top-36)/innerHeight):.2;const g=$("#h1"),r=g&&g.offsetParent?g.getBoundingClientRect():null;aurGr=r&&r.width?[r.left/innerWidth,1-r.bottom/innerHeight,r.right/innerWidth,1-r.top/innerHeight]:[0,0,0,0];}gl.uniform1f(pA.U.flo,aurFlo);gl.uniform4f(pA.U.grt,aurGr[0],aurGr[1],aurGr[2],aurGr[3]);   /* the edge never comes within 36 px of the composer */gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
     lastAur=neon;
     gl.useProgram(pS);quad(pS);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);
@@ -1832,6 +1833,9 @@ const Sky=(function(){
         if(x!=null){waveX=x;waveY=y;waveR=y;waveAt=n;}}
       apply();},
     twistLeft(){return readyAt&&twistDeg?Math.max(0,readyAt+TWIST_S*1000-performance.now()):0;},
+    aurProfile(){if(!au)return null;gl.bindFramebuffer(gl.FRAMEBUFFER,au.f);const w=au.w,h=au.h,px=new Uint8Array(w*h*4);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,px);gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+      const col=new Float64Array(w);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4;col[x]+=px[i]*.2126+px[i+1]*.7152+px[i+2]*.0722;}let sm=0,mm=0;for(let x=0;x<w;x++){sm+=col[x];mm+=col[x]*(x+.5)/w;}
+      const bins=[];for(let b=0;b<32;b++){let v=0;for(let x=Math.floor(b*w/32);x<Math.floor((b+1)*w/32);x++)v+=col[x];bins.push(Math.round(v));}return {com:sm?mm/sm:.5,sum:Math.round(sm),cx:AW.cx,bins};},
     busy(on){boostTo=on?1.7:1;busyOn=on;setNeon();},level(m,e){lvl=[.2,.28,.45,.58,.66][m]+Math.min(e,3)*.035;setNeon();},mode,state(){return {shower:shower.length,sign:sign?sign.edges.length:0,field:field?field.P.length:0,chand:chand?chand.P.length:0,cons:cons?cons.edges.length:0,shoot:!!shoot,rain:rain.length,mode:skyMode,calm:+calm.toFixed(3),fw:+fw.toFixed(3),tw:+tw.toFixed(3),neon:+neon.toFixed(3),neonTo,neonBase:+neonBase.toFixed(3),ultraE:+ultraE.toFixed(3),eff:eff(),c2:+c2E.toFixed(3),wave:+waveA.toFixed(3),wave2:+waveA2.toFixed(3),vg:+vg.toFixed(3),uTwist:+uTwDeg(performance.now()).toFixed(2),rich:+rich.toFixed(3),starB:+starB.toFixed(3),spd,one,twistDeg,twistNowDeg:+(twistNow*180/Math.PI).toFixed(3),arc:+arcNow.toFixed(3),sinceReadyS:readyAt?+((performance.now()-readyAt)/1000).toFixed(2):null};}};
 })();
 /* mp4 first (WKWebView and Safari can freeze a .webm on its last frame), and a loop watchdog: if the clip stalls near
@@ -1957,7 +1961,7 @@ function setGreeting(text){greeting=text;const h1=$("#h1");killTracers();h1.text
 setGreeting(greet);
 /* the sideways lock, belt and braces: nothing may leave the page scrolled */
 stage.addEventListener("scroll",()=>{stage.scrollLeft=0;stage.scrollTop=0;});addEventListener("scroll",()=>{if(scrollX||scrollY)scrollTo(0,0);},{passive:true});
-window.__beta={setGreeting,sky:()=>Sky?Sky.state():null,fx:FX,tracing:()=>tracers.size};
+window.__beta={setGreeting,sky:()=>Sky?Sky.state():null,aur:()=>Sky&&Sky.aurProfile?Sky.aurProfile():null,fx:FX,tracing:()=>tracers.size};
 /* edge states, for review: ?empty=1 shows the sidebar with no chats; ?err=1 shows an error line under the composer */
 {const qs=new URLSearchParams(location.search);if(qs.get("empty")==="1")$("#hist").classList.add("none");
  if(qs.get("err")==="1"){const n=$("#note");n.textContent="Your server did not answer. Your Mac will take it.";n.className="note err on";stage.classList.add("has-note");}}
