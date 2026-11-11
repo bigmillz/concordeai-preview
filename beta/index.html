@@ -1500,8 +1500,8 @@ const PFX_FS="precision mediump float;varying vec4 vc;varying vec3 vl;void main(
   "a*=vc.a;gl_FragColor=vec4(vc.rgb*a,a);}";
 function pfxProgram(gl){const sh=(k,s)=>{const x=gl.createShader(k);gl.shaderSource(x,s);gl.compileShader(x);return x;};const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,PFX_VS));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,PFX_FS));gl.linkProgram(p);
   if(!gl.getProgramParameter(p,gl.LINK_STATUS)){if(!gl.isContextLost())console.error("shader: "+(gl.getProgramInfoLog(p)||"link failed").slice(0,200));return null;}   /* a broken shader says so (it once failed silently) */
-  const buf=gl.createBuffer(),f=new Float32Array(9*6*700),aP=gl.getAttribLocation(p,"p"),aC=gl.getAttribLocation(p,"c"),aL=gl.getAttribLocation(p,"l"),uR=gl.getUniformLocation(p,"res");let n=0;
-  const v=(x,y,r,g,b,a,lx,ly,k)=>{if(n>=4200)return;const o=n*9;f[o]=x;f[o+1]=y;f[o+2]=r;f[o+3]=g;f[o+4]=b;f[o+5]=a;f[o+6]=lx;f[o+7]=ly;f[o+8]=k;n++;};
+  const buf=gl.createBuffer(),f=new Float32Array(9*6*1600),aP=gl.getAttribLocation(p,"p"),aC=gl.getAttribLocation(p,"c"),aL=gl.getAttribLocation(p,"l"),uR=gl.getUniformLocation(p,"res");let n=0;
+  const v=(x,y,r,g,b,a,lx,ly,k)=>{if(n>=9600)return;const o=n*9;f[o]=x;f[o+1]=y;f[o+2]=r;f[o+3]=g;f[o+4]=b;f[o+5]=a;f[o+6]=lx;f[o+7]=ly;f[o+8]=k;n++;};
   return {clear(){n=0;},count(){return n;},
     star(x,y,s,col,a,rot){if(a<.004||s<.3)return;const c=Math.cos(rot||0)*s,si=Math.sin(rot||0)*s,P=[[-1,-1],[1,-1],[1,1],[-1,-1],[1,1],[-1,1]];for(const [u,w] of P)v(x+u*c-w*si,y+u*si+w*c,col[0],col[1],col[2],a,u,w,1);},
     line(x0,y0,x1,y1,wd,col,a0,a1){if(a0<.004&&a1<.004)return;const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy)||1,h=wd/2+1,nx=-dy/L*h,ny=dx/L*h;
@@ -1848,7 +1848,7 @@ const Sky=(function(){
     const chat=stage.classList.contains("chat"),colL=chat?R($("#convo")).left:Math.min(cb.left,h1?h1.left:cb.left),colR=chat?R($("#convo")).right:Math.max(cb.right,h1?h1.right:cb.right);
     const left=(side?side.right:0)+24,top=(hd?hd.bottom:64)+16;
     const areas=[[left,top,colL-24,innerHeight*.62],[colR+24,top,innerWidth-24,innerHeight*.62],[colL+40,top,colR-40,(h1&&!chat?h1.top:cb.top)-20],[colL,(h1&&!chat?h1.bottom:cb.top-120)+14,colR,cb.top-10]].filter(a=>a[2]-a[0]>150&&a[3]-a[1]>110);
-    if(!areas.length)return null;signPlace=(signPlace+1+Math.floor(Math.random()*2))%areas.length;if(!chat&&areas.length===4&&(signK=(signK||0)+1)%2)signPlace=3;   /* every other one above the box */const [x0,y0,x1,y1]=areas[signPlace%areas.length];
+    if(!areas.length)return null;signPlace=(signPlace+1+Math.floor(Math.random()*2))%areas.length;if(!chat&&areas.length===4&&(signK=(signK||0)+1)%2)signPlace=3;if(signForce!=null&&areas.length===4)signPlace=signForce;signForce=null;   /* every other one above the box */const [x0,y0,x1,y1]=areas[signPlace%areas.length];
     const cs=[[x0,y0],[x1,y0],[x0,y1],[x1,y1]].map(([x,y])=>toSky(x,y,t)),qx0=Math.min(...cs.map(c=>c[0])),qx1=Math.max(...cs.map(c=>c[0])),qy0=Math.min(...cs.map(c=>c[1])),qy1=Math.max(...cs.map(c=>c[1]));
     const pts=[];for(let gx=Math.floor(qx0/46);gx<=Math.floor(qx1/46);gx++)for(let gy=Math.floor(qy0/46);gy<=Math.floor(qy1/46);gy++){const h=skyHash(gx,gy);if(h<.84)continue;
       const ox=(skyHash(F32(gx+F32(1.7)),F32(gy+F32(1.7)))*.8+.1)*46,oy=(skyHash(F32(gx+F32(3.1)),F32(gy+F32(3.1)))*.8+.1)*46,qx=gx*46+ox,qy=gy*46+oy,[sx,sy]=toScreen(qx,qy,t);
@@ -1857,6 +1857,33 @@ const Sky=(function(){
     const P=pts.slice(0,4+Math.floor(Math.random()*3));const inT=[0],edges=[];while(inT.length<P.length){let best=null;for(const i of inT)for(let j=0;j<P.length;j++){if(inT.includes(j))continue;const dd=Math.hypot(P[i].sx-P[j].sx,P[i].sy-P[j].sy);if(!best||dd<best[2])best=[i,j,dd];}inT.push(best[1]);edges.push([best[0],best[1]]);}
     if(Math.random()<.35&&P.length>4){const a=0,b2=P.length-1;if(!edges.some(e=>(e[0]===a&&e[1]===b2)||(e[0]===b2&&e[1]===a)))edges.push([a,b2]);}   // sometimes it closes into a figure
     return {P,edges,t0:performance.now(),drift:Math.random()<.35};}
+  /* THE STARS' LANDING (per the owner: "push the star effect ... a lot harder while still not being tacky"; "through the
+     roof"): a wave of 450 star births (225 Balanced) sweeping out from the composer into the open sky over 1.5 s, of four
+     kinds (pin-points, stars, four-point glints, a few slow bright stars), 30 arriving as trails; the sky about 2.5 x denser
+     through the hang; 60 (30) kept for the rest; the stars near the pointer brighten softly, typing sets a light shimmer. */
+  let wave=[],ptrAt=0,typeAt=0,signForce=null;
+  addEventListener("pointermove",()=>{ptrAt=performance.now();},{passive:true});
+  document.addEventListener("input",e=>{if(e.target&&e.target.id==="ask")typeAt=performance.now();},true);
+  function buildWave(nowT){const cb=$(".cbox").getBoundingClientRect();if(!cb.width||stage.classList.contains("chat"))return [];const hd=$("header").getBoundingClientRect(),sd=stage.classList.contains("side-open")?$("#side").getBoundingClientRect():null;
+    const x0=(sd?sd.right:0)+16,x1=innerWidth-16,y0=hd.bottom+8,y1=cb.top-6,ex=rects(),cx=cb.left+cb.width/2,cy=cb.top;
+    const full=skyMode==="full",n=full?450:225,keep=full?60:30,trails=full?30:15,out=[],dmax=Math.max(1,Math.hypot(Math.max(cx-x0,x1-cx),(cy-y0)*1.4));let tries=0;
+    while(out.length<n&&tries++<n*8){const x=x0+Math.random()*(x1-x0),y=y0+Math.random()*(y1-y0);if(ex.some(r=>inR(x,y,r,8)))continue;
+      const dn=Math.min(1,Math.hypot(x-cx,(y-cy)*1.4)/dmax),far=Math.random()<.4,k=Math.random(),pin=k<.3,big=!pin&&k>.96,i=out.length;
+      out.push({x,y,bt:nowT+150+1350*Math.pow(dn,.8)+Math.random()*120,s:pin?.5+Math.random()*.3:big?3+Math.random():far?.7+Math.random()*.4:1.3+Math.random()*1.8,
+        a:pin?.5+Math.random()*.3:big?.85:far?.25+Math.random()*.15:.45+Math.random()*.4,far,bloom:big?2500:900,
+        end:i<keep?0:nowT+3300+Math.random()*1700,col:big?WHITE:UCOL[Math.floor(Math.random()*UCOL.length)],w:2*Math.PI/(2+Math.random()*5),ph:Math.random()*6.28,
+        sh:pin||Math.random()<.3,g:big||Math.random()<.25,tr:i>=keep&&i<keep+trails?{x:cx+(x-cx)*.35,y:cy+(y-cy)*.35,d:500+Math.random()*250}:null});}
+    return out;}
+  function drawWave(nowT,t){if(!wave.length)return;const chat=stage.classList.contains("chat")?0:1,ue=ultraE*chat,pe=Math.max(0,1-(nowT-ptrAt)/1200),te=Math.max(0,1-(nowT-typeAt)/900);
+    for(let i=wave.length-1;i>=0;i--){const p=wave[i],age=nowT-p.bt;if(age<0)continue;const u=Math.min(1,age/p.bloom);let a=p.a*ss5(u);
+      if(p.end){if(nowT>p.end+1200){wave.splice(i,1);continue;}if(nowT>p.end)a*=1-ss5((nowT-p.end)/1200);}
+      const tw=Math.sin(t*p.w+p.ph);a*=p.sh?.35+.65*Math.pow(.5+.5*tw,4):.6+.4*(.5+.5*tw);
+      let x=p.x,y=p.y+(p.far?2:3)*Math.sin(t*.12+p.ph);
+      if(p.tr&&age<p.tr.d){const v=age/p.tr.d,e=1-Math.pow(1-v,3),hx=p.tr.x+(p.x-p.tr.x)*e,hy=p.tr.y+(p.y-p.tr.y)*e,tl=Math.min(e,.45);
+        pfx.line(p.tr.x+(p.x-p.tr.x)*(e-tl),p.tr.y+(p.y-p.tr.y)*(e-tl),hx,hy,1,[.86,.91,1],0,.8*Math.min(1,v*4)*(1-v*.6)*ue);x=hx;y=hy;a=Math.max(a,.8*Math.min(1,v*4));}
+      if(pe>0&&ptr.x>-900){const dx=x-ptr.x,dy=y-ptr.y,q=dx*dx+dy*dy;if(q<32400)a*=1+.6*pe*Math.exp(-q/8100);}
+      pfx.star(x,y,p.s*2.2,p.col,a*ue,0);if(u<1&&p.g)pfx.star(x,y,p.s*(p.bloom>1000?3.2:4.5)*(1-.4*u),WHITE,(p.bloom>1000?.6:.45)*Math.sin(Math.PI*u)*ue,u*.3);}
+    if(te>0&&field&&!stage.classList.contains("chat"))for(let k=0;k<field.P.length;k+=3){const p=field.P[k],f=.5+.5*Math.sin(nowT*.012+p.ph*7);if(f>.8)pfx.star(p.x,p.y,p.s*3.4,WHITE,.35*te*(f-.8)*5*ultraE,0);}}
   function drawSign(nowT,t,on){if(sign&&stage.classList.contains("chat")&&!sign.out){sign.out=1;const d=sign.edges.length*.42+2;if((nowT-sign.t0)/1000<sign.edges.length*.42)sign=null;else if((nowT-sign.t0)/1000<d)sign.t0=nowT-d*1000;}   /* a conversation: no constellation lines (the one showing fades) */
     if(on&&fxLive()&&!sign&&nowT>nextSign&&!stage.classList.contains("chat")){sign=buildSign(t);nextSign=nowT+9000+Math.random()*5000;}
     if(!sign)return;const age=(nowT-sign.t0)/1000,n=sign.edges.length,per=.42,draw=n*per,hold=2,fade=1.2;
@@ -1866,8 +1893,8 @@ const Sky=(function(){
       pfx.line(x0,y0,hx,hy,.7,ICE,.24*fa*ultraE,.34*fa*ultraE);if(u<1)pfx.star(hx,hy,3.2,WHITE,.85*ultraE,0);else lit.add(j);});   // the travelling light at the head
     lit.forEach(i=>pfx.star(S[i][0],S[i][1],4.6,WHITE,.6*fa*ultraE,0));}
   function skyFx(nowT,t,dt){if(!pfx)return;pfx.clear();const ue=ultraE;
-    drawChand(nowT,t);drawField(nowT,t,ultraWant&&lift(),dt);drawSign(nowT,t,ultraWant&&lift());
-    if(ue<.002&&!ultraWant){cons=null;shoot=null;rain.length=0;if(pfx.count()){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}return;}
+    drawChand(nowT,t);drawField(nowT,t,ultraWant&&lift(),dt);drawSign(nowT,t,ultraWant&&lift());drawWave(nowT,t);
+    if(ue<.002&&!ultraWant){cons=null;shoot=null;rain.length=0;wave.length=0;if(pfx.count()){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,W,H);pfx.draw(innerWidth,innerHeight,true);}return;}
     const on=ultraWant&&lift();
     // the constellation: each line draws in over 260 ms (all within about 600), holds, then fades over 1.2 s
     if(cons){const age=nowT-cons.t0,fade=age<1100?1:Math.max(0,1-(age-1100)/1200);if(fade<=0)cons=null;else{
@@ -2002,7 +2029,7 @@ const Sky=(function(){
       {const n=performance.now();if(!on&&uTwAt){uTwFrom=uTwDeg(n);uTwTo=0;uTwAt=n;}}
       if(on&&lift()&&smash===false){if(!field)requestAnimationFrame(()=>{if(ultraWant&&!field)field=buildField(false);});}   // back within 1.5 s: no second show, the field simply returns
       else if(on&&lift()){const n=performance.now();surgeAt=n;twDir=Math.random()<.5?-1:1;uTwFrom=uTwDeg(n);uTwTo=UTW_DEG;uTwAt=n;
-        nextShoot=n+700+Math.random()*500;nextRain=n+300;cons=null;field=buildField(true);nextSign=n+1800+Math.random()*800;sign=null;nextShower=n+1300;landing=true;   /* a star sign and a meteor shower in the landing */   // the field launches up from the box's edge at once
+        nextShoot=n+700+Math.random()*500;nextRain=n+300;cons=null;field=buildField(true);nextSign=n+1500+Math.random()*300;sign=null;signForce=2;wave=[];requestAnimationFrame(()=>{if(ultraWant&&lift())wave=buildWave(n);});nextShower=n+1300;landing=true;   /* a star sign and a meteor shower in the landing */   // the field launches up from the box's edge at once
         if(x!=null){MX.arr=n;MX.kx=x;const cb=$(".cbox").getBoundingClientRect();MX.top=cb.top;if(skyMode==="full")MX.up=n+360;}   // the matrix lights in one sweep out from the knob's x
         requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!ultraWant)return;cons=buildCons(skyClock);}));   // spread over the next frames
         if(x!=null){waveX=x;waveY=y;waveR=y;waveAt=n;}}
