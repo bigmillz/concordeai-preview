@@ -7,7 +7,7 @@
 <title>ConcordeAI 7.0 beta</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%272 2.3 19.6 16.4%27%3E%3Cg stroke=%27%23e6e9f4%27 stroke-width=%271.6%27 stroke-linecap=%27round%27 fill=%27none%27%3E%3Cline x1=%273.2%27 y1=%2717.5%27 x2=%2720.4%27 y2=%273.5%27/%3E%3Cline x1=%277.5%27 y1=%2717.5%27 x2=%2720.4%27 y2=%277%27/%3E%3Cline x1=%2711.8%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2710.5%27/%3E%3Cline x1=%2716.1%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2714%27/%3E%3Cline x1=%2719.3%27 y1=%2717.5%27 x2=%2720.4%27 y2=%2716.6%27/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Space+Grotesk:wght@300..700&family=Michroma&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=Space+Grotesk:wght@300..700&family=Michroma&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* BALANCE AND STING, the quiet version. Balanced is the default (html.bal); html.full brings the whole show back
    (the Effects toggle under the settings icon); html.calm is the stillest. Every light, trail, shimmer and flight
@@ -1224,6 +1224,38 @@ textarea.sin{height:72px;padding:8px 10px;line-height:1.45;resize:none}
   .srail{flex-direction:row;overflow-x:auto;scrollbar-width:none;padding:12px 52px 12px 12px;border-right:0;border-bottom:var(--hl) solid rgba(255,255,255,.08)}.slab{display:none}
   .spanes{padding:20px 16px 32px}.sr{flex-wrap:wrap}.sseg{max-width:100%;overflow-x:auto;scrollbar-width:none}}
 @media (prefers-reduced-motion:reduce){#setbg,#settings{transition:none}}
+
+/* 2026-11-12, per Patrick: answers read like Claude's (a warm text serif, Inter for the interface), and Settings chunkier but tight */
+:root{--ui:'Inter',-apple-system,system-ui,sans-serif;--serif:'Source Serif 4','Charter','Iowan Old Style',Georgia,serif}
+.body{font-family:var(--serif);font-size:17px;line-height:1.62;letter-spacing:0;font-weight:400;font-optical-sizing:auto;color:#ebe8e3}
+.body strong{font-weight:600;color:#f6f4f0}
+.body h2,.body h3{font-family:var(--serif);font-weight:600;letter-spacing:-.006em}
+.body code,.body pre,.body kbd{font-family:var(--mono)}
+.msg.user,.who,.liveline,.details,aside{font-family:var(--ui)}
+@media (min-width:601px){
+#settings{width:800px;height:620px;grid-template-columns:212px minmax(0,1fr);border-radius:16px;background:#121214}
+.srail{gap:4px;padding:22px 12px}
+.slab{margin:0 12px 12px;font:600 12px/16px var(--ui)}
+.spanes{padding:28px 32px 32px}
+.sclose{top:18px;right:18px;width:32px;height:32px;border-radius:10px}
+}
+.srow{height:40px;padding:0 14px;border-radius:10px;font:500 15px/1 var(--ui);color:rgba(255,255,255,.7)}
+.srow.on{background:#242428;color:#fff}
+.spane h2{margin:0 0 20px;font:650 22px/28px var(--ui);letter-spacing:-.016em}
+.sseg{padding:3px;border-radius:11px}
+.sseg button{height:32px;padding:0 16px;border-radius:8px;font:550 14px/1 var(--ui)}
+.sr{min-height:62px;padding:12px 0}
+.sr b,.mr b{font:600 15px/20px var(--ui)}
+.sr span,.mr span{font:450 13px/18px var(--ui)}
+.mr{min-height:66px;gap:14px}
+.mr em{font:550 13px/18px var(--ui)}
+.sdot{width:8px;height:8px;border-radius:3px}
+.sbtn{height:36px;padding:0 16px;border-radius:10px;font:600 14px/1 var(--ui)}
+.sin{height:42px;padding:0 14px;border-radius:10px;font:450 15px/1 var(--ui)}
+textarea.sin{height:88px;padding:10px 14px}
+.sfield label{font:600 13px/18px var(--ui)}
+.snote,.ssub,.sends{font-size:13px;line-height:18px}
+.sw{width:40px;height:24px;border-radius:8px}.sw::after{top:3px;left:3px;width:16px;height:16px;border-radius:5px}.sw[aria-checked="true"]::after{transform:translateX(16px)}
 </style>
 </head>
 <body>
